@@ -1,0 +1,6 @@
+2012.02.09
+the efi.c in 2.6.31 is not work for disk > 2TB,
+so I sync the efi.c efi.h with 2.6.34.
+And it is work.
+
+siyou. 

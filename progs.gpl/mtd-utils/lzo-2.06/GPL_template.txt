@@ -1,0 +1,28 @@
+Module name: lzo
+
+Module version: 2.06
+
+Copyright:
+Copyright (C) 1996-2011 Markus Franz Xaver Johannes Oberhumer All Rights Reserved.	
+Copyright (C) 1989, 1991-2011 Free Software Foundation, Inc.	
+Copyright (c) 1994-2008 Ralf S. Engelschall <rse@engelschall.com>
+Copyright 1996-2011 Free Software Foundation, Inc. Taken from GNU libtool, 2001 Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
+Copyright (C) 2004, 2005, 2007, 2009 Free Software Foundation, Inc. Written by Scott James Remnant, 2004.	
+Copyright (C) 2004, 2005, 2007, 2008, 2009 Free Software Foundation, Inc. Written by Gary V. Vaughan, 2004	
+Copyright (C) 1999, 2000, 2003, 2004, 2005, 2009, 2010 Free Software Foundation, Inc. Written by Tom Tromey <tromey@cygnus.com>.	
+Copyright (C) 1996, 1997, 1999, 2000, 2002-2006, 2008, 2009 Free Software Foundation, Inc. Originally by Fran,cois Pinard <pinard@iro.umontreal.ca>, 1996.	
+Copyright (C) 1995-1997, 2003-2005, 2007, 2009, 2010 Free Software Foundation, Inc. written by Ulrich Drepper <drepper@gnu.ai.mit.edu>, June 1995	
+Copyright (C) 1994 X Consortium
+
+
+License type: GPL-2.0+
+
+Download URL:
+http://www.oberhumer.com/opensource/lzo/download/lzo-2.06.tar.gz
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: @@modday@@
+
+------------------------------------------------------------------------

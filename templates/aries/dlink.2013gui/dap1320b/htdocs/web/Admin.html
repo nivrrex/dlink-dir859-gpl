@@ -1,0 +1,436 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml" xml:lang="zh_TW" lang="zh_TW">
+
+<head>
+<title>D-LINK</title>
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<link rel="stylesheet" type="text/css" href="css/style_pages.css" media="all" />
+<link href="css/jquery.selectbox.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" charset="utf-8" src="./js/comm.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/hmac_md5.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/libajax.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/hnap.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/i18n.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/jquery.validate.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/pagetool.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/checkTimeout.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/includeLang.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/messageDescription.js"></script>
+
+<script>
+$(document).ready(function(){
+	
+	presetCheckBox("enableGraphicalAuthentication", true);
+	presetCheckBox("enableHTTPSServer", true);
+	presetCheckBox("enableRemoteManagement", true);
+	presetCheckBox("useHTTPS", true);
+	
+	//jquery
+	$("div.checkbox_on" || "div.checkbox_off").click(function(e) {
+	 var checkboxId =  e.target.id +'_ck';	 
+		if(e.target.getAttribute("class") == "checkbox_on") {
+			var disable = I18N("j","Disabled");
+			e.target.setAttribute("class", "checkbox_off");
+			e.target.setAttribute("className", "checkbox_off");
+			document.getElementById(e.target.id).innerHTML='<input type="checkbox" name=' + e.target.id + ' id=' + checkboxId + ' checked>'+disable;
+			document.getElementById(checkboxId).checked=false;
+			
+			if (checkboxId == "enableRemoteManagement_ck")
+			{
+				document.getElementById("remoteAdminPort").disabled = true;
+				document.getElementById("remoteAdminPort").value = "";
+				presetCheckBox("useHTTPS", false);
+				document.getElementById("useHTTPS").disabled = true;
+			}
+			
+			if (checkboxId == "useHTTPS_ck")
+			{
+				document.getElementById("remoteAdminPort").value = "8080";
+			}
+			
+			changeFlag = true;
+			save_button_changed();
+		}
+		else {
+			var enable = I18N("j","Enabled");
+			e.target.setAttribute("class", "checkbox_on");
+			e.target.setAttribute("className", "checkbox_on");
+			document.getElementById(e.target.id).innerHTML='<input type="checkbox" name=' + e.target.id + ' id=' + checkboxId + ' checked="">'+enable;
+			document.getElementById(checkboxId).checked=true;
+			
+			if (checkboxId == "enableRemoteManagement_ck")
+			{
+				document.getElementById("remoteAdminPort").disabled = false;
+				document.getElementById("remoteAdminPort").value = "8080";
+				document.getElementById("useHTTPS").disabled = false;
+			}
+			
+			if (checkboxId == "useHTTPS_ck")
+			{
+				presetCheckBox("enableRemoteManagement", true);
+				document.getElementById("remoteAdminPort").value = "8181";
+				document.getElementById("remoteAdminPort").disabled = false;
+				document.getElementById("useHTTPS").disabled = false;
+			}
+			
+			changeFlag = true;
+			save_button_changed();
+		}
+	});
+	
+	GetXML();
+});
+</script>
+
+<script type="text/javascript">
+	
+	var HNAP = new HNAP_XML();
+	
+	var changePassword = "0";
+	
+	function Load_HTML()
+	{ 
+		$("#header").load("header.html");
+	}
+	
+	function Initial()
+	{
+		initialMenu();
+		initialDetectRouterConnection();
+	}
+	
+	function GetXML()
+	{
+		var xml_GetDeviceSettings = HNAP.GetXML("GetDeviceSettings");
+			
+		// CAPTCHA
+		var captcha = xml_GetDeviceSettings.Get("GetDeviceSettingsResponse/CAPTCHA");
+		if(captcha == "true")
+		{
+			presetCheckBox("enableGraphicalAuthentication", true);
+		}
+		else
+		{
+			presetCheckBox("enableGraphicalAuthentication", false);
+		}
+		
+		var xml_GetAdministrationSettings = HNAP.GetXML("GetAdministrationSettings");
+		// Enable HTTPS Server
+		var administrationSettings = xml_GetAdministrationSettings.Get("GetAdministrationSettingsResponse/HTTPS");
+		if(administrationSettings == "true")
+		{
+			presetCheckBox("enableHTTPSServer", true);
+		}
+		else
+		{
+			presetCheckBox("enableHTTPSServer", false);
+		}
+		// Enable Remote Mgt
+		var remoteMgt = xml_GetAdministrationSettings.Get("GetAdministrationSettingsResponse/RemoteMgt");
+		if(remoteMgt == "true")
+		{
+			presetCheckBox("enableRemoteManagement", true);
+		}
+		else
+		{
+			presetCheckBox("enableRemoteManagement", false);
+			document.getElementById("remoteAdminPort").disabled = true;
+			document.getElementById("useHTTPS").disabled = true;
+		}
+		// Remote Admin Port
+		var remote_AdminPort = xml_GetAdministrationSettings.Get("GetAdministrationSettingsResponse/RemoteMgtPort");
+		if (remote_AdminPort != "")
+		{
+			document.getElementById("remoteAdminPort").value = remote_AdminPort;
+		}
+		else
+		{
+			document.getElementById("remoteAdminPort").value = "";
+		}
+
+		// Enable Remote Mgt HTTPS
+		var remote_MgtHTTPS = xml_GetAdministrationSettings.Get("GetAdministrationSettingsResponse/RemoteMgtHTTPS");
+		if(remote_MgtHTTPS == "true")
+		{
+			presetCheckBox("useHTTPS", true);
+		}
+		else
+		{
+			presetCheckBox("useHTTPS", false);
+		}
+	}
+	
+	function CheckConnectionStatus()
+	{
+		$.ajax({
+			cache : false,
+			url : "./js/CheckConnection",
+			timeout : 2000,
+			type : "GET",
+			success : function(data) { SetXML(); },
+			error : function() { document.getElementById("DetectRouterConnection").style.display = "inline"; }
+		});
+	}
+	
+	function SetXML()
+	{
+		////////////////////////////// SetDeviceSettings //////////////////////////////
+		var xml_SetDeviceSettings = HNAP.GetXML("SetDeviceSettings");
+		
+		/*set device hostname*/
+		var xml_GetNetworkSettings = HNAP.GetXML("GetNetworkSettings");
+		var device_name = xml_GetNetworkSettings.Get("GetNetworkSettingsResponse/DeviceName");
+		xml_SetDeviceSettings.Set("SetDeviceSettings/DeviceName", device_name);
+		
+		// Admin Password
+		if (changePassword == "1")
+		{
+			// Admin Password Modification
+			xml_SetDeviceSettings.Set("SetDeviceSettings/AdminPassword", document.getElementById("password_Admin").value);
+			xml_SetDeviceSettings.Set("SetDeviceSettings/ChangePassword", "true");
+		}
+		else
+		{
+			xml_SetDeviceSettings.Set("SetDeviceSettings/AdminPassword", "");
+			xml_SetDeviceSettings.Set("SetDeviceSettings/ChangePassword", "false");
+		}
+		
+		// CAPTCHA
+		if (document.getElementById("enableGraphicalAuthentication_ck").checked == "1")
+		{
+			xml_SetDeviceSettings.Set("SetDeviceSettings/CAPTCHA", "true");
+		}
+		else
+		{
+			xml_SetDeviceSettings.Set("SetDeviceSettings/CAPTCHA", "false");
+		}
+		
+		var xml_SetDeviceSettingsResult = HNAP.SetXMLAsync("SetDeviceSettings", xml_SetDeviceSettings);
+		// alert(xml_SetDeviceSettingsResult.Get("SetDeviceSettingsResponse/SetDeviceSettingsResult"));
+		
+		
+		////////////////////////////// SetAdministrationSettings //////////////////////////////
+		var xml_SetAdministrationSettings = HNAP.GetXML("SetAdministrationSettings");
+		// Enable HTTPS Server
+		if (document.getElementById("enableHTTPSServer_ck").checked == "1")
+		{
+			xml_SetAdministrationSettings.Set("SetAdministrationSettings/HTTPS", "true");
+		}
+		else
+		{
+			xml_SetAdministrationSettings.Set("SetAdministrationSettings/HTTPS", "false");
+		}
+		
+		// Enable Remote Mgt
+		if (document.getElementById("enableRemoteManagement_ck").checked == "1")
+		{
+			xml_SetAdministrationSettings.Set("SetAdministrationSettings/RemoteMgt", "true");
+		}
+		else
+		{
+			xml_SetAdministrationSettings.Set("SetAdministrationSettings/RemoteMgt", "false");
+		}
+		// Remote Admin Port
+		xml_SetAdministrationSettings.Set("SetAdministrationSettings/RemoteMgtPort", document.getElementById("remoteAdminPort").value);
+		
+		// Enable Remote Mgt HTTPS
+		if (document.getElementById("useHTTPS_ck").checked == "1")
+		{
+			xml_SetAdministrationSettings.Set("SetAdministrationSettings/RemoteMgtHTTPS", "true");
+		}
+		else
+		{
+			xml_SetAdministrationSettings.Set("SetAdministrationSettings/RemoteMgtHTTPS", "false");
+		}
+		
+		var xml_SetAdministrationSettingsResult = HNAP.SetXMLAsync("SetAdministrationSettings", xml_SetAdministrationSettings);
+		// alert(xml_SetAdministrationSettingsResult.Get("SetAdministrationSettingsResponse/SetAdministrationSettingsResult"));
+		document.getElementById("CreatePopAlertMessage").style.display = "inline";
+		setTimeout("waitSettingFinished()", 1000);
+	}
+	
+	function waitSettingFinished()
+	{
+		if (changePassword == "1")
+		{
+			readyLogout();
+		}
+		else
+		{
+			window.location.reload();
+		}
+	}
+	
+	function clearTextField()
+	{
+		document.getElementById("password_Admin").value = "";
+		changePassword = "1";
+	}
+	
+</script>
+<script language="JavaScript">
+        // 2013/08/15 Timmy Add
+        $(function() {
+			$("input, textarea, select").change(function () {
+				changeFlag = true;
+				save_button_changed();
+			});
+        });
+        
+        function save_button_changed()
+		{
+			document.getElementById("Save_Disable_btn").style.display = "none";
+			document.getElementById("Save_btn").style.display = "block";
+		}
+</script>
+
+<style>
+#advancedBlock1 {
+	display: none;
+}
+</style>
+</head>
+
+<body>
+	<div id="wrapper">
+		<!-------------------- Logo ------------------------->
+		<div id="header"></div>
+		<!-------------------- Menu ------------------------->
+		<div id="menu"></div>
+		<!-------------------- Content ---------------------->
+		<div id="content">
+			<!-------------------- info ---------------------->
+	  		<div id="info">
+			  	<div id="FunctionName"><script>I18N("h", "Admin");</script></div>
+			  	<div id="wall"><img src="image/page_Admin.png" alt="" width="195" height="119"/></div>
+			    <div id="directions">
+			      		<script>I18N("h", "The admin password is used to log in to this configuration interface. It is highly recommended that you create a password to keep your router secure.");</script>
+				</div>
+			</div>
+		    <!-------------------- funcBar ---------------------->
+		    <div id="funcBar">
+				<div id="pagePath"><script>I18N("h", "Management");</script> >> <script>I18N("h", "Admin");</script></div>
+				<ul id="rightFunc">
+					<li style="display:block"><div id="Save_btn" onclick="document.getElementById('sumbit_CheckData').click()" style="cursor:pointer; display:none"><script>I18N("h", "Save");</script></div></li>
+					<li style="display:block"><div id="Save_Disable_btn"><script>I18N("h", "Save");</script></div></li>
+					<!--<li style="display:block"><a href="javascript:CheckHTMLStatus('System');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "System");</script></div></a></li> -->
+					
+				</ul>
+			</div>
+	    	<!-------------------- main ------------------------->
+	     	<div id="main">
+ 		   		<!-------------------- general ---------------------->
+ 		   		<form name="adminpassword_Settings" id="adminpassword_Settings" method="POST" action="">
+ 		   		<input id="sumbit_CheckData" class="submit" type="submit" value="Submit" style="display:none" />
+				<table class="block" border="0" style="margin: 10px 0 0 0 ;">
+				<tbody>
+					 <tr>
+						<td colspan="2"><div class ="title"><script>I18N("h", "Admin Password");</script></div></td
+					 </tr>
+				   	 <tr>
+				     	<th><script>I18N("h", "Password");</script>:</th>
+				     	<td><input class="styled-text" type="text" name="password_Admin" size="30" id="password_Admin" value="********" onfocus ="clearTextField()"></td>
+				     </tr>
+				     <tr>
+				     	<th><script>I18N("h", "Enable Graphical Authentication (CAPTCHA)");</script>:</th>
+				     	<td><div id="enableGraphicalAuthentication" class="checkbox_on"><input type="checkbox" name="enableGraphicalAuthentication" id="enableGraphicalAuthentication_ck" checked></div></td>
+				     </tr>
+				</tbody>
+			    </table>
+			   	</form>
+			    <!--<div class="advButton" onclick="showAdv('advancedBlock1');"><script>I18N("h", "Advanced Settings");</script>...</div> -->
+			    <!--<hr />-->
+			    <!-------------------- advaneced  ---------------------->
+				<div id="advancedBlock1">
+				    <table class="block" border="0">
+			    	<tbody>
+						 <tr>
+							<td colspan="4"><div class ="title"><script>I18N("h", "Administration");</script></div></td>
+						 </tr>
+						<tr>
+					    	<th><script>I18N("h", "Enable HTTPS Server");</script>:</th>
+					    	<td colspan="3"><div id="enableHTTPSServer" class="checkbox_on"><input type="checkbox" name="enableHTTPSServer" id="enableHTTPSServer_ck" checked></div></td>
+					    </tr>
+					     	<tr>
+					     	<tr>
+					       	<th><script>I18N("h", "Enable Remote Management");</script>:</th>
+					       	<td colspan="3"><div id="enableRemoteManagement" class="checkbox_on"><input type="checkbox" name="enableRemoteManagement" id="enableRemoteManagement_ck" checked></div></td>
+					    </tr>
+					   	<tr>
+					       	<th><script>I18N("h", "Remote Admin Port");</script>:</th>
+					       	<td width='20px'><input class="styled-text" type="text" name="remoteAdminPort" size="5" id="remoteAdminPort" value="8080"></td>
+						   	<td width='100px' align="right" ><script>I18N("h", "Use HTTPS");</script>:</td>
+						   	<td><div id="useHTTPS" class="checkbox_on"><input type="checkbox" name="useHTTPS" id="useHTTPS_ck" checked></div></td>
+					    </tr>
+					</tbody>
+				    </table>
+				</div>
+		 </div>
+		 <div id="CreatePopAlertMessage" style="display:none">
+			<div id="AlertPopRect">
+			<div id="AlertPopBody">
+				<table class="myAlertPop_table_b" id="waitSettingFinish" border="0" cellspacing="0">
+				   <tbody>
+						 <tr>
+						 	<td>
+								<center><div id="Loading_pop_image2"></div></center>
+							</td>
+						 </tr>
+						 <tr>
+						 	<td label id="reciprocal_Number"></label></td>
+						 </tr>
+						 <tr>
+						 	<td id="dialog_msg_black2"><script>I18N("h", "Your changes are being saved.");</script></td>
+						 </tr>
+				   </tbody>
+				</table>
+			</div>
+			</div>
+		 </div>
+		 <!-- Detect Router Connection, Timmy Add 2013/08/15 -->
+		 <div id="DetectRouterConnection" style="display:none"></div>
+		 <div id="footer">Copyright &copy; 2013 D-Link Corporation/D-Link Systems, Inc.</div>
+	</div>
+<script type="text/javascript" charset="utf-8">
+	$(document).ready( function() {
+		
+		// Check Device Password
+		$.validator.addMethod("checkDevicePassword", function( value, element ) {
+			var returnVal = true;
+			if (value.length > 15 || value.length < 6)
+			{
+				returnVal = false;
+			}
+			return returnVal;
+		}, jQuery.validator.messages.check_DeviceAdminPassword);
+		
+		$('#adminpassword_Settings').validate({
+			rules: {
+				password_Admin: {
+					required: true,
+					checkDevicePassword: true
+				}
+			},
+			messages: {
+				password_Admin: {
+					required: jQuery.validator.messages.check_Password
+				}
+			},
+			submitHandler: function(form) {
+				CheckConnectionStatus();
+			}
+		});
+	});
+</script>
+</body>
+<script type="text/javascript">
+	Load_HTML();
+	Initial();
+	checkTimeout();
+</script>
+</html>

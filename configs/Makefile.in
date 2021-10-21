@@ -1,0 +1,2 @@
+PROGS_GPL_SUBDIRS=zlib-1.2.3 libiconv openssl-0.9.8zc libgsasl libnl-tiny busybox-1.14.1 nsbbox iptables-1.4.7 mathopd-1.6 udhcpcd pppd.alpha wireless_tools_atheros.29 iproute2-2.6.33 mDNSResponder-544/ dnsmasq radvd-1.8 wide-dhcpv6-20080615 email ndisc6-0.9.9 mtd-utils
+PROGS_PRIV_SUBDIRS= xmldb3 rgbin madwifi_LSDK-WLAN-10.x mrd updateleases portt proxyd lld2d widget peanut servd cgibin.aries alpha_gd cwmHelper logd ddnsd nameresolv updatewifistats hostapd_wps alpha_stunnel web_file_access arpmonitor art2

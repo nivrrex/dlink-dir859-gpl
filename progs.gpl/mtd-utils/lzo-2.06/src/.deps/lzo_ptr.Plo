@@ -1,0 +1,60 @@
+src/lzo_ptr.lo: src/lzo_ptr.c src/lzo_conf.h include/lzo/lzoconf.h \
+  config.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/bin/../lib/gcc/mips-linux-uclibc/4.3.3/include-fixed/limits.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/bin/../lib/gcc/mips-linux-uclibc/4.3.3/include-fixed/syslimits.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/limits.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/features.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_config.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_arch_features.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sys/cdefs.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/posix1_lim.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/local_lim.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/linux/limits.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_local_lim.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/posix2_lim.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/bin/../lib/gcc/mips-linux-uclibc/4.3.3/include/stddef.h \
+  include/lzo/lzodefs.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/string.h src/miniacc.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/assert.h src/lzo_ptr.h
+
+src/lzo_conf.h:
+
+include/lzo/lzoconf.h:
+
+config.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/bin/../lib/gcc/mips-linux-uclibc/4.3.3/include-fixed/limits.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/bin/../lib/gcc/mips-linux-uclibc/4.3.3/include-fixed/syslimits.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/limits.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/features.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_config.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_arch_features.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sys/cdefs.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/posix1_lim.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/local_lim.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/linux/limits.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_local_lim.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/posix2_lim.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/bin/../lib/gcc/mips-linux-uclibc/4.3.3/include/stddef.h:
+
+include/lzo/lzodefs.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/string.h:
+
+src/miniacc.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/assert.h:
+
+src/lzo_ptr.h:

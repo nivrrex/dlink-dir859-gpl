@@ -1,0 +1,636 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns= "http://www.w3c.org/1999/xhtml" xml:lang="zh_TW" lang="zh_TW">
+
+<head>
+<title>D-LINK</title>
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<link rel="stylesheet" type="text/css" href="css/style_pages.css" media="all" />
+<link href="css/jquery.selectbox.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" charset="utf-8" src="./js/comm.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/hmac_md5.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/libajax.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/hnap.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/i18n.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/pagetool.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/checkTimeout.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/jquery.selectbox-0.2_new.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/jquery.validate.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/includeLang.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/messageDescription.js"></script>
+
+<script type="text/javascript">
+	
+	var HNAP = new HNAP_XML();
+	
+	var Total_EthernetClients = 0;
+	var tmp_MACAddress;
+	
+	// Create Array to storage
+	var array2Dv;
+	
+/*	function Array2DVar(x, y)
+	{
+		this.length = x;
+		this.x = x;
+		this.y = y;
+		for(var i = 0; i < this.length; i++)
+		{
+			this[i] = new Array(y);
+		}
+	}
+*/	
+	function Load_HTML()
+	{ 
+		$("#header").load("header.html");
+	}
+	
+	function Initial()
+	{
+		initialMenu();
+		initialDetectRouterConnection();
+	}
+	
+	function String_UC(str)
+	{
+		str = str.toUpperCase();
+		
+		return str;
+	}
+	
+/*	function Get_ClientInfo()
+	{
+		var xml_GetClientinfo = HNAP.GetXML("GetClientInfo");
+		var count = 0;
+		var Add_Select1 = document.getElementById("clone_ComputerIp");
+		var Add_Select2 = document.getElementById("clone_ComputerIpByStaticIP");
+		Total_EthernetClients = xml_GetClientinfo.Get("GetClientInfoResponse/ClientInfoLists/ClientInfo#");
+		array2Dv = new Array2DVar(Total_EthernetClients, 1);
+		
+		for (var i = 1; i <= Total_EthernetClients; i ++)
+		{
+			array2Dv[count][0] = String_UC(xml_GetClientinfo.Get("GetClientInfoResponse/ClientInfoLists/ClientInfo:" + i + "/MacAddress"));
+			Add_Select1.options.add(new Option(array2Dv[count][0], i));
+			Add_Select2.options.add(new Option(array2Dv[count][0], i));
+			count ++;
+		}
+	}
+*/	
+	function GetXML()
+	{
+		var xml_GetWanSettings = HNAP.GetXML("GetWanSettings");
+		var xml_GetIPv6Status = HNAP.GetXML("GetIPv6Status");
+		var xml_GetRouterLanSettings = HNAP.GetXML("GetRouterLanSettings");
+
+		var wan_type = xml_GetWanSettings.Get("GetWanSettingsResponse/Type");
+		var wan_MACAddress = String_UC(xml_GetWanSettings.Get("GetWanSettingsResponse/MacAddress"));
+		
+		//document.getElementById("macAddress_StaticIP").value = wan_MACAddress;
+		//document.getElementById("macAddress_DynamicIP").value = wan_MACAddress;
+		//tmp_MACAddress = wan_MACAddress;
+		
+		$("#security_24").selectbox();
+	}
+	
+	function CheckConnectionStatus()
+	{
+		$.ajax({
+			cache : false,
+			url : "./js/CheckConnection",
+			timeout : 2000,
+			type : "GET",
+			success : function(data) { SetXML(); },
+			error : function() { document.getElementById("DetectRouterConnection").style.display = "inline"; }
+		});
+	}
+	
+	function SetXML()
+	{
+		var xml_SetWanSettings = HNAP.GetXML("SetWanSettings");
+		
+		// Check Combobox who selected.
+		var selectedCombobox = document.getElementById("connection_Type").value;
+		
+		switch (selectedCombobox)
+		{
+			case "1":
+				xml_SetWanSettings.Set("SetWanSettings/Type", "Static");
+				xml_SetWanSettings.Set("SetWanSettings/IPAddress", document.getElementById("iPAddress_StaticIP").value);
+				xml_SetWanSettings.Set("SetWanSettings/SubnetMask", document.getElementById("subnetMask_StaticIP").value);
+				xml_SetWanSettings.Set("SetWanSettings/Gateway", document.getElementById("defaultGateway_StaticIP").value);
+				xml_SetWanSettings.Set("SetWanSettings/MTU", document.getElementById("mtu_StaticIP_Input").value);
+				var MaximumTransmissionUnit_StaticIP = document.getElementById("mtu_StaticIP").value;
+				if (MaximumTransmissionUnit_StaticIP == 1)
+				{
+					xml_SetWanSettings.Set("SetWanSettings/MTU", "1500");
+				}
+				else
+				{
+					xml_SetWanSettings.Set("SetWanSettings/MTU", document.getElementById("mtu_StaticIP_Input").value);
+				}
+				xml_SetWanSettings.Set("SetWanSettings/DNS/Primary", document.getElementById("primaryDNSAddress_StaticIP").value);
+				xml_SetWanSettings.Set("SetWanSettings/DNS/Secondary", document.getElementById("secondaryDNSAddress_StaticIP").value);
+				xml_SetWanSettings.Set("SetWanSettings/MacAddress", document.getElementById("macAddress_StaticIP").value);
+				break;
+			case "2":
+				xml_SetWanSettings.Set("SetWanSettings/Type", "DHCP");
+				xml_SetWanSettings.Set("SetWanSettings/MTU", document.getElementById("mtu_DynamicIP_Input").value);
+				var MaximumTransmissionUnit_DynamicIP = document.getElementById("mtu_DynamicIP").value;
+				if (MaximumTransmissionUnit_DynamicIP == 1)
+				{
+					xml_SetWanSettings.Set("SetWanSettings/MTU", "1500");
+				}
+				else
+				{
+					xml_SetWanSettings.Set("SetWanSettings/MTU", document.getElementById("mtu_DynamicIP_Input").value);
+				}
+				xml_SetWanSettings.Set("SetWanSettings/HostName", document.getElementById("hostName_DynamicIP").value);
+				xml_SetWanSettings.Set("SetWanSettings/DNS/Primary", document.getElementById("primaryDNSAddress_DynamicIP").value);
+				xml_SetWanSettings.Set("SetWanSettings/DNS/Secondary", document.getElementById("secondaryDNSAddress_DynamicIP").value);
+				xml_SetWanSettings.Set("SetWanSettings/MacAddress", document.getElementById("macAddress_DynamicIP").value);
+				break;
+		}
+	}
+	function waitSettingFinished()
+	{
+		window.location.reload();
+	}
+	
+	
+	function CheckString(element, value)
+	{
+		element.value = element.value.replace(/\s/g, "");
+	}
+	
+	var _ReciprocalNumber = 10;
+	
+	function Start_reciprocal_Number_RestoreConfiguration()
+	{
+		if (_ReciprocalNumber >= 0)
+		{
+			document.getElementById("reciprocal_Number").innerHTML = _ReciprocalNumber + " " + I18N("j", "Sec");
+			_ReciprocalNumber --;
+			setTimeout("Start_reciprocal_Number_RestoreConfiguration()", 1000);
+		}
+		else
+		{
+			document.getElementById("waitSettingFinish").style.display = "none";
+			document.getElementById("SuccessSettings").style.display = "inline";
+		}
+	}
+	
+	function changeSecurity24GSelect(val)
+	{	
+		if (val == "None")
+		{
+			
+			document.getElementById("show_password_24G").disable = true;			//
+			document.getElementById("show_password_24G").style.display = "none"; 	//
+	/*		$("#80211Mode_24").selectbox('detach');
+			$("#80211Mode_24 option[value='802.11n']").remove();
+			$("#80211Mode_24 option[value='802.11gn']").remove();
+			$("#80211Mode_24 option[value='802.11bgn']").remove();
+			$("#80211Mode_24").append('<option value="802.11n">802.11n only</option>');
+			$("#80211Mode_24").append('<option value="802.11gn">Mixed 802.11g/n</option>');
+			$("#80211Mode_24").append('<option value="802.11bgn">Mixed 802.11b/g/n</option>');
+			$("#80211Mode_24").selectbox('attach');
+			document.getElementById("show_80211Mode_24G").style.display = "none";
+			*/
+			$("#auth_24").selectbox('detach');
+			$("#auth_24 option[value='WEP-AUTO']").remove();
+			$("#auth_24 option[value='WEP-OPEN']").remove();
+			$("#auth_24 option[value='WEP-SHARED']").remove();
+			$("#auth_24").append('<option value="WEP-AUTO">Both (Open/Shared Key)</option>');
+			$("#auth_24").append('<option value="WEP-OPEN">Open</option>');
+			$("#auth_24").append('<option value="WEP-SHARED">Shared Key</option>');
+			$("#auth_24").selectbox('attach');
+			document.getElementById("show_auth").style.display = "none";
+			
+			$("#pass_len").selectbox('detach');
+			$("#pass_len option[value='WEP-64']").remove();
+			$("#pass_len option[value='WEP-64']").remove();
+			$("#pass_len option[value='WEP-128']").remove();
+			$("#pass_len option[value='WEP-64']").remove();
+			$("#pass_len").append('<option value="WEP-64">64 bit (10 hex digits)</option>');
+			$("#pass_len").append('<option value="WEP-64">64 bit (5 ascii characters)</option>');
+			$("#pass_len").append('<option value="WEP-128">128 bit (26 hex digits)</option>');
+			$("#pass_len").append('<option value="WEP-128">128 bit (13 ascii characters)</option>');
+			$("#pass_len").selectbox('attach');
+			document.getElementById("show_pass_len").style.display = "none";
+			
+			
+		}
+		else if (val == "WEP")
+		{
+			document.getElementById("show_password_24G").style.display = "table-row";
+		/*	$("#80211Mode_24").selectbox('detach');
+			$("#80211Mode_24 option[value='802.11n']").remove();
+			$("#80211Mode_24 option[value='802.11gn']").remove();
+			$("#80211Mode_24 option[value='802.11bgn']").remove();
+			$("#80211Mode_24").append('<option value="802.11gn">Mixed 802.11g/n</option>');
+			$("#80211Mode_24").append('<option value="802.11bgn">Mixed 802.11b/g/n</option>');
+			$("#80211Mode_24").selectbox('attach');
+			document.getElementById("show_80211Mode_24G").style.display = "table-row"; */
+			$("#auth_24").selectbox('detach');
+			$("#auth_24 option[value='WEP-AUTO']").remove();
+			$("#auth_24 option[value='WEP-OPEN']").remove();
+			$("#auth_24 option[value='WEP-SHARED']").remove();
+			$("#auth_24").append('<option value="WEP-AUTO">Both (Open/Shared Key)</option>');
+			$("#auth_24").append('<option value="WEP-OPEN">Open</option>');
+			$("#auth_24").append('<option value="WEP-SHARED">Shared Key</option>');
+			$("#auth_24").selectbox('attach');
+			document.getElementById("show_auth").style.display = "table-row";
+			
+			$("#pass_len").selectbox('detach');
+			$("#pass_len option[value='WEP-64']").remove();
+			$("#pass_len option[value='WEP-64']").remove();
+			$("#pass_len option[value='WEP-128']").remove();
+			$("#pass_len option[value='WEP-128']").remove();
+			$("#pass_len").append('<option value="WEP-64">64 bit (10 hex digits)</option>');
+			$("#pass_len").append('<option value="WEP-64">64 bit (5 ascii characters)</option>');
+			$("#pass_len").append('<option value="WEP-128">128 bit (26 hex digits)</option>');
+			$("#pass_len").append('<option value="WEP-128">128 bit (13 ascii characters)</option>');
+			$("#pass_len").selectbox('attach');
+			document.getElementById("show_pass_len").style.display = "table-row";
+		}
+		else
+		{
+			document.getElementById("show_password_24G").style.display = "table-row";
+		/*	$("#80211Mode_24").selectbox('detach');
+			$("#80211Mode_24 option[value='802.11n']").remove();
+			$("#80211Mode_24 option[value='802.11gn']").remove();
+			$("#80211Mode_24 option[value='802.11bgn']").remove();
+			$("#80211Mode_24").append('<option value="802.11n">802.11n only</option>');
+			$("#80211Mode_24").append('<option value="802.11gn">Mixed 802.11g/n</option>');
+			$("#80211Mode_24").append('<option value="802.11bgn">Mixed 802.11b/g/n</option>');
+			$("#80211Mode_24").selectbox('attach');
+			document.getElementById("show_80211Mode_24G").style.display = "table-row"; */
+			$("#auth_24").selectbox('detach');
+			$("#auth_24 option[value='WEP-AUTO']").remove();
+			$("#auth_24 option[value='WEP-OPEN']").remove();
+			$("#auth_24 option[value='WEP-SHARED']").remove();
+			$("#auth_24").append('<option value="WEP-AUTO">Both (Open/Shared Key)</option>');
+			$("#auth_24").append('<option value="WEP-OPEN">Open</option>');
+			$("#auth_24").append('<option value="WEP-SHARED">Shared Key</option>');
+			$("#auth_24").selectbox('attach');
+			document.getElementById("show_auth").style.display = "none";
+			
+			$("#pass_len").selectbox('detach');
+			$("#pass_len option[value='WEP-64']").remove();
+			$("#pass_len option[value='WEP-64']").remove();
+			$("#pass_len option[value='WEP-128']").remove();
+			$("#pass_len option[value='WEP-128']").remove();
+			$("#pass_len").append('<option value="WEP-64">64 bit (10 hex digits)</option>');
+			$("#pass_len").append('<option value="WEP-64">64 bit (5 ascii characters)</option>');
+			$("#pass_len").append('<option value="WEP-128">128 bit (26 hex digits)</option>');
+			$("#pass_len").append('<option value="WEP-128">128 bit (13 ascii characters)</option>');
+			$("#pass_len").selectbox('attach');
+			document.getElementById("show_pass_len").style.display = "none";
+		}
+		save_button_changed();    
+	}
+	
+	function createUserButton()
+	{
+		var xml_GetSiteSurvey = HNAP.GetXML("GetSiteSurvey"); 
+		var survey_result = xml_GetSiteSurvey.Get("GetSiteSurveyResult/APStatInfoLists")
+		//xml_GetSiteSurvey.Set("GetSiteSurvey/Action" , "DETECT");
+			
+		document.getElementById("createPop").style.display = "inline";
+		document.getElementById("createButton").disabled = true;
+	//	document.getElementById("sr_Name").value = "";
+	//	document.getElementById("sr_DestinationIP").value = "";
+	//	document.getElementById("sr_Netmask").value = "";
+	//	document.getElementById("sr_Gateway").value = "";
+	//	document.getElementById("sr_Matrix").value = "";
+		
+		$("#sr_Interface").selectbox('detach');
+		$("#sr_Interface").val('0');
+		$("#sr_Interface").selectbox('attach');
+	}
+	
+	function closeCreateRulePOP()
+	{
+		var GetResult = AddRowToIndex();
+		
+		if (GetResult == "Success")
+		{
+			document.getElementById("createPop").style.display = "none";
+		//	document.getElementById("sr_Name").value = "";
+		//	document.getElementById("sr_DestinationIP").value = "";
+		//	document.getElementById("sr_Netmask").value = "";
+		//	document.getElementById("sr_Gateway").value = "";
+		//	document.getElementById("sr_Matrix").value = "";
+			
+			$("#sr_Interface").selectbox('detach');
+			$("#sr_Interface").val('0');
+			$("#sr_Interface").selectbox('attach');
+			
+		//	check_TotalRule(Limit_TotalStaticRouteRules, Total_StaticRouteRules);
+		}
+		// document.getElementById("sr_Interface").value = "0";
+	}
+	
+	function clearCreateRulePOP()
+	{
+		document.getElementById("createPop").style.display = "none";
+		document.getElementById("createButton").disabled = false;
+	//	document.getElementById("sr_Name").value = "";
+	//	document.getElementById("sr_DestinationIP").value = "";
+	//	document.getElementById("sr_Netmask").value = "";
+	//	document.getElementById("sr_Gateway").value = "";
+	//	document.getElementById("sr_Matrix").value = "";
+		
+		$("#sr_Interface").selectbox('detach');
+		$("#sr_Interface").val('0');
+		$("#sr_Interface").selectbox('attach');
+		
+	//	$("#staticrouter_form").validate().resetForm();
+	}
+	
+
+		
+</script>
+<script language="JavaScript">
+        // 2013/08/15 Timmy Add
+        $(function() {
+			$("input, textarea, select").change(function () {
+				changeFlag = true;
+				save_button_changed();
+			});
+        });
+        
+        function save_button_changed()
+		{
+			document.getElementById("Save_Disable_btn").style.display = "none";
+			document.getElementById("Save_btn").style.display = "block";
+		}
+</script>
+
+
+
+<style>
+
+#show_24g {
+	display: block;
+}
+
+#show_password_24G {
+	display: none;
+}
+#show_auth {
+	display: none;
+}
+#show_pass_len {
+	display: none;
+}
+</style>
+
+</head>
+
+<body>
+	<form name="internet_form" id="internet_form" method="POST" action="">
+	<div id="wrapper">
+		<!-------------------- Logo ------------------------->
+		<div id="header"></div>
+		<!-------------------- Menu ------------------------->
+		<div id="menu"></div>
+		<!-------------------- Content ---------------------->
+		<div id="content">
+		<!-------------------- info ---------------------->
+         <div id="info"> 			
+				<div id="FunctionName"><script>I18N("h", "Internet");</script></div>
+				<div id="wallimage"><img src="image/internet_page.png" alt="" width="195" height="119"/></div>
+		      	<div id="directions">
+					<script>I18N("h", "Use this section to configure the Wi-Fi Network you would like your DAP-1320b to connect to. Use Site Survey to scan available Wi-Fi networks and select the Wi-Fi Network you would like your DAP-1320b to connect to. Enter the Password of the Wi-Fi Network you selected and click Save.");</script>
+				</div>
+	     </div> 
+	     <!-------------------- funcBar ---------------------->   
+	     <div id="funcBar">
+			<div id="pagePath">&nbsp;<script>I18N("h", "Settings");</script> >> <script>I18N("h", "Wi-Fi");</script></div>
+			<ul id="rightFunc">
+				<li style="display:block"><div id="Save_btn" onclick="document.getElementById('sumbit_CheckData').click()" style="cursor:pointer; display:none"><script>I18N("h", "Save");</script></div></li>
+				<li style="display:block"><div id="Save_Disable_btn"><script>I18N("h", "Save");</script></div></li>
+				<input id="sumbit_CheckData" class="submit" type="submit" value="Submit" style="display:none" />
+				<!--<li style="display:block"><a href="javascript:CheckHTMLStatus('Internet_IPv6');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "IPv6");</script></div></a></li> -->
+			</ul>
+		</div>		
+	   	 <!-------------------- main ---------------------->   
+		<br />
+	    <div id="main">
+ 		   <div id ="show_24g">
+		   <table class="block" border="0" >
+			   <tbody>
+
+				<tr>
+								<th><script>I18N("h", "Wireless Mode");</script>:</th>
+								<td>&nbsp;</td>
+				</tr>
+				<tr>
+							<th><script>I18N("h", "Wi-Fi Network Name (SSID)");</script>:</th>
+							
+							<td><input type="text" class="styled-text required" size="30" id="ssid" name="ssid" onClick="this.select();"></td>
+						<!--	<td><div id="Survey_btn" onclick="process_wps();" ><script>I18N("h", "SCAN");</script></div></td> -->
+							<td><button type="button" name="createButton" id="createButton" class="styled_button_s" onclick="createUserButton()" style="padding: 5px 15px; right:80px;"><script>I18N("h", "SCAN");</script></button></td>
+	
+				 </tr>
+				 
+				 
+				 <tr>
+								<th><script>I18N("h", "Security Mode");</script>:</th>
+								<td>
+									<div class="styled-select">
+										<select name="security_24" id="security_24" onChange="changeSecurity24GSelect(this.value)">
+											<option value="None">None</option>
+											<option value="WEP">WEP</option>
+											<option value="WPA-Personal">WPA-Personal</option>
+										</select>
+									</div>  
+								</td>
+							</tr>
+							
+						<tr id="show_pass_len">
+								<th><script>I18N("h", "Password Length");</script>:</th>
+								<td>
+									<div class="styled-select">
+										<select name="pass_len" id="pass_len">
+										</select>
+									</div>  
+								</td>
+						</tr>	
+							
+							<tr id = "show_password_24G">
+							<th><script>I18N("h", "Password");</script>:</th>
+							<td>
+							<input class="styled-text required" type="text" name="password_24" size="30" id="password_24" onClick="this.select();"></td>
+							</tr>
+							<tr id="show_auth">
+								<th><script>I18N("h", "Authentication");</script>:</th>
+								<td>
+									<div class="styled-select">
+										<select name="auth_24" id="auth_24">
+										</select>
+									</div>  
+								</td>
+							</tr>	
+			   </tbody>
+			</table> 
+		</div>
+		
+		<form name="staticrouter_form" id="staticrouter_form" action="">
+				<input id="sumbit_CheckData" class="submit" type="submit" value="Submit" style="display:none" />
+				<div id="createPop" style="display:none">
+					<div class="dialogBox"  style="width:400px">
+					<div id="closeCreatePopBtn" onclick="clearCreateRulePOP()" style="cursor:pointer"></div>
+							<table class="myCreatePop_table" border="1" cellspacing="0" id="tblStaticRoute3">
+								<tbody>
+									<tr>
+										<td colspan="3"><div class ="popTitle"><script>I18N("h", "Wi-Fi Network:");</script></div></td>
+									</tr>
+									<tr>
+										<td style="width: 312px"><script>I18N("h", "SSID");</script></td>
+										<td width="20px">Key</td>
+										<td>
+											Signal<div style="width: 20px"></div> 
+										</td>
+									</tr>
+									
+								
+									
+									
+									
+									<tr>
+										<td id="save_td" colspan="4">
+											<center><button type="button" name="createButton" class="styled_button_s" id="save_buttonFocus" tabindex="7" onkeyup="focusToFirstIndex(this)" onclick="document.getElementById('sumbit_CheckData').click()"><script>I18N("h", "SELECT");</script></button></center>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+					</div>
+				</div>
+				</form>
+								
+		
+		<!-- Detect Router Connection, Timmy Add 2013/08/15 -->
+		<div id="DetectRouterConnection" style="display:none"></div>
+	</div>
+	</div>	
+		<div id="footer">Copyright &copy; 2013 D-Link Corporation/D-Link Systems, Inc.</div>
+	
+	</div>
+</form>
+		
+<script type="text/javascript" charset="utf-8">
+	$(document).ready( function() {
+		
+		
+		// Check Password
+		$.validator.addMethod("checkPassword", function( value, element ) {
+			var GetPassword = document.getElementById("password_24").value;
+			var returnVal = true;
+			if (GetPassword == "")
+			{
+				returnVal = false;
+			}
+			
+			return returnVal;
+		}, jQuery.validator.messages.check_Password);
+		
+		//check SSID
+		$.validator.addMethod("checkSSID", function( value, element ) {
+			var GetSSID = document.getElementById("ssid").value;
+			var returnVal = true;
+			if (GetSSID == "")
+			{
+				returnVal = false;
+			}
+			
+			return returnVal;
+		}, jQuery.validator.messages.ssid);
+		
+		// Check Is None For RADIO_2.4GHz
+		$.validator.addMethod("checkWEPPassword", function( value, element ) {
+			var returnVal = true;
+			var GetSecurityType = document.getElementById("security_24").value;
+			var GetSecurityEncryption = document.getElementById("pass_len").value
+			if (GetSecurityType != "WEP")
+			{
+				returnVal = true;
+			}
+			else
+			{
+				if ( GetSecurityEncryption == "WEP-64"){
+					if (value.length != 10)
+					{
+					returnVal = false;
+					}
+				}
+				else if ( GetSecurityEncryption == "WEP-128"){
+					if (value.length != 26)
+					{
+					returnVal = false;
+					}
+				}
+			}
+			return returnVal;
+		}, jQuery.validator.messages.password_WEPCheck);
+		
+		// Check Is WPA For RADIO_2.4GHz
+		$.validator.addMethod("checkWPAPassword", function( value, element ) {
+			var returnVal = true;
+			var GetSecurityType = document.getElementById("security_24").value;
+			if (GetSecurityType != "WPA-Personal")
+			{
+				returnVal = true;
+			}
+			else
+			{
+				if (value.length > 63 || value.length < 8)
+				{
+					returnVal = false;
+				}
+			}
+			return returnVal;
+		}, jQuery.validator.messages.password_WPACheck);
+		
+			
+		$('#internet_form').validate({
+			rules: {
+				ssid: "required" ,
+				password_24: {
+					required: true,
+					checkWEPPassword: true,
+					checkWPAPassword: true
+				}
+			},
+			messages: {
+					ssid: jQuery.validator.messages.ssid,
+					password_24: {
+					required: jQuery.validator.messages.check_Password
+				}
+
+			//submitHandler: function(form) {
+			//	CheckConnectionStatus();
+			},
+			submitHandler: function(form) {
+		            if (form.id == "staticrouter_form")
+		            {
+		            	closeCreateRulePOP();
+		            }
+						CheckConnectionStatus();
+				},
+		});
+	});
+</script>
+</body>
+<script type="text/javascript">
+	Load_HTML();
+	Initial();
+	//Get_ClientInfo();
+	GetXML();
+	checkTimeout();
+</script>
+</html>

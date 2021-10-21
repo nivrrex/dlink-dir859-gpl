@@ -1,0 +1,467 @@
+<!--
+typedef enum parameterType {
+	TR069Root		= 0,
+	TR069Str 		= 6,
+	TR069Int 		= 7,
+	TR069UI 		= 9,
+	TR069Bool 		= 14,
+	TR069DT 		= 11,
+	TR069B64 		= 12,
+	TR069Multi 		= 254,	/* multi object */
+	TR069Signe 		= 255	/* single object */
+} ParameterType;
+
+typedef enum notification {
+	NT_None 		= 0,
+	NT_Passive 		= 1,
+	NT_Active 		= 2,
+	NT_Allways 		= 16,		/*Forced Inform parameters */
+	NT_Fix 			= 32,		/*Parameters for which Active Notification MAY be denied by the CPE */
+	NT_AllActive 	= 64,		/*Forced Active Notification parameters*/
+	NT_DefActive 	= 128		/*Default Active Notification parameters*/
+} NotificationType;
+
+typedef enum ParamAttribute {
+	PA_None         = 0,
+	PA_ReadOnly 	= 1,
+	PA_ReadWrite 	= 2,
+	PA_NoAdd 		= 4,
+	PA_NoDelete 	= 8,
+	PA_Reboot		= 16,
+	PA_NoCache		= 32
+} ParamAttr;
+-->
+<InternetGatewayDevice>
+	<DeviceSummary type="6" notify="16" attr="1" range="(1024)" version="1.1" action="DeviceSummary"></DeviceSummary>
+	<LANDeviceNumberOfEntries type="9" notify="0" attr="1" action="LanDeviceNumberofEntries"></LANDeviceNumberOfEntries>
+	<WANDeviceNumberOfEntries type="9" notify="0" attr="1" action="WanDeviceNumberofEntries"></WANDeviceNumberOfEntries>
+	<Capabilities type="255" notify="32" attr="1">
+		<PerformanceDiagnostic type="255" notify="32" attr="1">
+			<DownloadTransports type="6" notify="0" attr="1" version="1.3" action="PerformanceDiagnostic.DownloadTransports"></DownloadTransports>
+			<UploadTransports type="6" notify="0" attr="1" version="1.3" action="PerformanceDiagnostic.UploadTransports"></UploadTransports>
+		</PerformanceDiagnostic>
+	</Capabilities>
+	<DeviceInfo type="255" notify="32" attr="1">
+		<Manufacturer type="6" notify="0" attr="1" range="(64)" action="DeviceInfo.Manufacturer"></Manufacturer>
+		<ManufacturerOUI type="6" notify="0" attr="1" range="(6)" action="DeviceInfo.ManufacturerOUI"></ManufacturerOUI>
+		<ModelName type="6" notify="0" attr="1" range="(64)" action="DeviceInfo.ModelName"></ModelName>
+		<Description type="6" notify="0" attr="1" range="(256)" action="DeviceInfo.Description"></Description>
+		<ProductClass type="6" notify="0" attr="1" range="(64)" action="DeviceInfo.ProductClass"></ProductClass>
+		<SerialNumber type="6" notify="0" attr="1" range="(64)" action="DeviceInfo.SerialNumber"></SerialNumber>
+		<HardwareVersion type="6" notify="16" attr="1" range="(64)" action="DeviceInfo.HardwareVersion"></HardwareVersion>
+		<SoftwareVersion type="6" notify="80" attr="1" range="(256)" action="DeviceInfo.SoftwareVersion"></SoftwareVersion>
+		<ModemFirmwareVersion type="6" notify="0" attr="1" range="(64)" action="DeviceInfo.ModemFirmwareVersion"></ModemFirmwareVersion>
+		<EnabledOptions type="6" notify="0" attr="1" range="(1024)" action="DeviceInfo.EnabledOptions"></EnabledOptions>
+		<AdditionalHardwareVersion type="6" notify="0" attr="1" range="(64)" action="DeviceInfo.AdditionalHardwareVersion"></AdditionalHardwareVersion>
+		<AdditionalSoftwareVersion type="6" notify="0" attr="1" range="(64)" action="DeviceInfo.AdditionalSoftwareVersion"></AdditionalSoftwareVersion>
+		<SpecVersion type="6" notify="16" attr="1" range="(16)" action="DeviceInfo.SpecVersion"></SpecVersion>
+		<ProvisioningCode type="6" notify="80" attr="2" range="(64)" action="DeviceInfo.ProvisioningCode"></ProvisioningCode>
+		<UpTime type="9" notify="32" attr="33" action="DeviceInfo.Uptime"></UpTime>
+		<FirstUseDate type="11" notify="0" attr="1" action="DeviceInfo.FirstUseDate"></FirstUseDate>
+		<DeviceLog type="6" notify="0" attr="1" range="(32768)" action="DeviceInfo.DeviceLog"></DeviceLog>
+		<VendorConfigFileNumberOfEntries type="9" notify="0" attr="1" action="DeviceInfo.VendorConfigFileNumberOfEntries"></VendorConfigFileNumberOfEntries>
+	</DeviceInfo>
+	<ManagementServer type="255" notify="32" attr="1">
+		<EnableCWMP type="14" notify="0" attr="2" version="1.4" action="ManagementServer.EnableCWMP"></EnableCWMP>
+		<URL type="6" notify="0" attr="2" range="(256)" action="ManagementServer.URL"></URL>
+		<Username type="6" notify="0" attr="2" range="(256)" action="ManagementServer.UserName"></Username>
+		<Password type="6" notify="0" attr="2" range="(256)" action="ManagementServer.Password"></Password>
+		<PeriodicInformEnable type="14" notify="0" attr="2" action="ManagementServer.PeriodicInformEnable"></PeriodicInformEnable>
+		<PeriodicInformInterval type="9" notify="0" attr="2" range="[1:]" action="ManagementServer.PeriodicInformInterval"></PeriodicInformInterval>
+		<PeriodicInformTime type="11" notify="0" attr="2" range="(null)" action="ManagementServer.PeriodicInformTime"></PeriodicInformTime>
+		<ParameterKey type="6" notify="48" attr="1" range="(32)" action="ManagementServer.ParameterKey"></ParameterKey>
+		<ConnectionRequestURL type="6" notify="144" attr="1" range="(256)" action="ManagementServer.ConnectionRequestURL"></ConnectionRequestURL>
+		<ConnectionRequestUsername type="6" notify="0" attr="2" range="(256)" action="ManagementServer.ConnectionRequestUsername"></ConnectionRequestUsername>
+		<ConnectionRequestPassword type="6" notify="0" attr="2" range="(256)" action="ManagementServer.ConnectionRequestPassword"></ConnectionRequestPassword>
+		<UpgradesManaged type="14" notify="0" attr="2" action="ManagementServer.UpgradesManaged"></UpgradesManaged>
+		<KickURL type="6" notify="0" attr="1" range="(256)" action="ManagementServer.KickURL"></KickURL>
+		<DownloadProgressURL type="6" notify="0" attr="1" range="(256)" action="ManagementServer.DownloadProgressURL"></DownloadProgressURL>
+		<DefaultActiveNotificationThrottle type="9" notify="0" attr="2" version="1.4" action="ManagementServer.DefaultActiveNotificationThrottle"></DefaultActiveNotificationThrottle>
+		<UDPConnectionRequestAddress type="6" notify="0" attr="1" range="(256)" version="1.2" action="ManagementServer.UDPConnectionRequestAddress"></UDPConnectionRequestAddress>
+		<UDPConnectionRequestAddressNotificationLimit type="9" notify="0" attr="2" version="1.2" action="ManagementServer.UDPConnectionRequestAddressNotificationLimit"></UDPConnectionRequestAddressNotificationLimit>
+		<STUNEnable type="14" notify="0" attr="2" version="1.2" action="ManagementServer.STUNEnable"></STUNEnable>
+		<STUNServerAddress type="6" notify="0" attr="2" range="(256)" version="1.2" action="ManagementServer.STUNServerAddress"></STUNServerAddress>
+		<STUNServerPort type="9" notify="0" attr="2" range="[0:65535]" version="1.2" action="ManagementServer.STUNServerPort"></STUNServerPort>
+		<STUNUsername type="6" notify="0" attr="2" range="(256)" version="1.2" action="ManagementServer.STUNUsername"></STUNUsername>
+		<STUNPassword type="6" notify="0" attr="2" range="(256)" version="1.2" action="ManagementServer.STUNPassword"></STUNPassword>
+		<STUNMaximumKeepAlivePeriod type="7" notify="0" attr="2" range="[-1:]" version="1.2" action="ManagementServer.STUNMaximumKeepAlivePeriod"></STUNMaximumKeepAlivePeriod>
+		<STUNMinimumKeepAlivePeriod type="9" notify="0" attr="2" version="1.2" action="ManagementServer.STUNMinimumKeepAlivePeriod"></STUNMinimumKeepAlivePeriod>
+		<NATDetected type="14" notify="0" attr="1" version="1.2" action="ManagementServer.NATDetected"></NATDetected>
+		<ManageableDeviceNumberOfEntries type="9" notify="0" attr="1" version="1.2" action="ManagementServer.ManageableDeviceNumberOfEntries"></ManageableDeviceNumberOfEntries>
+		<ManageableDeviceNotificationLimit type="9" notify="0" attr="2" version="1.2" action="ManagementServer.ManageableDeviceNotificationLimit"></ManageableDeviceNotificationLimit>
+		<ManageableDevice type="254" notify="32" attr="1" hk="ManageableDevice">
+			<template type="255" notify="32" attr="1">
+				<ManufacturerOUI type="6" notify="32" attr="1" range="(6)" version="1.2" action="ManageableDevice.ManufacturerOUI"></ManufacturerOUI>
+				<SerialNumber type="6" notify="32" attr="1" range="(64)" version="1.2" action="ManageableDevice.SerialNumber"></SerialNumber>
+				<ProductClass type="6" notify="32" attr="1" range="(64)" version="1.2" action="ManageableDevice.ProductClass"></ProductClass>
+				<Host type="6" notify="0" attr="1" range="(1024)" version="1.4" action="ManageableDevice.Host"></Host>
+			</template>
+		</ManageableDevice>
+	</ManagementServer>
+	<Layer3Forwarding type="255" notify="32" attr="1">
+		<DefaultConnectionService type="6" notify="0" attr="2" range="(256)" action="Layer3Forwarding.DefaultConnectionService"></DefaultConnectionService>
+		<ForwardNumberOfEntries type="9" notify="0" attr="1" action="Layer3Forwarding.ForwardNumberOfEntries"></ForwardNumberOfEntries>
+		<Forwarding type="254" notify="32" attr="1" hk="Layer3Forwarding">
+			<template type="255" notify="32" attr="1">
+				<Enable type="14" notify="0" attr="2" default="False" action="Forwarding.Enable"></Enable>
+				<Status type="6" notify="0" attr="1" range="(256)" default="Forwarding.Disabled" action="Forwarding.Status"></Status>
+				<StaticRoute type="14" notify="0" attr="1" default="True" version="1.4" action="Forwarding.StaticRoute"></StaticRoute>
+				<Type type="6" notify="0" attr="2" range="(256)" default="Host" action="Forwarding.Type"></Type>
+				<DestIPAddress type="6" notify="0" attr="2" range="(256)" action="Forwarding.DestIPAddress"></DestIPAddress>
+				<DestSubnetMask type="6" notify="0" attr="2" range="(256)" action="Forwarding.DestSubnetMask"></DestSubnetMask>
+				<SourceIPAddress type="6" notify="0" attr="2" range="(256)" action="Forwarding.SourceIPAddress"></SourceIPAddress>
+				<SourceSubnetMask type="6" notify="0" attr="2" range="(256)" action="Forwarding.SourceSubnetMask"></SourceSubnetMask>
+				<GatewayIPAddress type="6" notify="0" attr="2" range="(256)" action="Forwarding.GatewayIPAddress"></GatewayIPAddress>
+				<Interface type="6" notify="0" attr="2" range="(256)" action="Forwarding.Interface"></Interface>
+				<ForwardingMetric type="7" notify="0" attr="2" range="[-1:]" default="-1" action="Forwarding.ForwardingMetric"></ForwardingMetric>
+			</template>
+		</Forwarding>
+	</Layer3Forwarding>
+	<LANConfigSecurity type="255" notify="32" attr="1">
+		<ConfigPassword type="6" notify="0" attr="2" range="(64)" action="LANConfigSecurity.ConfigPassword"></ConfigPassword>
+	</LANConfigSecurity>
+	<LANDevice type="254" notify="32" attr="13" hk="LANDevice">
+		<template type="255" notify="32" attr="1">
+			<LANEthernetInterfaceNumberOfEntries type="9" notify="0" attr="1" action="LANDevice.LANEthernetInterfaceNumberOfEntries"></LANEthernetInterfaceNumberOfEntries>
+			<LANUSBInterfaceNumberOfEntries type="9" notify="0" attr="1" action="LANDevice.LANUSBInterfaceNumberOfEntries"></LANUSBInterfaceNumberOfEntries>
+			<LANWLANConfigurationNumberOfEntries type="9" notify="0" attr="1" action="LANDevice.LANWLANConfigurationNumberOfEntries"></LANWLANConfigurationNumberOfEntries>
+			<LANHostConfigManagement type="255" notify="32" attr="1">
+<!-- Current not support these items.
+				<MACAddress type="6" notify="0" attr="1" range="(256)" version="1.4" action="LANHostConfigManagement.MACAddress"></MACAddress>
+-->
+				<DHCPServerConfigurable type="14" notify="0" attr="2" default="True" action="LANHostConfigManagement.DHCPServerConfigurable"></DHCPServerConfigurable>
+				<DHCPServerEnable type="14" notify="0" attr="2" default="False" action="LANHostConfigManagement.DHCPServerEnable"></DHCPServerEnable>
+				<DHCPRelay type="14" notify="0" attr="1" action="LANHostConfigManagement.DHCPRelay"></DHCPRelay>
+				<MinAddress type="6" notify="0" attr="2" range="(256)" action="LANHostConfigManagement.MinAddress"></MinAddress>
+				<MaxAddress type="6" notify="0" attr="2" range="(256)" action="LANHostConfigManagement.MaxAddress"></MaxAddress>
+				<ReservedAddresses type="6" notify="0" attr="2" range="(256)" action="LANHostConfigManagement.ReservedAddresses"></ReservedAddresses>
+				<SubnetMask type="6" notify="0" attr="2" range="(256)" action="LANHostConfigManagement.SubnetMask"></SubnetMask>
+				<DNSServers type="6" notify="0" attr="2" range="(64)" action="LANHostConfigManagement.DNSServers"></DNSServers>
+				<DomainName type="6" notify="0" attr="2" range="(64)" action="LANHostConfigManagement.DomainName"></DomainName>
+				<IPRouters type="6" notify="0" attr="2" range="(64)" action="LANHostConfigManagement.IPRouters"></IPRouters>
+				<IPInterfaceNumberOfEntries type="9" notify="0" attr="1" default="0" action="LANHostConfigManagement.IPInterfaceNumberOfEntries"></IPInterfaceNumberOfEntries>
+				<IPInterface type="254" notify="32" attr="1" hk="LANIPInterface">
+					<template type="255" notify="32" attr="1">
+						<Enable type="14" notify="0" attr="2" default="False" action="IPInterface.Enable"></Enable>
+						<IPInterfaceIPAddress type="6" notify="0" range="(256)" attr="2" action="IPInterface.IPInterfaceIPAddress"></IPInterfaceIPAddress>
+						<IPInterfaceSubnetMask type="6" notify="0" range="(256)" attr="2" action="IPInterface.IPInterfaceSubnetMask"></IPInterfaceSubnetMask>
+						<IPInterfaceAddressingType type="6" notify="0" attr="2" range="(256)" default="DHCP" action="IPInterface.IPInterfaceAddressingType"></IPInterfaceAddressingType>
+					</template>
+				</IPInterface>
+			</LANHostConfigManagement>
+			<LANEthernetInterfaceConfig type="254" notify="32" attr="13" hk="LANEthernetInterfaceConfig">
+				<template type="255" notify="32" attr="1">
+					<Enable type="14" notify="0" attr="2" action="LANEthernetInterfaceConfig.Enable"></Enable>
+					<Status type="6" notify="0" attr="1" range="(256)" action="LANEthernetInterfaceConfig.Status"></Status>
+					<Name type="6" notify="0" attr="1" range="(16)" version="1.4" action="LANEthernetInterfaceConfig.Name"></Name>
+					<MACAddress type="6" notify="0" attr="1" range="(256)" action="LANEthernetInterfaceConfig.MACAddress"></MACAddress>
+					<MACAddressControlEnabled type="14" notify="0" attr="2" action="LANEthernetInterfaceConfig.MACAddressControlEnabled"></MACAddressControlEnabled>
+					<MaxBitRate type="6" notify="0" attr="2" range="(256)" action="LANEthernetInterfaceConfig.MaxBitRate"></MaxBitRate>
+					<DuplexMode type="6" notify="0" attr="2" range="(256)" action="LANEthernetInterfaceConfig.DuplexMode"></DuplexMode>
+					<Stats type="255" notify="32" attr="1">
+						<EthernetBytesSent type="9" notify="32" attr="33" action="Stats.EthernetBytesSent"></EthernetBytesSent>
+						<EthernetBytesReceived type="9" notify="32" attr="33" action="Stats.EthernetBytesReceived"></EthernetBytesReceived>
+						<EthernetPacketsSent type="9" notify="32" attr="33" action="Stats.EthernetPacketsSent"></EthernetPacketsSent>
+						<EthernetPacketsReceived type="9" notify="32" attr="33" action="Stats.EthernetPacketsReceived"></EthernetPacketsReceived>
+						<EthernetErrorsSent type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetErrorsSent"></EthernetErrorsSent>
+						<EthernetErrorsReceived type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetErrorsReceived"></EthernetErrorsReceived>
+						<EthernetUnicastPacketsSent type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetUnicastPacketsSent"></EthernetUnicastPacketsSent>
+						<EthernetUnicastPacketsReceived type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetUnicastPacketsReceived"></EthernetUnicastPacketsReceived>
+						<EthernetDiscardPacketsSent type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetDiscardPacketsSent"></EthernetDiscardPacketsSent>
+						<EthernetDiscardPacketsReceived type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetDiscardPacketsReceived"></EthernetDiscardPacketsReceived>
+						<EthernetMulticastPacketsSent type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetMulticastPacketsSent"></EthernetMulticastPacketsSent>
+						<EthernetMulticastPacketsReceived type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetMulticastPacketsReceived"></EthernetMulticastPacketsReceived>
+						<EthernetBroadcastPacketsSent type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetBroadcastPacketsSent"></EthernetBroadcastPacketsSent>
+						<EthernetBroadcastPacketsReceived type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetBroadcastPacketsReceived"></EthernetBroadcastPacketsReceived>
+						<EthernetUnknownProtoPacketsReceived type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetUnknownProtoPacketsReceived"></EthernetUnknownProtoPacketsReceived>
+					</Stats>
+				</template>
+			</LANEthernetInterfaceConfig>
+			<Hosts type="255" notify="32" attr="1">
+				<HostNumberOfEntries type="9" notify="0" attr="1" action="Hosts.HostNumberOfEntries"></HostNumberOfEntries>
+				<Host type="254" notify="32" attr="1" hk="Host">
+					<template type="255" notify="32" attr="1">
+						<IPAddress type="6" notify="0" attr="1" range="(256)" action="Host.IPAddress"></IPAddress>
+						<AddressSource type="6" notify="0" attr="33" range="(256)" action="Host.AddressSource"></AddressSource>
+						<LeaseTimeRemaining type="7" notify="32" attr="33" range="[-1:]" action="Host.LeaseTimeRemaining"></LeaseTimeRemaining>
+						<MACAddress type="6" notify="0" attr="1" range="(256)" action="Host.MACAddress"></MACAddress>
+<!-- Current not support these items.						
+						<Layer2Interface type="6" notify="0" attr="1" range="(256)" version="1.4" action="Host.Layer2Interface"></Layer2Interface>
+-->
+						<HostName type="6" notify="0" attr="1" range="(64)" action="Host.HostName"></HostName>
+						<InterfaceType type="6" notify="0" attr="1" range="(256)" action="Host.InterfaceType"></InterfaceType>
+						<Active type="14" notify="0" attr="1" action="Host.Active"></Active>
+					</template>
+				</Host>
+			</Hosts>
+			<WLANConfiguration type="254" notify="32" attr="13" hk="WLANConfiguration">
+				<template type="255" notify="32" attr="1">
+					<Enable type="14" notify="0" attr="2" action="WLANConfiguration.Enable"></Enable>
+					<Status type="6" notify="0" attr="1" range="(256)" action="WLANConfiguration.Status"></Status>
+					<Alias type="6" notify="0" attr="2" range="(64)" version="1.9" action="WLANConfiguration.Alias"></Alias>
+					<Name type="6" notify="0" attr="1" range="(16)" version="1.4" action="WLANConfiguration.Name"></Name>
+					<BSSID type="6" notify="0" attr="1" range="(256)" action="WLANConfiguration.BSSID"></BSSID>
+					<MaxBitRate type="6" notify="0" attr="2" action="WLANConfiguration.MaxBitRate"></MaxBitRate>
+					<Channel type="6" notify="0" attr="2" action="WLANConfiguration.Channel"></Channel>
+					<AutoChannelEnable type="14" notify="0" attr="2" version="1.4" action="WLANConfiguration.AutoChannelEnable"></AutoChannelEnable>
+					<SSID type="6" notify="0" attr="2" range="(32)" action="WLANConfiguration.SSID"></SSID>
+					<BeaconType type="6" notify="0" attr="2" range="(256)" action="WLANConfiguration.BeaconType"></BeaconType>
+					<MACAddressControlEnabled type="14" notify="0" attr="2" action="WLANConfiguration.MACAddressControlEnabled"></MACAddressControlEnabled>
+					<Standard type="6" notify="0" attr="1" range="(256)" action="WLANConfiguration.Standard"></Standard>
+					<WEPKeyIndex type="9" notify="0" attr="2" range="[1:4]" action="WLANConfiguration.WEPKeyIndex"></WEPKeyIndex>
+					<KeyPassphrase type="6" notify="0" attr="2" range="(63)" action="WLANConfiguration.KeyPassphrase"></KeyPassphrase>
+					<WEPEncryptionLevel type="6" notify="0" attr="1" range="(64)" action="WLANConfiguration.WEPEncryptionLevel"></WEPEncryptionLevel>
+					<BasicEncryptionModes type="6" notify="0" attr="2" range="(31)" action="WLANConfiguration.BasicEncryptionModes"></BasicEncryptionModes>
+					<BasicAuthenticationMode type="6" notify="0" attr="2" range="(31)" action="WLANConfiguration.BasicAuthenticationMode"></BasicAuthenticationMode>
+					<WPAEncryptionModes type="6" notify="0" attr="2" range="(31)" action="WLANConfiguration.WPAEncryptionModes"></WPAEncryptionModes>
+					<WPAAuthenticationMode type="6" notify="0" attr="2" range="(31)" action="WLANConfiguration.WPAAuthenticationMode"></WPAAuthenticationMode>
+					<IEEE11iEncryptionModes type="6" notify="0" attr="2" range="(31)" action="WLANConfiguration.IEEE11iEncryptionModes"></IEEE11iEncryptionModes>
+					<IEEE11iAuthenticationMode type="6" notify="0" attr="2" range="(31)" action="WLANConfiguration.IEEE11iAuthenticationMode"></IEEE11iAuthenticationMode>
+					<PossibleChannels type="6" notify="0" attr="1" range="(1024)" action="WLANConfiguration.PossibleChannels"></PossibleChannels>
+					<BasicDataTransmitRates type="6" notify="0" attr="2" range="(256)" action="WLANConfiguration.BasicDataTransmitRates"></BasicDataTransmitRates>
+					<OperationalDataTransmitRates type="6" notify="0" attr="2" range="(256)" action="WLANConfiguration.OperationalDataTransmitRates"></OperationalDataTransmitRates>
+					<PossibleDataTransmitRates type="6" notify="0" attr="1" range="(256)" action="WLANConfiguration.PossibleDataTransmitRates"></PossibleDataTransmitRates>
+					<InsecureOOBAccessEnabled type="14" notify="0" attr="2" action="WLANConfiguration.InsecureOOBAccessEnabled"></InsecureOOBAccessEnabled>
+					<BeaconAdvertisementEnabled type="14" notify="0" attr="2" action="WLANConfiguration.BeaconAdvertisementEnabled"></BeaconAdvertisementEnabled>
+					<SSIDAdvertisementEnabled type="14" notify="0" attr="2" version="1.4" action="WLANConfiguration.SSIDAdvertisementEnabled"></SSIDAdvertisementEnabled>
+					<RadioEnabled type="14" notify="0" attr="2" action="WLANConfiguration.RadioEnabled"></RadioEnabled>
+					<TransmitPowerSupported type="6" notify="0" attr="1" range="(64)" version="1.4" action="WLANConfiguration.TransmitPowerSupported"></TransmitPowerSupported>
+					<TransmitPower type="6" notify="0" attr="2" range="[0:100]" version="1.4" action="WLANConfiguration.TransmitPower"></TransmitPower>
+					<AutoRateFallBackEnabled type="14" notify="0" attr="2" action="WLANConfiguration.AutoRateFallBackEnabled"></AutoRateFallBackEnabled>
+					<LocationDescription type="6" notify="0" attr="2" range="(4096)" action="WLANConfiguration.LocationDescription"></LocationDescription>
+					<RegulatoryDomain type="6" notify="0" attr="2" range="(3)" action="WLANConfiguration.RegulatoryDomain"></RegulatoryDomain>
+					<TotalPSKFailures type="9" notify="32" attr="33" action="WLANConfiguration.TotalPSKFailures"></TotalPSKFailures>
+					<TotalIntegrityFailures type="9" notify="32" attr="33" action="WLANConfiguration.TotalIntegrityFailures"></TotalIntegrityFailures>
+					<ChannelsInUse type="6" notify="0" attr="1" range="(1024)" action="WLANConfiguration.ChannelsInUse"></ChannelsInUse>
+					<DeviceOperationMode type="6" notify="0" attr="2" range="(31)" action="WLANConfiguration.DeviceOperationMode"></DeviceOperationMode>
+					<DistanceFromRoot type="9" notify="0" attr="2" action="WLANConfiguration.DistanceFromRoot"></DistanceFromRoot>
+					<PeerBSSID type="6" notify="0" attr="2" range="(256)" action="WLANConfiguration.PeerBSSID"></PeerBSSID>
+					<AuthenticationServiceMode type="6" notify="0" attr="2" range="(256)" action="WLANConfiguration.AuthenticationServiceMode"></AuthenticationServiceMode>
+					<WMMSupported type="14" notify="0" attr="1" version="1.4" action="WLANConfiguration.WMMSupported"></WMMSupported>
+					<UAPSDSupported type="14" notify="0" attr="1" version="1.4" action="WLANConfiguration.UAPSDSupported"></UAPSDSupported>
+					<WMMEnable type="14" notify="0" attr="2" version="1.4" action="WLANConfiguration.WMMEnable"></WMMEnable>
+					<UAPSDEnable type="14" notify="0" attr="2" version="1.4" action="WLANConfiguration.UAPSDEnable"></UAPSDEnable>
+					<TotalBytesSent type="9" notify="32" attr="33" action="WLANConfiguration.TotalBytesSent"></TotalBytesSent>
+					<TotalBytesReceived type="9" notify="32" attr="33" action="WLANConfiguration.TotalBytesReceived"></TotalBytesReceived>
+					<TotalPacketsSent type="9" notify="32" attr="33" action="WLANConfiguration.TotalPacketsSent"></TotalPacketsSent>
+					<TotalPacketsReceived type="9" notify="32" attr="33" action="WLANConfiguration.TotalPacketsReceived"></TotalPacketsReceived>
+					<TotalAssociations type="9" notify="32" attr="33" action="WLANConfiguration.TotalAssociations"></TotalAssociations>
+				</template>
+			</WLANConfiguration>
+		</template>
+	</LANDevice>
+	<WANDevice type="254" notify="32" attr="13" hk="WANDevice">
+		<template type="255" notify="32" attr="1">
+			<WANConnectionNumberOfEntries type="9" notify="0" attr="1" action="WANDevice.WANConnectionNumberOfEntries"></WANConnectionNumberOfEntries>
+			<WANCommonInterfaceConfig type="255" notify="32" attr="1">
+				<EnabledForInternet type="14" notify="0" attr="2" action="WANCommonInterfaceConfig.EnabledForInternet"></EnabledForInternet>
+				<WANAccessType type="6" notify="0" attr="1" range="(256)" action="WANCommonInterfaceConfig.WANAccessType"></WANAccessType>
+				<Layer1UpstreamMaxBitRate type="9" notify="0" attr="1" action="WANCommonInterfaceConfig.Layer1UpstreamMaxBitRate"></Layer1UpstreamMaxBitRate>
+				<Layer1DownstreamMaxBitRate type="9" notify="0" attr="1" action="WANCommonInterfaceConfig.Layer1DownstreamMaxBitRate"></Layer1DownstreamMaxBitRate>
+				<PhysicalLinkStatus type="6" notify="0" attr="1" range="(256)" action="WANCommonInterfaceConfig.PhysicalLinkStatus"></PhysicalLinkStatus>
+				<TotalBytesSent type="9" notify="32" attr="33" action="WANCommonInterfaceConfig.TotalBytesSent"></TotalBytesSent>
+				<TotalBytesReceived type="9" notify="32" attr="33" action="WANCommonInterfaceConfig.TotalBytesReceived"></TotalBytesReceived>
+				<TotalPacketsSent type="9" notify="32" attr="33" action="WANCommonInterfaceConfig.TotalPacketsSent"></TotalPacketsSent>
+				<TotalPacketsReceived type="9" notify="32" attr="33" action="WANCommonInterfaceConfig.TotalPacketsReceived"></TotalPacketsReceived>
+			</WANCommonInterfaceConfig>
+			<WANConnectionDevice type="254" notify="32" attr="1" hk="WANConnectionDevice">
+				<template type="255" notify="32" attr="1">
+					<WANIPConnectionNumberOfEntries type="9" notify="0" attr="1" action="WANConnectionDevice.WANIPConnectionNumberOfEntries"></WANIPConnectionNumberOfEntries>
+					<WANPPPConnectionNumberOfEntries type="9" notify="0" attr="1" action="WANConnectionDevice.WANPPPConnectionNumberOfEntries"></WANPPPConnectionNumberOfEntries>
+					<WANIPConnection type="254" notify="32" attr="1" hk="WANIPConnection">
+						<template type="255" notify="32" attr="1">
+							<Enable type="14" notify="0" attr="2" default="False" action="WANIPConnection.Enable"></Enable>
+							<Reset type="14" notify="0" attr="2" default="False" version="1.4" action="WANIPConnection.Reset"></Reset>
+							<ConnectionStatus type="6" notify="0" attr="1" range="(256)" action="WANIPConnection.ConnectionStatus"></ConnectionStatus>
+							<PossibleConnectionTypes type="6" notify="0" attr="1" range="(256)" action="WANIPConnection.PossibleConnectionTypes"></PossibleConnectionTypes>
+							<ConnectionType type="6" notify="0" attr="2" range="(256)" action="WANIPConnection.ConnectionType"></ConnectionType>
+							<Name type="6" notify="0" attr="2" range="(256)" action="WANIPConnection.Name"></Name>
+							<Uptime type="9" notify="32" attr="33" action="WANIPConnection.Uptime"></Uptime>
+							<LastConnectionError type="6" notify="0" attr="1" range="(256)" default="ERROR_NONE" action="WANIPConnection.LastConnectionError"></LastConnectionError>
+							<RSIPAvailable type="14" notify="0" attr="1" action="WANIPConnection.RSIPAvailable"></RSIPAvailable>
+							<NATEnabled type="14" notify="0" attr="2" action="WANIPConnection.NATEnabled"></NATEnabled>
+							<AddressingType type="6" notify="0" attr="2" range="(256)" action="WANIPConnection.AddressingType"></AddressingType>
+							<ExternalIPAddress type="6" notify="144" attr="2" range="(256)" action="WANIPConnection.ExternalIPAddress"></ExternalIPAddress>
+							<SubnetMask type="6" notify="0" attr="2" range="(256)" action="WANIPConnection.SubnetMask"></SubnetMask>
+							<DefaultGateway type="6" notify="0" attr="2" range="(256)" action="WANIPConnection.DefaultGateway"></DefaultGateway>
+							<DNSEnabled type="14" notify="0" attr="2" default="True" action="WANIPConnection.DNSEnabled"></DNSEnabled>
+							<DNSOverrideAllowed type="14" notify="0" attr="2" default="False" action="WANIPConnection.DNSOverrideAllowed"></DNSOverrideAllowed>
+							<DNSServers type="6" notify="0" attr="2" range="(64)" action="WANIPConnection.DNSServers"></DNSServers>
+							<MACAddress type="6" notify="0" attr="2" range="(256)" action="WANIPConnection.MACAddress"></MACAddress>
+							<ConnectionTrigger type="6" notify="0" attr="2" range="(256)" default="OnDemand" action="WANIPConnection.ConnectionTrigger"></ConnectionTrigger>
+							<RouteProtocolRx type="6" notify="0" attr="2" range="(256)" default="Off" action="WANIPConnection.RouteProtocolRx"></RouteProtocolRx>
+							<PortMappingNumberOfEntries type="9" notify="0" attr="1" action="WANIPConnection.PortMappingNumberOfEntries"></PortMappingNumberOfEntries>
+							<PortMapping type="254" notify="32" attr="1" hk="PortMapping">
+								<template type="255" notify="32" attr="1">
+									<PortMappingEnabled type="14" notify="0" attr="2" default="False" action="PortMapping.PortMappingEnabled"></PortMappingEnabled>
+									<PortMappingLeaseDuration type="9" notify="32" attr="2" action="PortMapping.PortMappingLeaseDuration"></PortMappingLeaseDuration>
+									<RemoteHost type="6" notify="0" attr="2" range="(256)" action="PortMapping.RemoteHost"></RemoteHost>
+									<ExternalPort type="9" notify="0" attr="2" action="PortMapping.ExternalPort"></ExternalPort>
+									<InternalPort type="9" notify="0" attr="2" action="PortMapping.InternalPort"></InternalPort>
+									<PortMappingProtocol type="6" notify="0" attr="2" range="(256)" action="PortMapping.PortMappingProtocol"></PortMappingProtocol>
+									<InternalClient type="6" notify="0" attr="2" range="(256)" action="PortMapping.InternalClient"></InternalClient>
+									<PortMappingDescription type="6" notify="0" attr="2" range="(256)" action="PortMapping.PortMappingDescription"></PortMappingDescription>
+								</template>
+							</PortMapping>
+							<Stats type="255" notify="32" attr="1">
+								<EthernetBytesSent type="9" notify="32" attr="33" action="Stats.EthernetBytesSent"></EthernetBytesSent>
+								<EthernetBytesReceived type="9" notify="32" attr="33" action="Stats.EthernetBytesReceived"></EthernetBytesReceived>
+								<EthernetPacketsSent type="9" notify="32" attr="33" action="Stats.EthernetPacketsSent"></EthernetPacketsSent>
+								<EthernetPacketsReceived type="9" notify="32" attr="33" action="Stats.EthernetPacketsReceived"></EthernetPacketsReceived>
+<!-- Current not support these items.
+								<EthernetErrorsSent type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetErrorsSent"></EthernetErrorsSent>
+								<EthernetErrorsReceived type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetErrorsReceived"></EthernetErrorsReceived>
+								<EthernetUnicastPacketsSent type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetUnicastPacketsSent"></EthernetUnicastPacketsSent>
+								<EthernetUnicastPacketsReceived type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetUnicastPacketsReceived"></EthernetUnicastPacketsReceived>
+								<EthernetDiscardPacketsSent type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetDiscardPacketsSent"></EthernetDiscardPacketsSent>
+								<EthernetDiscardPacketsReceived type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetDiscardPacketsReceived"></EthernetDiscardPacketsReceived>
+								<EthernetMulticastPacketsSent type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetMulticastPacketsSent"></EthernetMulticastPacketsSent>
+								<EthernetMulticastPacketsReceived type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetMulticastPacketsReceived"></EthernetMulticastPacketsReceived>
+								<EthernetBroadcastPacketsSent type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetBroadcastPacketsSent"></EthernetBroadcastPacketsSent>
+								<EthernetBroadcastPacketsReceived type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetBroadcastPacketsReceived"></EthernetBroadcastPacketsReceived>
+								<EthernetUnknownProtoPacketsReceived type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetUnknownProtoPacketsReceived"></EthernetUnknownProtoPacketsReceived>
+-->
+							</Stats>
+						</template>
+					</WANIPConnection>
+					<WANPPPConnection type="254" notify="32" attr="1" hk="WANPPPConnection">
+						<template type="255" notify="32" attr="1">
+							<Enable type="14" notify="0" attr="2" default="False" action="WANPPPConnection.Enable"></Enable>
+<!-- Current not support these items.
+							<Reset type="14" notify="0" attr="2" default="False" version="1.4" action="WANPPPConnection.Reset"></Reset>
+-->
+							<ConnectionStatus type="6" notify="0" attr="1" range="(256)" action="WANPPPConnection.ConnectionStatus"></ConnectionStatus>
+							<PossibleConnectionTypes type="6" notify="0" attr="1" range="(256)" action="WANPPPConnection.PossibleConnectionTypes"></PossibleConnectionTypes>
+							<ConnectionType type="6" notify="0" attr="2" range="(256)" action="WANPPPConnection.ConnectionType"></ConnectionType>
+<!-- Current not support these items.							
+							<PPPoESessionID type="9" notify="0" attr="1" range="[1:]" version="1.4" action="WANPPPConnection.PPPoESessionID"></PPPoESessionID>
+							<DefaultGateway type="6" notify="0" attr="1" range="(256)" version="1.4" action="WANPPPConnection.DefaultGateway"></DefaultGateway>
+-->
+							<Name type="6" notify="0" attr="2" range="(256)" action="WANPPPConnection.Name"></Name>
+							<Uptime type="9" notify="32" attr="33" action="WANPPPConnection.Uptime"></Uptime>
+							<LastConnectionError type="6" notify="0" attr="1" range="(256)" default="ERROR_NONE" action="WANPPPConnection.LastConnectionError"></LastConnectionError>
+							<RSIPAvailable type="14" notify="0" attr="1" action="WANPPPConnection.RSIPAvailable"></RSIPAvailable>
+							<NATEnabled type="14" notify="0" attr="2" action="WANPPPConnection.NATEnabled"></NATEnabled>
+							<Username type="6" notify="0" attr="2" range="(64)" action="WANPPPConnection.Username"></Username>
+							<Password type="6" notify="0" attr="2" range="(64)" action="WANPPPConnection.Password"></Password>
+							<ExternalIPAddress type="6" notify="144" attr="1" range="(256)" action="WANPPPConnection.ExternalIPAddress"></ExternalIPAddress>
+							<DNSEnabled type="14" notify="0" attr="2" default="True" action="WANPPPConnection.DNSEnabled"></DNSEnabled>
+							<DNSOverrideAllowed type="14" notify="0" attr="2" default="False" action="WANPPPConnection.DNSOverrideAllowed"></DNSOverrideAllowed>
+							<DNSServers type="6" notify="0" attr="2" range="(64)" action="WANPPPConnection.DNSServers"></DNSServers>
+							<MACAddress type="6" notify="0" attr="2" range="(256)" action="WANPPPConnection.MACAddress"></MACAddress>
+							<TransportType type="6" notify="0" attr="1" range="(256)" action="WANPPPConnection.TransportType"></TransportType>
+							<PPPoEACName type="6" notify="0" attr="2" range="(256)" action="WANPPPConnection.PPPoEACName"></PPPoEACName>
+							<PPPoEServiceName type="6" notify="0" attr="2" range="(256)" action="WANPPPConnection.PPPoEServiceName"></PPPoEServiceName>
+							<ConnectionTrigger type="6" notify="0" attr="2" range="(256)" default="OnDemand" action="WANPPPConnection.ConnectionTrigger"></ConnectionTrigger>
+							<RouteProtocolRx type="6" notify="0" attr="2" range="(256)" default="Off" action="WANPPPConnection.RouteProtocolRx"></RouteProtocolRx>
+							<PortMappingNumberOfEntries type="9" notify="0" attr="1" action="WANPPPConnection.PortMappingNumberOfEntries"></PortMappingNumberOfEntries>
+							<PortMapping type="254" notify="32" attr="1" hk="PortMapping">
+								<template type="255" notify="32" attr="1">
+									<PortMappingEnabled type="14" notify="0" attr="2" default="False" action="PortMapping.PortMappingEnabled"></PortMappingEnabled>
+									<PortMappingLeaseDuration type="9" notify="32" attr="2" action="PortMapping.PortMappingLeaseDuration"></PortMappingLeaseDuration>
+									<RemoteHost type="6" notify="0" attr="2" range="(256)" action="PortMapping.RemoteHost"></RemoteHost>
+									<ExternalPort type="9" notify="0" attr="2" action="PortMapping.ExternalPort"></ExternalPort>
+									<InternalPort type="9" notify="0" attr="2" action="PortMapping.InternalPort"></InternalPort>
+									<PortMappingProtocol type="6" notify="0" attr="2" range="(256)" action="PortMapping.PortMappingProtocol"></PortMappingProtocol>
+									<InternalClient type="6" notify="0" attr="2" range="(256)" action="PortMapping.InternalClient"></InternalClient>
+									<PortMappingDescription type="6" notify="0" attr="2" range="(256)" action="PortMapping.PortMappingDescription"></PortMappingDescription>
+								</template>
+							</PortMapping>
+							<Stats type="255" notify="32" attr="1">
+								<EthernetBytesSent type="9" notify="32" attr="33" action="Stats.EthernetBytesSent"></EthernetBytesSent>
+								<EthernetBytesReceived type="9" notify="32" attr="33" action="Stats.EthernetBytesReceived"></EthernetBytesReceived>
+								<EthernetPacketsSent type="9" notify="32" attr="33" action="Stats.EthernetPacketsSent"></EthernetPacketsSent>
+								<EthernetPacketsReceived type="9" notify="32" attr="33" action="Stats.EthernetPacketsReceived"></EthernetPacketsReceived>
+<!-- Current not support these items.
+								<EthernetErrorsSent type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetErrorsSent"></EthernetErrorsSent>
+								<EthernetErrorsReceived type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetErrorsReceived"></EthernetErrorsReceived>
+								<EthernetUnicastPacketsSent type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetUnicastPacketsSent"></EthernetUnicastPacketsSent>
+								<EthernetUnicastPacketsReceived type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetUnicastPacketsReceived"></EthernetUnicastPacketsReceived>
+								<EthernetDiscardPacketsSent type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetDiscardPacketsSent"></EthernetDiscardPacketsSent>
+								<EthernetDiscardPacketsReceived type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetDiscardPacketsReceived"></EthernetDiscardPacketsReceived>
+								<EthernetMulticastPacketsSent type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetMulticastPacketsSent"></EthernetMulticastPacketsSent>
+								<EthernetMulticastPacketsReceived type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetMulticastPacketsReceived"></EthernetMulticastPacketsReceived>
+								<EthernetBroadcastPacketsSent type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetBroadcastPacketsSent"></EthernetBroadcastPacketsSent>
+								<EthernetBroadcastPacketsReceived type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetBroadcastPacketsReceived"></EthernetBroadcastPacketsReceived>
+								<EthernetUnknownProtoPacketsReceived type="9" notify="32" attr="33" version="1.4" action="Stats.EthernetUnknownProtoPacketsReceived"></EthernetUnknownProtoPacketsReceived>
+-->
+							</Stats>
+						</template>
+					</WANPPPConnection>
+					<WANEthernetLinkConfig type="255" notify="32" attr="1">
+						<EthernetLinkStatus type="6" notify="0" attr="1" action="WANEthernetLinkConfig.EthernetLinkStatus"></EthernetLinkStatus>
+					</WANEthernetLinkConfig>
+				</template>
+			</WANConnectionDevice>
+			<WANEthernetInterfaceConfig type="255" notify="32" attr="1">
+				<Enable type="14" notify="0" attr="2" action="WANEthernetInterfaceConfig.Enable"></Enable>
+				<Status type="6" notify="0" attr="1" action="WANEthernetInterfaceConfig.Status"></Status>
+				<MACAddress type="6" notify="0" attr="1" action="WANEthernetInterfaceConfig.MACAddress"></MACAddress>
+				<MaxBitRate type="6" notify="0" attr="2" action="WANEthernetInterfaceConfig.MaxBitRate"></MaxBitRate>
+				<DuplexMode type="6" notify="0" attr="2" action="WANEthernetInterfaceConfig.DuplexMode"></DuplexMode>
+				<Stats type="255" notify="32" attr="1">
+					<BytesSent type="9" notify="32" attr="33" action="WANEthernetInterfaceConfig.BytesSent"></BytesSent>
+					<BytesReceived type="9" notify="32" attr="33" action="WANEthernetInterfaceConfig.BytesReceived"></BytesReceived>
+					<PacketsSent type="9" notify="32" attr="33" action="WANEthernetInterfaceConfig.PacketsSent"></PacketsSent>
+					<PacketsReceived type="9" notify="32" attr="33" action="WANEthernetInterfaceConfig.PacketsReceived"></PacketsReceived>
+				</Stats>
+			</WANEthernetInterfaceConfig>
+		</template>
+	</WANDevice>
+	<UDPEchoConfig type="255" notify="32" attr="1">
+		<Enable type="14" notify="0" attr="2" version="1.3" action="UDPEchoConfig.Enable"></Enable>
+		<Interface type="6" notify="0" attr="2" range="(256)" version="1.3" action="UDPEchoConfig.Interface"></Interface>
+		<SourceIPAddress type="6" notify="0" attr="2" version="1.3" action="UDPEchoConfig.SourceIPAddress"></SourceIPAddress>
+		<UDPPort type="9" notify="0" attr="2" version="1.3" action="UDPEchoConfig.UDPPort"></UDPPort>
+		<EchoPlusEnabled type="14" notify="0" attr="2" version="1.3" action="UDPEchoConfig.EchoPlusEnabled"></EchoPlusEnabled>
+		<EchoPlusSupported type="14" notify="0" attr="1" version="1.3" action="UDPEchoConfig.EchoPlusSupported"></EchoPlusSupported>
+		<PacketsReceived type="9" notify="32" attr="33" version="1.3" hk="Miscellaneous"></PacketsReceived>
+		<PacketsResponded type="9" notify="32" attr="33" version="1.3" hk="Miscellaneous"></PacketsResponded>
+		<BytesReceived type="9" notify="32" attr="33" version="1.3" hk="Miscellaneous"></BytesReceived>
+		<BytesResponded type="9" notify="32" attr="33" version="1.3" hk="Miscellaneous"></BytesResponded>
+		<TimeFirstPacketReceived type="11" notify="32" attr="33" version="1.3" hk="Miscellaneous"></TimeFirstPacketReceived>
+		<TimeLastPacketReceived type="11" notify="32" attr="33" version="1.3" hk="Miscellaneous"></TimeLastPacketReceived>
+	</UDPEchoConfig>
+	<IPPingDiagnostics type="255" notify="32" attr="1">
+		<Interface type="6" notify="0" attr="2" range="(256)" action="IPPingDiagnostics.Interface"></Interface>
+		<Host type="6" notify="0" attr="2" range="(256)" action="IPPingDiagnostics.Host"></Host>
+		<NumberOfRepetitions type="9" notify="0" attr="2" range="[1:]" action="IPPingDiagnostics.NumberOfRepetitions"></NumberOfRepetitions>
+		<Timeout type="9" notify="0" attr="2" range="[1:]" action="IPPingDiagnostics.Timeout"></Timeout>
+		<DataBlockSize type="9" notify="0" attr="2" range="[1:65535]" action="IPPingDiagnostics.DataBlockSize"></DataBlockSize>
+		<DSCP type="9" notify="0" attr="2" range="[0:63]" default="0" action="IPPingDiagnostics.DSCP"></DSCP>
+		<DiagnosticsState type="6" notify="32" attr="34" hk="Miscellaneous"></DiagnosticsState>
+		<SuccessCount type="9" notify="32" attr="33" hk="Miscellaneous"></SuccessCount>
+		<FailureCount type="9" notify="32" attr="33" hk="Miscellaneous"></FailureCount>
+		<AverageResponseTime type="9" notify="32" attr="33" hk="Miscellaneous"></AverageResponseTime>
+		<MinimumResponseTime type="9" notify="32" attr="33" hk="Miscellaneous"></MinimumResponseTime>
+		<MaximumResponseTime type="9" notify="32" attr="33" hk="Miscellaneous"></MaximumResponseTime>
+	</IPPingDiagnostics>
+	<DownloadDiagnostics type="255" notify="32" attr="1">
+		<Interface type="6" notify="0" attr="2" range="(256)" version="1.3" action="DownloadDiagnostics.Interface"></Interface>
+		<DownloadURL type="6" notify="0" attr="2" range="(256)" version="1.3" action="DownloadDiagnostics.DownloadURL"></DownloadURL>
+		<DSCP type="9" notify="0" attr="2" range="[0:63]" default="0" version="1.3" action="DownloadDiagnostics.DSCP"></DSCP>
+		<EthernetPriority type="9" notify="0" attr="2" range="[0:7]" default="0" version="1.3" action="DownloadDiagnostics.EthernetPriority"></EthernetPriority>
+		<DiagnosticsState type="6" notify="32" attr="34" version="1.3" hk="Miscellaneous"></DiagnosticsState>
+		<ROMTime type="11" notify="32" attr="33" version="1.3" hk="Miscellaneous"></ROMTime>
+		<BOMTime type="11" notify="32" attr="33" version="1.3" hk="Miscellaneous"></BOMTime>
+		<EOMTime type="11" notify="32" attr="33" version="1.3" hk="Miscellaneous"></EOMTime>
+		<TestBytesReceived type="9" notify="32" attr="33" version="1.3" hk="Miscellaneous"></TestBytesReceived>
+		<TotalBytesReceived type="9" notify="32" attr="33" version="1.3" hk="Miscellaneous"></TotalBytesReceived>
+		<TCPOpenRequestTime type="11" notify="32" attr="33" version="1.3" hk="Miscellaneous"></TCPOpenRequestTime>
+		<TCPOpenResponseTime type="11" notify="32" attr="33" version="1.3" hk="Miscellaneous"></TCPOpenResponseTime>
+	</DownloadDiagnostics>
+	<UploadDiagnostics type="255" notify="32" attr="1">
+		<Interface type="6" notify="0" attr="2" range="(256)" version="1.3" action="UploadDiagnostics.Interface"></Interface>
+		<UploadURL type="6" notify="0" attr="2" range="(256)" version="1.3" action="UploadDiagnostics.UploadURL"></UploadURL>
+		<DSCP type="9" notify="0" attr="2" range="[0:63]" default="0" version="1.3" action="UploadDiagnostics.DSCP"></DSCP>
+		<EthernetPriority type="9" notify="0" attr="2" range="[0:7]" default="0" version="1.3" action="UploadDiagnostics.EthernetPriority"></EthernetPriority>
+		<TestFileLength type="9" notify="0" attr="2" version="1.3" action="UploadDiagnostics.TestFileLength"></TestFileLength>
+		<DiagnosticsState type="6" notify="32" attr="34" version="1.3" hk="Miscellaneous"></DiagnosticsState>
+		<ROMTime type="11" notify="32" attr="33" version="1.3" hk="Miscellaneous"></ROMTime>
+		<BOMTime type="11" notify="32" attr="33" version="1.3" hk="Miscellaneous"></BOMTime>
+		<EOMTime type="11" notify="32" attr="33" version="1.3" hk="Miscellaneous"></EOMTime>
+		<TotalBytesSent type="9" notify="32" attr="33" version="1.3" hk="Miscellaneous"></TotalBytesSent>
+		<TCPOpenRequestTime type="11" notify="32" attr="33" version="1.3" hk="Miscellaneous"></TCPOpenRequestTime>
+		<TCPOpenResponseTime type="11" notify="32" attr="33" version="1.3" hk="Miscellaneous"></TCPOpenResponseTime>
+	</UploadDiagnostics>
+</InternetGatewayDevice>

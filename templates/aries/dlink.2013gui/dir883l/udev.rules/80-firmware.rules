@@ -1,0 +1,2 @@
+# firmware-class requests, copies files into the kernel
+SUBSYSTEM=="firmware", ACTION=="add", RUN+="/etc/scripts/firmware.sh"

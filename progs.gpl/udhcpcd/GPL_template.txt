@@ -1,0 +1,19 @@
+Module nameo: udhcpcd
+
+Module version: 0.9.8
+
+Copyright:
+Copyright (C) 1999 Matthew Ramsay <matthewr@moreton.com.au> Chris Trew <ctrew@moreton.com.au>	
+Copyright (c) 1997-2006 Jean Tourrilhes, All Rights Reserved.
+
+License type: GPLv2
+
+Download URL:
+https://launchpad.net/ubuntu/+archive/primary/+files/udhcp_0.9.8.orig.tar.gz
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: @@modday@@
+
+------------------------------------------------------------------------

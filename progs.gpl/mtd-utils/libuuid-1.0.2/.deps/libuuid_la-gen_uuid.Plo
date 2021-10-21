@@ -1,0 +1,193 @@
+libuuid_la-gen_uuid.lo: gen_uuid.c \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/stdio.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/features.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_config.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_arch_features.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sys/cdefs.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/bin/../lib/gcc/mips-linux-uclibc/4.3.3/include/stddef.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/types.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/wordsize.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/kernel_types.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/typesizes.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/pthreadtypes.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/sched.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_stdio.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/wchar.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/wchar.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_mutex.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/pthread.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sched.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/time.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/time.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_clk_tck.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/signal.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/sigset.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/initspin.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/sigthread.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_pthread.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/bin/../lib/gcc/mips-linux-uclibc/4.3.3/include/stdarg.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/stdio_lim.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/string.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/fcntl.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/fcntl.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sgidefs.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sys/types.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/errno.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/errno.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/linux/errno.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/asm/errno.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/asm-generic/errno-base.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/bin/../lib/gcc/mips-linux-uclibc/4.3.3/include-fixed/limits.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/bin/../lib/gcc/mips-linux-uclibc/4.3.3/include-fixed/syslimits.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/limits.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/posix1_lim.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/local_lim.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/linux/limits.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_local_lim.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/posix2_lim.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sys/stat.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/stat.h all-io.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/unistd.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/posix_opt.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/confname.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/getopt.h c.h \
+  config.h /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/stdint.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/stdlib.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/alloca.h uuidP.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/inttypes.h uuid.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sys/time.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sys/select.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/select.h uuidd.h \
+  randutils.h
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/stdio.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/features.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_config.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_arch_features.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sys/cdefs.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/bin/../lib/gcc/mips-linux-uclibc/4.3.3/include/stddef.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/types.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/wordsize.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/kernel_types.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/typesizes.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/pthreadtypes.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/sched.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_stdio.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/wchar.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/wchar.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_mutex.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/pthread.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sched.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/time.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/time.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_clk_tck.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/signal.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/sigset.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/initspin.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/sigthread.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_pthread.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/bin/../lib/gcc/mips-linux-uclibc/4.3.3/include/stdarg.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/stdio_lim.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/string.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/fcntl.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/fcntl.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sgidefs.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sys/types.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/errno.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/errno.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/linux/errno.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/asm/errno.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/asm-generic/errno-base.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/bin/../lib/gcc/mips-linux-uclibc/4.3.3/include-fixed/limits.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/bin/../lib/gcc/mips-linux-uclibc/4.3.3/include-fixed/syslimits.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/limits.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/posix1_lim.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/local_lim.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/linux/limits.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_local_lim.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/posix2_lim.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sys/stat.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/stat.h:
+
+all-io.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/unistd.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/posix_opt.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/confname.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/getopt.h:
+
+c.h:
+
+config.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/stdint.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/stdlib.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/alloca.h:
+
+uuidP.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/inttypes.h:
+
+uuid.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sys/time.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sys/select.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/select.h:
+
+uuidd.h:
+
+randutils.h:

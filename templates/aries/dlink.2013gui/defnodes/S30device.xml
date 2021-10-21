@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<SiGnAtUrE>
+	<runtime>
+		<device>
+			<vendor>D-Link</vendor>
+			<fwinfosrv>wrpd.dlink.com</fwinfosrv>
+			<fwinfopath>/router/firmware/query.aspx</fwinfopath>
+			<upnpmodelname>D-Link Router</upnpmodelname>
+		</device>
+	</runtime>
+</SiGnAtUrE>

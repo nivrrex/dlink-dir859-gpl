@@ -1,0 +1,83 @@
+libuuid_la-pack.lo: pack.c \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/string.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/features.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_config.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_arch_features.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sys/cdefs.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/bin/../lib/gcc/mips-linux-uclibc/4.3.3/include/stddef.h \
+  uuidP.h /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/inttypes.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/stdint.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/wchar.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/wordsize.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sys/types.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/types.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/kernel_types.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/typesizes.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/pthreadtypes.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/sched.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/time.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/endian.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/endian.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sys/select.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/select.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/sigset.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/time.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sys/sysmacros.h uuid.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sys/time.h \
+  /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_clk_tck.h
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/string.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/features.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_config.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_arch_features.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sys/cdefs.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/bin/../lib/gcc/mips-linux-uclibc/4.3.3/include/stddef.h:
+
+uuidP.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/inttypes.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/stdint.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/wchar.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/wordsize.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sys/types.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/types.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/kernel_types.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/typesizes.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/pthreadtypes.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/sched.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/time.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/endian.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/endian.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sys/select.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/select.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/sigset.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/time.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sys/sysmacros.h:
+
+uuid.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/sys/time.h:
+
+/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/include/bits/uClibc_clk_tck.h:

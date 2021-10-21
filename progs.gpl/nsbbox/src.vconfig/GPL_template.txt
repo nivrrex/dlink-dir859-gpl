@@ -1,0 +1,21 @@
+Module name: vconfig
+
+Module version: 1.00
+
+Copyright:
+(C) Copyright 2001-2003 Alex Zeffertt, Cambridge Broadband Ltd, ajz@cambridgebroadband.com Re-worked by Ben Greear <greearb@candelatech.com>	
+Copyright	(c) 1998-2001 Ben Greear	
+Copyright 2001, 2002 by Robert Olsson <robert.olsson@its.uu.se> Uppsala University, Sweden 2002 Ben Greear <greearb@candelatech.com>	
+Copyright 1994, University of Cambridge Computer Laboratory All Rights Reserved.
+
+License type: LGPLv2, GPL, GPLv2
+
+Download URL:
+https://www.candelatech.com/~greear/vlan.html
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: @@modday@@
+
+------------------------------------------------------------------------

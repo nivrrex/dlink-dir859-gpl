@@ -1,0 +1,2 @@
+SUBSYSTEM=="linkreport", ACTION=="LINKUP", RUN+="/usr/sbin/usockc /var/gpio_ctrl LINKUP"
+SUBSYSTEM=="linkreport", ACTION=="LINKDOWN", RUN+="/usr/sbin/usockc /var/gpio_ctrl LINKDOWN"

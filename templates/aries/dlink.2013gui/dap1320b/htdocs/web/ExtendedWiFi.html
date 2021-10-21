@@ -1,0 +1,788 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml" xml:lang="zh_TW" lang="zh_TW">
+
+<head>
+<title>D-LINK</title>
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<link rel="stylesheet" type="text/css" href="css/style_pages.css" media="all" />
+<link href="css/jquery.selectbox.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" charset="utf-8" src="./js/comm.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/hmac_md5.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/libajax.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/hnap.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/i18n.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/pagetool.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/checkTimeout.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/jquery.selectbox-0.2_new.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/jquery.validate.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/includeLang.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/messageDescription.js"></script>
+
+<script>
+$(document).ready(function(){
+	
+
+	GetXML24G();
+});
+
+</script>
+<script type="text/javascript">
+	
+	var HNAP = new HNAP_XML();
+	
+	var _ReciprocalNumber = 60;
+	
+	// pre-load security setting to UI display 
+	$(document).ready(function(){
+	security_mode(document.getElementById("security_24").value);});
+	
+	//init selectbox
+		$(function ()
+	{
+		$("#pass_len_24").selectbox();
+		$("#security_24").selectbox();
+		$("#auth_24").selectbox();
+		
+	});
+	
+	//---------- start of tools for page
+	//get element by id
+	function OBJ(id)
+	{
+		if		(document.getElementById) return document.getElementById(id);
+		else if	(document.all) return document.all[id].style;
+		else if	(document.layers) return document.layers[id];
+		else return false;
+	}
+	//set select value
+	function set_select_value(obj, value)
+	{
+		for (var i=0; i < obj.length; i+=1)
+			if (obj[i].value == value)
+			{
+				obj.selectedIndex = i;
+				break;
+			}
+		return obj.selectedIndex;
+	}
+	//add select option
+	function add_select_option(obj, value, text)
+	{
+		var Option_Exist = false;
+		for(var i=0; i < obj.length; i++)
+		{ 
+			if(obj.options[i].value == value)
+			{
+				Option_Exist = true;
+				break;
+			}
+		}
+		if(!Option_Exist)
+		{
+			var new_option = new Option(text, value); 
+			obj.options.add(new_option);				
+		}
+	}
+	//remove options
+	function remove_opt(obj)
+	{
+		if (obj == null) return;
+		if (obj.options == null) return;
+		obj.options.length = 0;
+	}
+	
+	var selected_ssid = null;
+	var def_security = null;
+	function InjectTable(tblID, uid, data, type)
+	{
+		var rows = OBJ(tblID).getElementsByTagName("tr");
+		var tagTR = null;
+		var tagTD = null;
+		var i;
+		var str;
+		var found = false;
+		selected_ssid = null;
+		def_security = null;
+		
+		/* Search the rule by UID. */
+		for (i=0; !found && i<rows.length; i++) if (rows[i].id == uid) found = true;
+		if (found)
+		{
+			for (i=0; i<data.length; i++)
+			{
+				tagTD = OBJ(uid+"_"+i);
+				switch (type[i])
+				{
+					case "text":
+						str = data[i];
+						if(typeof(tagTD.innerText) !== "undefined")	tagTD.innerText = str;
+						else if(typeof(tagTD.textContent) !== "undefined")	tagTD.textContent = str;
+						else	tagTD.innerHTML = str;
+						break;	
+					default:
+						str = data[i];
+						tagTD.innerHTML = str;
+						break;
+				}
+			}
+			return;
+		}
+	
+		/* Add a new row for this entry */
+		tagTR = OBJ(tblID).insertRow(rows.length);
+		tagTR.id = uid;
+		
+		tagTR.onclick = function (evt)
+		{
+			selected_ssid = data[0]; //ssid
+			if(data[3]=="NONE") def_security = "NONE";
+			else if(data[3].indexOf("WEP") == 0) def_security = "WEP";
+			else def_security = "WPA+2PSK";
+			ChangeBgcolor(tblID, uid);
+		};
+		
+		/* save the rule in the table */
+		for (i=0; i<data.length-1; i++)
+		{
+			tagTD = tagTR.insertCell(i);
+			tagTD.id = uid+"_"+i;
+			tagTD.className = "content";
+
+			switch (type[i])
+			{
+				case "text":
+					str = data[i];
+					if(typeof(tagTD.innerText) !== "undefined")	tagTD.innerText = str;
+					else if(typeof(tagTD.textContent) !== "undefined")	tagTD.textContent = str;
+					else	tagTD.innerHTML = str;
+					break;
+				default:
+					str = data[i];
+					tagTD.innerHTML = str; 
+					break;
+			}
+		}
+	}
+	
+	function CleanTable(tblID)
+	{
+		table = OBJ(tblID);
+		var rows = table.getElementsByTagName("tr");
+		while (rows.length > 1) table.deleteRow(rows.length - 1);
+	}
+	//---------- end of tools for page
+	
+	
+	function Load_HTML()
+	{ 
+		$("#header").load("header.html");
+	}
+	
+	function Initial()
+	{
+		initialMenu();
+		initialDetectRouterConnection();
+	}
+	
+	function GetXML24G()
+	{
+		//////////////////////////////////////// 2.4 GHz ////////////////////////////////////////
+		var xml_GetWLanRadioSettings = HNAP.GetXML("GetWLanRadioSettings", new Array("RadioID", "RADIO_2.4GHz"));
+		
+		// Radio Status :
+
+
+		// Wi-Fi Name (SSID) :
+		var ssid_24 = xml_GetWLanRadioSettings.Get("GetWLanRadioSettingsResponse/SSID");
+		document.getElementById("wifiName_24").value = ssid_24;
+				
+		//// GetWLanRadioSecurity
+		var xml_GetWLanRadioSecurity = HNAP.GetXML("GetWLanRadioSecurity", new Array("RadioID", "RADIO_2.4GHz"));
+		
+		// Security Status :
+		var security_24_status = xml_GetWLanRadioSecurity.Get("GetWLanRadioSecurityResponse/Enabled");
+		
+		// Security Mode :
+		var security_24_Type = xml_GetWLanRadioSecurity.Get("GetWLanRadioSecurityResponse/Type");
+		if(security_24_status != "false")
+		{
+			if(security_24_Type == "WPA-PSK" || security_24_Type == "WPA2-PSK" || security_24_Type == "WPAORWPA2-PSK")
+			{
+				document.getElementById("security_24").options[2].selected=true;
+			}
+			else
+			{
+				document.getElementById("security_24").options[1].selected = true;
+				//document.getElementById("password_24").disabled = false;
+			}
+			
+			// Get Password
+			var password_24 = xml_GetWLanRadioSecurity.Get("GetWLanRadioSecurityResponse/Key");
+			document.getElementById("password_24").value = password_24;
+		}
+		else
+		{
+			document.getElementById("security_24").options[0].selected = true;
+			//document.getElementById("password_24").disabled = true;
+			//document.getElementById("show_80211Mode_24G").style.display = "none";
+			
+		}
+		$("#security_24").selectbox();
+
+	}
+
+	function CheckConnectionStatus()
+	{
+		$.ajax({
+			cache : false,
+			url : "./js/CheckConnection",
+			timeout : 2000,
+			type : "GET",
+			success : function(data) { SetXML24G(); /*,SetXML5G();*/ }, //module 24G or 5G 
+			error : function() { document.getElementById("DetectRouterConnection").style.display = "inline"; }
+		});
+	}
+	
+	function SetXML24G()
+	{
+		//////////////////////////////////////// 2.4 GHz Basic Settings ////////////////////////////////////////
+		var xml_SetWLanRadioSettings = HNAP.GetXML("SetWLanRadioSettings");
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/RadioID", "RADIO_2.4GHz");
+		
+	
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Enabled", "true");
+
+		
+		// RADIO_2.4GHz SSID
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/SSID", document.getElementById("wifiName_24").value);
+		
+		// RADIO_2.4GHz Mode
+
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Mode", "802.11bgn"); //temp default
+		// 2.4 GHz Channel
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Channel", "0");
+		
+		// 2.4 GHz Transmission Power
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/TXPower", "100");
+
+
+		// 2.4 GHz Channel Width
+
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/ChannelWidth", "20+40");
+
+		
+		// 2.4 GHz Visibility Status
+		xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/SSIDBroadcast", "true");
+		
+		// debug
+		var xml_SetWLanRadioSettingsResult = HNAP.SetXMLAsync("SetWLanRadioSettings", xml_SetWLanRadioSettings);
+		// alert(xml_SetWLanRadioSettingsResult.Get("SetWLanRadioSettingsResponse/SetWLanRadioSettingsResult"));
+		
+		//////////////////////////////////////// 2.4 GHz Security Settings ////////////////////////////////////////
+		// 2.4 GHz Settings Security Mode
+		var selectSecurityMode_24 = document.getElementById("security_24").value;
+
+			// None
+			if(selectSecurityMode_24 =="NONE"){
+				var xml_SetWLanRadioSecurity = HNAP.GetXML("SetWLanRadioSecurity");
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/RadioID", "RADIO_2.4GHz");
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Enabled", "false");
+				var xml_SetWLanRadioSecurityResult = HNAP.SetXMLAsync("SetWLanRadioSecurity", xml_SetWLanRadioSecurity);
+				// alert(xml_SetWLanRadioSecurityResult.Get("SetWLanRadioSecurityResponse/SetWLanRadioSecurityResult"));
+			}
+			// WEP Mode
+			if(selectSecurityMode_24 =="WEP"){
+				var xml_SetWLanRadioSecurity = HNAP.GetXML("SetWLanRadioSecurity");
+				var WEP_len = document.getElementById("pass_len_24").value ;
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/RadioID", "RADIO_2.4GHz");
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Enabled", "true");
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Type", document.getElementById("auth_24").value); ////2013/9/6 hill
+				//xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Encryption", document.getElementById("pass_len").value); //2013/9/6 hill
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Key", document.getElementById("password_24").value);
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/KeyRenewal", "3600");
+				if(WEP_len =="64Hex" || WEP_len =="64ASCII"){
+					//alert(document.getElementById("pass_len").value);
+					xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Encryption", "WEP-64");
+				}
+				else if(WEP_len =="128Hex" || WEP_len =="128ASCII"){
+					//alert(document.getElementById("pass_len").value);
+					xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Encryption", "WEP-128");
+					}
+				
+				
+				var xml_SetWLanRadioSecurityResult = HNAP.SetXMLAsync("SetWLanRadioSecurity", xml_SetWLanRadioSecurity);
+				// alert(xml_SetWLanRadioSecurityResult.Get("SetWLanRadioSecurityResponse/SetWLanRadioSecurityResult"));
+				}
+			// WPA-P Mode
+			if(selectSecurityMode_24 =="WPAPSK"){
+				var xml_SetWLanRadioSecurity = HNAP.GetXML("SetWLanRadioSecurity");
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/RadioID", "RADIO_2.4GHz");
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Enabled", "true");
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Type", "WPAORWPA2-PSK");
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Encryption", "TKIPORAES");
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Key", document.getElementById("password_24").value);
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/KeyRenewal", "3600");
+				var xml_SetWLanRadioSecurityResult = HNAP.SetXMLAsync("SetWLanRadioSecurity", xml_SetWLanRadioSecurity);
+				// alert(xml_SetWLanRadioSecurityResult.Get("SetWLanRadioSecurityResponse/SetWLanRadioSecurityResult"));
+				}
+
+		
+		document.getElementById("CreatePopAlertMessage").style.display = "inline";
+		document.getElementById("waitSettingFinish").style.display = "inline";
+		Start_reciprocal_Number_RestoreConfiguration();
+	}
+	
+
+/*	
+	function WEP_maxlength(val){
+	
+		if(val == "WEP-64"){
+		var max_len = document.getElementById("password_24");
+		  max_len.setAttribute("maxlength", 5);
+		  //document.getElementById("password_24").value ="00000";
+		}
+		if(val == "WEP-128"){
+		var max_len = document.getElementById("password_24");
+		  max_len.setAttribute("maxlength", 13);
+		 // document.getElementById("password_24").value ="0000000000";
+		}
+		if(val == "WEP-64-H"){
+		var max_len = document.getElementById("password_24");
+		  max_len.setAttribute("maxlength", 10);
+		//  document.getElementById("password_24").value ="0000000000000";
+		}
+		if(val == "WEP-128-H"){
+		var max_len = document.getElementById("password_24");
+		  max_len.setAttribute("maxlength", 26);
+		//  document.getElementById("password_24").value ="00000000000000000000000000";
+		}
+	}
+*/
+
+
+	function Start_reciprocal_Number_RestoreConfiguration()
+	{
+		if (_ReciprocalNumber >= 0)
+		{
+			document.getElementById("reciprocal_Number").innerHTML = _ReciprocalNumber + " " + I18N("j", "Sec");
+			_ReciprocalNumber --;
+			setTimeout("Start_reciprocal_Number_RestoreConfiguration()", 1000);
+		}
+		else
+		{
+			document.getElementById("waitSettingFinish").style.display = "none";
+			document.getElementById("SuccessSettings").style.display = "inline";
+		}
+	}
+	
+	function returnToHome()
+	{
+		window.location.reload();
+	}
+	
+	function security_mode(mode)
+	{
+		switch (mode)
+		{
+			case "NONE":
+				OBJ("pwl_tr").style.display = "none";
+				OBJ("passwd_tr").style.display = "none";
+				OBJ("auth_tr").style.display = "none";
+				break;
+			case "WEP":
+				OBJ("pwl_tr").style.display = "table-row";
+				OBJ("passwd_tr").style.display = "table-row";
+				OBJ("auth_tr").style.display = "table-row";
+				break;
+			case "WPAPSK":
+			OBJ("pwl_tr").style.display = "none";
+			OBJ("passwd_tr").style.display = "table-row";
+			OBJ("auth_tr").style.display = "none";
+				break;
+			case "WPA2PSK":
+			case "WPA+2PSK":
+				OBJ("pwl_tr").style.display = "none";
+				OBJ("passwd_tr").style.display = "table-row";
+				break;
+		}
+	}
+	
+	
+</script>
+<script language="JavaScript">
+        // 2013/08/15 Timmy Add
+        $(function() {
+			$("input, textarea, select").change(function () {
+				changeFlag = true;
+				save_button_changed();
+			});
+        });
+        
+        function save_button_changed()
+		{
+			document.getElementById("Save_Disable_btn").style.display = "none";
+			document.getElementById("Save_btn").style.display = "block";
+		}
+</script>
+<style>
+#advancedBlock1 {
+	display: none;
+}
+#advancedBlock2 {
+	display: none;
+}
+#show_5g{
+	display: none;
+}
+
+#show_24g{
+	display: block;
+}
+
+
+#show_password_24G {
+	display: none;
+}
+#show_auth {
+	display: none;
+}
+#show_pass_len {
+	display: none;
+}
+
+
+</style>
+
+</head>
+
+<body>
+	<form name="extendedwifi_form" id="extendedwifi_form" method="POST" action="">
+	<div id="wrapper">
+		<!-------------------- Logo ------------------------->
+		<div id="header"></div>
+		<!-------------------- Menu ------------------------->
+		<div id="menu"></div>
+		<!-------------------- Content ---------------------->
+		<div id="content">
+		<!-------------------- info ------------------------->	
+			<div id="info"> 
+				<div id="FunctionName"><script>I18N("h", "Extended Wi-Fi");</script></div>
+				<div id="wallimage"><img src="image/wifi_24.png" alt="" width="195" height="119"/></div>
+			    <div id="directions">
+						<script>I18N("h", "Use this section to configure the wireless settings for your D-Link Extender. Please note that changes made on this section may also need to be duplicated on your Wireless Client.");</script>
+				</div>	
+			</div> 
+			<!-------------------- funcBar ---------------------->
+		    <div id="funcBar">
+				<div id="pagePath">&nbsp;<script>I18N("h", "Settings");</script> >> <script>I18N("h", "Extended Wi-Fi");</script></div>
+				<ul id="rightFunc">
+					<li style="display:block"><div id="Save_btn" onclick="document.getElementById('sumbit_CheckData').click()" style="cursor:pointer; display:none"><script>I18N("h", "Save");</script></div></li>
+					<li style="display:block"><div id="Save_Disable_btn"><script>I18N("h", "Save");</script></div></li>
+					<input id="sumbit_CheckData" class="submit" type="submit" value="Submit" style="display:none" />
+					<!--<li style="display:block"><a href="javascript:CheckHTMLStatus('GuestZone');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "Guest Zone");</script></div></a></li> -->
+				</ul>
+			</div>	 
+	     	<!-------------------- main ---------------------->
+	     	<div id="main">	
+				<!-------------------- Wi-Fi RADIO_2.4GHz ---------------------->
+				<!--<p>2.4 GHz</p>-->
+				<div id ="show_24g">
+				<table class="block" border="0" cellspacing="0" style="margin: 10px 0 0 0;">
+					<tbody>
+						<tr>
+							<td><div class ="title"></div></td>
+							<td></td>
+						</tr>
+						<tr>
+							<th><script>I18N("h", "Wi-Fi Name (SSID)");</script>:</th>
+							<td><input class="styled-text required" type="text" name="wifiName_24" size="30" id="wifiName_24" onClick="this.select();"></td>
+						</tr>
+						
+						<tr>
+								<th><script>I18N("h", "Security Mode");</script>:</th>
+								<td>
+									<div class="styled-select">
+										<select name="security_24" id="security_24" onChange="security_mode(this.value)">
+											<option value="NONE">None</option>
+											<option value="WEP">WEP</option>
+											<option value="WPAPSK">WPA-Personal</option>
+										</select>
+									</div>  
+								</td>
+							</tr>
+						<tr id="pwl_tr" style="display:none;">
+								<th><script>I18N("h", "Password Length");</script>:</th>
+								<td>
+									<div class="styled-select">
+										<select id="pass_len_24">
+											<option value="64Hex">64 bit(10 hex digits)</option>
+											<option value="64ASCII">64 bit(5 ascii characters)</option>
+											<option value="128Hex">128 bit(26 hex digits)</option>
+											<option value="128ASCII">128 bit(13 ascii characters)</option>
+										</select>
+									</div>
+								</td>
+								<td></td>
+							</tr>
+							<tr id="passwd_tr" style="display:none;">
+								<th><script>I18N("h", "Password");</script>:</th>
+								<td><input id="password_24" name="password_24" class="styled-text" type="text" size="27"></td>
+								<td></td>
+							</tr>
+							<tr id="auth_tr" style="display:none;">
+								<th><script>I18N("h", "Authentication");</script>:</th>
+								<td>
+									<div class="styled-select">
+										<select id="auth_24">
+											<option value="WEP-AUTO">Both (Open/Shared Key)</option>
+											<option value="WEP-OPEN">Open</option>
+											<option value="WEP-SHARED">Shared</option>
+											
+										</select>
+									</div>
+								</td>
+								<td></td>
+							</tr>		
+					</tbody>
+			    </table>
+				</div>
+				
+				<div id="CreatePopAlertMessage" style="display:none">
+					<div id="AlertPopRect">
+					<div id="AlertPopBody">
+						<table class="myAlertPop_table_b" id="waitSettingFinish" border="0" cellspacing="0" style="display:none">
+						   <tbody>
+								 <tr>
+								 	<td>
+										<center><div id="Loading_pop_image2"></div></center>
+									</td>
+								 </tr>
+								 <tr>
+								 	<td label id="reciprocal_Number">10</label></td>
+								 </tr>
+								 <tr>
+								 	<td id="dialog_msg_black2"><script>I18N("h", "Your changes are being saved. When reconnectiong to this device, please use the new Wi-Fi name and password you created.");</script></td>
+								 </tr>
+						   </tbody>
+						</table>
+						<table class="myAlertPop_table_b" id="SuccessSettings" border="0" cellspacing="0"  style="display:none">
+						   <tbody>
+								 <tr>
+								 	<td>
+										<center><div id="Information_pop_image"></div></center>
+									</td>
+								 </tr>
+								 <tr>
+									 <td>
+									 	<div id="dialog_msg_black"><script>I18N("h", "The new settings have been saved.");</script></div>
+									 </td>
+								 </tr>
+								 <tr>
+									 <td>
+									 	<center><div id="Confirm_btn" onclick="returnToHome()" style="cursor:pointer"><script>I18N("h", "OK");</script></div><center>
+									 </td>
+								 </tr>
+						   </tbody>
+						</table>
+					</div>
+					</div>
+				</div>
+				<!-- Detect Router Connection, Timmy Add 2013/08/15 -->
+				<div id="DetectRouterConnection" style="display:none"></div>
+			 </div>
+		</div>
+		<div id="footer">Copyright &copy; 2013 D-Link Corporation/D-Link Systems, Inc.</div>
+	</div>
+</form>
+<script type="text/javascript" charset="utf-8">
+	$(document).ready( function() {
+		$.validator.setDefaults( { submitHandler: function(form) { form.submit(); } } );
+		
+		// Check Is None For RADIO_2.4GHz
+		$.validator.addMethod("checkWEPPassword", function( value, element ) {
+			var returnVal = true;
+			var GetSecurityType = document.getElementById("security_24").value;
+			var GetSecurityEncryption = document.getElementById("pass_len_24").value;
+			if (GetSecurityType != "WEP")
+			{
+				returnVal = true;
+			}
+			else
+			{
+				
+					if (GetSecurityEncryption=="64Hex" && value.length != 10)
+						{
+							returnVal = false;
+						}
+					else if (GetSecurityEncryption=="64ASCII" && value.length != 5)
+						{
+							returnVal = false;
+						}	
+				
+			}
+			return returnVal;
+		}, jQuery.validator.messages.password_WEPCheck);
+		///////////////////////////////////////////////////128
+		$.validator.addMethod("checkWEPPassword128", function( value, element ) {
+			var returnVal = true;
+			var GetSecurityType = document.getElementById("security_24").value;
+			var GetSecurityEncryption = document.getElementById("pass_len_24").value;
+			if (GetSecurityType != "WEP")
+			{
+				returnVal = true;
+			}
+			else
+			{
+				if (GetSecurityEncryption=="128Hex" && value.length != 26)
+					{
+						returnVal = false;
+					}
+				else if (GetSecurityEncryption=="128ASCII" && value.length != 13)
+					{
+						returnVal = false;
+					}
+			}
+			return returnVal;
+		}, jQuery.validator.messages.password_WEPCheck128);
+
+
+		
+		///////////////////////////////hex check/////////////////////////////////////////
+		$.validator.addMethod("checkWEPPassworddigits", function( value, element ) {
+			var returnVal = true;
+			var GetSecurityType = document.getElementById("security_24").value;
+			var GetSecurityEncryption = document.getElementById("pass_len_24").value;
+			var WEP64_H = /^[a-f0-9]{10}$/;
+			var WEP128_H = /^[a-f0-9]{26}$/;
+			if (GetSecurityType != "WEP")
+			{
+				returnVal = true;
+			}
+			else
+			{
+				if (GetSecurityEncryption == "64Hex"){
+					if (WEP64_H.test(value)) 
+					{
+					returnVal = true;
+					}
+					else{
+					returnVal = false;
+					}
+				}
+				if (GetSecurityEncryption == "128Hex"){
+					if (WEP128_H.test(value)) 
+					{
+					returnVal = true;
+					}
+					else{
+					returnVal = false;
+					}
+				}
+			
+			}
+			return returnVal;
+		}, jQuery.validator.messages.hex_Range);
+		
+		
+
+		
+		// Check Is WPA For RADIO_2.4GHz
+		$.validator.addMethod("checkWPAPassword", function( value, element ) {
+			var returnVal = true;
+			var GetSecurityType = document.getElementById("security_24").value;
+			if (GetSecurityType != "WPAPSK")
+			{
+				returnVal = true;
+			}
+			else
+			{
+				if (value.length > 63 || value.length < 8)
+				{
+					returnVal = false;
+				}
+			}
+			return returnVal;
+		}, jQuery.validator.messages.password_WPACheck);
+		
+		// Check Is None For RADIO_5GHz
+		
+		$.validator.addMethod("checkWEPPassword5G", function( value, element ) {
+			var returnVal = true;
+			var GetSecurityType = document.getElementById("security_5").value;
+			if (GetSecurityType != "WEP")
+			{
+				returnVal = true;
+			}
+			else
+			{
+				if (value.length != 10)
+				{
+					returnVal = false;
+				}
+			}
+			return returnVal;
+		}, jQuery.validator.messages.password_WEPCheck);
+		
+		// Check Is WPA For RADIO_5GHz
+		$.validator.addMethod("checkWPAPassword5G", function( value, element ) {
+			var returnVal = true;
+			var GetSecurityType = document.getElementById("security_5").value;
+			if (GetSecurityType != "WPA-Personal")
+			{
+				returnVal = true;
+			}
+			else
+			{
+				if (value.length > 63 || value.length < 8)
+				{
+					returnVal = false;
+				}
+			}
+			return returnVal;
+		}, jQuery.validator.messages.password_WPACheck);
+		
+		$('#extendedwifi_form').validate({
+			rules: {
+				wifiName_24: "required",
+				password_24: {
+					required: true,
+					checkWEPPassword: true,
+					checkWEPPassword128: true,
+					checkWPAPassword: true,
+					checkWEPPassworddigits:true
+				},
+				wifiName_5: "required",
+				password_5: {
+					required: true,
+					checkWEPPassword5G: true,
+					checkWPAPassword5G: true
+				}
+			},
+			messages: {
+				wifiName_24: jQuery.validator.messages.ssid,
+				wifiName_5: jQuery.validator.messages.ssid,
+				password_24: {
+					required: jQuery.validator.messages.check_Password
+				},
+				password_5: {
+					required: jQuery.validator.messages.check_Password
+				}
+			},
+			submitHandler: function(form) {
+				CheckConnectionStatus();
+			}
+		});
+	});
+</script>
+</body>
+<script type="text/javascript">
+	Load_HTML();
+	Initial();
+	checkTimeout();
+</script>
+</html>

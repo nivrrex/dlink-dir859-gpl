@@ -1,0 +1,48 @@
+Module name: mtd-utils
+
+Module version: 1.4.5
+
+Copyright:
+Copyright (c) International Business Machines Corp., 2006	
+Copyright (C) 2006-2009 Nokia Corporation.	
+Copyright (C) 2008 University of Szeged, Hungary	
+Copyright (c) Artem Bityutskiy, 2007, 2008	
+Copyright (C) 2002, 2004 Christopher Clark <firstname.lastname@cl.cam.ac.uk> 
+Copyright (C) 1999 David A. Hinds. All Rights Reserved.	
+Copyright (C) 1989, 1991 Free Software Foundation, Inc. 
+Copyright (c) 2d3D, Inc. Written by Abraham vd Merwe <abraham@2d3d.co.za> All rights reserved.	
+Copyright (C) 2005 Sean Young <sean@mess.org>	
+Copyright (C) 2004 Ferenc Havasi <havasi@inf.u-szeged.hu>, University of Szeged, Hungary	
+Copyright (C) 2001-2003 Red Hat, Inc.	
+Copyright (c) 1999-2008 Igor Pavlov 
+Copyright 2001, 2002 Red Hat, Inc. 2001 David A. Schleef <ds@lineo.com> 2002 Axis Communications AB 2001, 2002 Erik Andersen <andersen@codepoet.org> 2004 University of Szeged, Hungary 2006 KaiGai Kohei <kaigai@ak.jp.nec.com>	
+(C) 1999 Andrea Arcangeli <andrea@suse.de>	
+Copyright (c) Erik Andersen <andersen@codepoet.org>	
+Copyright (C) 2010 Mike Frysinger <vapier@gentoo.org>	
+Copyright (C) 2008 Logitech.	
+Copyright (c) 2005 Ben Gardner <bgardner@wabtec.com>	
+Copyright (C) 2004 Zoltan Sogor <weth@inf.u-szeged.hu>, Ferenc Havasi <havasi@inf.u-szeged.hu> University of Szeged, Hungary 2006 KaiGai Kohei <kaigai@ak.jp.nec.com>	
+Copyright (C) 2004 Ferenc Havasi <havasi@inf.u-szeged.hu>, Zoltan Sogor <weth@inf.u-szeged.hu>, Patrik Kluba <pajko@halom.u-szeged.hu>, University of Szeged, Hungary	
+Copyright (C) 2003 Thomas Gleixner (tglx@linutronix.de)
+Copyright (c) 2001 Jari Kirma <Jari.Kirma@hut.fi>	
+Copyright (c) 2001, Daniel Industries, Inc.
+Copyright (C) 2001, 2002 Erik Andersen <andersen@codepoet.org>	
+Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com) 2003 Thomas Gleixner (tglx@linutronix.de)	
+Copyright (C) 2000 David Woodhouse (dwmw2@infradead.org) Steven J. Hill (sjhill@realitydiluted.com)	
+Copyright (C) 2000 Arcom Control System Ltd	
+Copyright (c) 2000-2007 by Nicolas Devillard. MIT License	
+COPYRIGHT (C) 1986 Gary S. Brown. 
+Copyright c 1999-2010 David Woodhouse <dwmw2@infradead.org>	
+(C) 1997-98 Luigi Rizzo (luigi@iet.unipi.it)
+
+License type: GPL-2.0+, BSD-3-Clause, Zlib, Dual-license, GPL-2.0, MPL-1.1
+
+Download URL:
+http://repository.timesys.com/buildsources/m/mtd-utils/mtd-utils-1.4.5/
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: @@modday@@
+
+------------------------------------------------------------------------

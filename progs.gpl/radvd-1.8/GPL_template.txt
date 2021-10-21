@@ -1,0 +1,23 @@
+Module name: radvd
+
+Module version: 1.8
+
+Copyright:
+Lars Fenneberg	<lf@elemental.net>
+Craig Metz	<cmetz@inner.net>
+Reuben Hawkins	<reubenhwk@gmail.com>
+Pedro Roque	<roque@di.fc.ul.pt>
+Marko Myllynen	<myllynen@lut.fi>
+Copyright 1996-2000 by the above mentioned author(s), All Rights Reserved.	
+
+License type: BSD
+
+Download URL:
+http://pkgs.fedoraproject.org/repo/pkgs/radvd/radvd-1.8.tar.gz/50b4cfbdfa04d629d80437fd1d9e2aef/radvd-1.8.tar.gz
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: @@modday@@
+
+------------------------------------------------------------------------

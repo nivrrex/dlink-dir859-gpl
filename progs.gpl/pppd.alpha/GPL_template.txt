@@ -1,0 +1,62 @@
+Module name: pppd
+
+Module version: 1.00
+
+Copyright:
+Copyright (C) 1990, RSA Data Security, Inc. All rights reserved. **	
+Copyright (C) 1991-2, RSA Data Security, Inc. Created 1991. All rights reserved.	
+Copyright (C) 1992, 93, 94, 95, 1996 Free Software Foundation, Inc.	
+Copyright (C) 1995,1996,1997,1998 Lars Fenneberg <lf@elemental.net>	
+Copyright (C) 1996, Lars Fenneberg <in5y050@public.uni-hamburg.de>	
+Copyright (C) 1996, Matjaz Godec <gody@elgo.si>	
+Copyright (C) 1996,1997 Lars Fenneberg	
+Copyright (C) 1997 Lars Fenneberg	
+Copyright (C) 1997, Miguel A.L. Paraz <map@iphil.net>	
+Copyright (C) 1999 by Roaring Penguin Software Inc.	
+Copyright (C) 2000 Roaring Penguin Software Inc.	
+Copyright (C) 2000 by Roaring Penguin Software Inc.	
+Copyright (C) 2000-2001 by Roaring Penguin Software Inc.	
+Copyright (C) 2000-2002 Paul Mackerras. All rights reserved.	
+Copyright (C) 2001 Roaring Penguin Software Inc.	
+Copyright (C) 2001 by Roaring Penguin Software Inc., Michal Ostrowski and Jamal Hadi Salim.	
+Copyright (C) 2002 Netservers	
+Copyright (C) 2002 Roaring Penguin Software Inc.	
+Copyright (C) 2002 by Roaring Penguin Software Inc.	
+Copyright (C) 2006 by Kozlov D. * xeb@mail.ru *	
+Copyright (C) Andrew Tridgell 1999	
+Copyright (c) 1984 Paul Mackerras. All rights reserved.	
+Copyright (c) 1984-2000 Carnegie Mellon University. All rights reserved.	
+Copyright (c) 1989 Regents of the University of California. All rights reserved.	
+Copyright (c) 1989-2002 Paul Mackerras. All rights reserved.	
+Copyright (c) 1991 Gregory M. Christy. All rights reserved.	
+Copyright (c) 1993-2002 Paul Mackerras. All rights reserved.	
+Copyright (c) 1994 Paul Mackerras. All rights reserved.	
+Copyright (c) 1994, 1995, 1996 The Regents of the University of California. All rights reserved.	
+Copyright (c) 1994-2002 Paul Mackerras. All rights reserved.	
+Copyright (c) 1995 Eric Rosenquist. All rights reserved.	
+Copyright (c) 1995 Pedro Roque Marques. All rights reserved.	
+Copyright (c) 1995, 1996, 1997 Francis.Dupont@inria.fr, INRIA Rocquencourt, Alain.Durand@imag.fr, IMAG, Jean-Luc.Richier@imag.fr, IMAG-LSR.	
+Copyright (c) 1996-2002 Paul Mackerras. All rights reserved.	
+Copyright (c) 1998, 1999 Francis.Dupont@inria.fr, GIE DYADE, Alain.Durand@imag.fr, IMAG, Jean-Luc.Richier@imag.fr, IMAG-LSR.	
+Copyright (c) 1999 Paul Mackerras. All rights reserved.	
+Copyright (c) 1999 Tommi Komulainen. All rights reserved.	
+Copyright (c) 1999-2002 Paul Mackerras. All rights reserved.	
+Copyright (c) 2001 by Sun Microsystems, Inc. All rights reserved.	
+Copyright (c) 2002 Google, Inc. All rights reserved.	
+Copyright (c) 2002-2003, Jouni Malinen <jkmaline@cc.hut.fi>	
+Copyright 1992 Livingston Enterprises, Inc. Livingston Enterprises, Inc. 6920 Koll Center Parkway Pleasanton, CA 94566
+Copyright 1999 Paul Mackerras, Alan Curry.	
+Copyright 2000 Michal Ostrowski <mostrows@styx.uwaterloo.ca>, Jamal Hadi Salim <hadi@cyberus.ca> Borrows heavily from the PPPoATM plugin by Mitchell Blank Jr., which is based in part on work from Jens Axboe and Paul Mackerras.	
+Copyright 2002 Roaring Penguin Software Inc.	
+
+License type: BSDv2, GPLv2, GPL
+
+Download URL:
+https://ppp.samba.org/download.html
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: @@modday@@
+
+------------------------------------------------------------------------

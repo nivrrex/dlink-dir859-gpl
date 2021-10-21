@@ -1,0 +1,15 @@
+
+GPL_LIST:=Copyright_Notice.txt
+GPL_WARNING:=GPL_WARNING.txt
+
+Q=@
+
+all:
+	@echo -e "\033[32mMake license file for $(shell pwd) ...\033[0m"
+	$(Q)sh $(TOPDIR)/progs.gpl/gen_gpllic.sh $(TOPDIR) $(GPL_LIST) $(GPL_WARNING)
+
+clean:
+	@echo -e "\033[32mClean license file ...\033[0m"
+	$(Q)rm -f $(TOPDIR)/$(GPL_LIST)
+	$(Q)rm -f $(TOPDIR)/$(GPL_WARNING)
+

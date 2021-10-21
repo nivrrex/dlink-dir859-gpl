@@ -1,0 +1,19 @@
+Module name: brctl
+
+Module version: 1.00
+
+Copyright:
+Copyright (C) 2000 Lennert Buytenhek	
+Copyright (C) 1997, 1998, 1999 Free Software Foundation, Inc.
+
+License type: GPLv2, LGPLv2
+
+Download URL:
+http://www.linuxfromscratch.org/blfs/view/svn/basicnet/bridge-utils.html
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: @@modday@@
+
+------------------------------------------------------------------------

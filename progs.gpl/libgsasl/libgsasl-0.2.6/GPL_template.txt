@@ -1,0 +1,60 @@
+Module name: libgsasl
+
+Module version: 0.2.6
+
+Copyright:
+Copyright (C) 2002, 2003, 2004, 2005 Simon Josefsson	
+Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005 Free Software Foundation, Inc. This Makefile.in is free software; the Free Software Foundation gives unlimited permission to copy and/or distribute it, with or without modifications, as long as this notice is preserved.	
+Copyright (C) 2001 Niels Moller	
+Copyright (C) 2002 Niels Moller	
+Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005 Free Software Foundation, Inc.
+Copyright (C) 2004 Free Software Foundation, Inc.
+Copyright (C) 2001, 2003, 2005 Free Software Foundation, Inc.	
+Copyright (C) 1999, 2002 Free Software Foundation, Inc.	
+Copyright (C) 1999, 2002-2003 Free Software Foundation, Inc.
+Copyright (C) 2001, 2002, 2003, 2005 Free Software Foundation, Inc.	
+Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005 Free Software Foundation, Inc.	
+Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
+Copyright (C) 2005 Free Software Foundation, Inc. Clytie Siddall <clytie@riverland.net.au>, 2005.
+Copyright (C) 2004 Free Software Foundation, Inc. This file is distributed under the same license as the libgsasl package. Jakub Bogusz <qboosh@pld-linux.org>, 2004.
+Copyright (C) 2004 Free Software Foundation, Inc. Acest fioier este distribuit sub aceeaoi licenta ca oi pachetul libgsasl. Laurentiu Buzdugan <lbuz@rolix.org>, 2004.	
+Copyright (C) 2001, 2002 Niels Moller
+Copyright (C) 2001, 2002, 2003 Free Software Foundation, Inc. Written by Bruno Haible <haible@clisp.cons.org>, 2001.
+Copyright (C) 1999, 2002-2005 Free Software Foundation, Inc.	
+Copyright (C) 1999, 2000, 2003, 2004, 2005 Free Software Foundation, Inc.	
+Copyright (C) 1999-2000, 2002-2003 Free Software Foundation, Inc.	
+Copyright (C) 1999, 2000, 2001, 2004, 2005 Free Software Foundation, Inc.
+Copyright (C) 1997, 2003 Free Software Foundation, Inc.	
+Copyright (C) 1997, 2000, 2002, 2004 Free Software Foundation, Inc. This file is part of the GNU C Library. Contributed by Jean-Francois Bignolles <bignolle@ecoledoc.ibp.fr>, 1997.	
+Copyright (C) 1997, 2000, 2001, 2003, 2004, 2005 Free Software Foundation, Inc.	
+Copyright (C) 1997, 1999, 2000, 2001, 2003, 2005 Free Software Foundation, Inc.
+Copyright (c) 1996-1999 by Internet Software Consortium.	
+Copyright (C) 1996, 1997, 2000, 2001, 2003, 2005 Free Software Foundation, Inc.
+Copyright (C) 1996, 1997, 1999 Free Software Foundation, Inc. From the GNU C Library, under GNU LGPL version 2.1. Contributed by Ulrich Drepper <drepper@cygnus.com>, 1996. Modified for Libgsasl by Simon Josefsson <simon@josefsson.org>	
+Copyright (C) 1996, 1997, 1999, 2000, 2002, 2003, 2004, 2005 Free Software Foundation, Inc. Originally by Fran,cois Pinard <pinard@iro.umontreal.ca>, 1996.	
+Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004 Free Software Foundation, Inc. Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996	
+Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005 Free Software Foundation, Inc.	
+Copyright (c) 1995 by International Business Machines, Inc.	
+Copyright (C) 1995, 1999, 2001, 2002, 2003, 2004 Free Software Foundation, Inc.	
+Copyright (C) 1995-1998, 2000-2002, 2004 Free Software Foundation, Inc.	
+Copyright (C) 1995-1997, 2000-2004 by Ulrich Drepper <drepper@gnu.ai.mit.edu>	
+Copyright (C) 1994 X Consortium	
+Copyright (C) 1994, 1996, 1997, 1998, 2001, 2003, 2005 Free Software Foundation, Inc.	
+Copyright (C) 1994, 1995, 1996, 1999, 2000, 2001, 2002, 2004, 2005 Free Software Foundation, Inc.	
+Copyright (C) 1992-1996, 1998-2012 Free Software Foundation, Inc.	
+Copyright (C) 1991, 1999 Free Software Foundation, Inc. 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.	
+Copyright (C) 1991, 1996, 1997, 1998, 2002, 2003, 2004 Free Software Foundation, Inc.	
+Copyright c 2003 Free Software Foundation, Inc. This file is distributed under the same license as the PACKAGE package. Michel Robitaille <robitail@IRO.UMontreal.CA>, traducteur depuis/since 1996.	
+Copyright 1996-2003 Free Software Foundation, Inc. Taken from GNU libtool, 2001 Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
+
+License type: LGPLv2.1, IBM, ISC
+
+Download URL:
+https://lists.gnu.org/archive/html/info-gnu/2005-08/msg00003.html
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: @@modday@@
+
+------------------------------------------------------------------------

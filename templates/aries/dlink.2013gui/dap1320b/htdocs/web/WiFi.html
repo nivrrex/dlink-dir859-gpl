@@ -1,0 +1,1109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns= "http://www.w3c.org/1999/xhtml" xml:lang="zh_TW" lang="zh_TW">
+
+<head>
+<title>D-LINK</title>
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<link rel="stylesheet" type="text/css" href="css/style_pages.css" media="all" />
+<link href="css/jquery.selectbox.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" charset="utf-8" src="./js/comm.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/hmac_md5.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/libajax.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/hnap.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/i18n.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/pagetool.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/checkTimeout.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/jquery.selectbox-0.2_new.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/jquery.validate.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/includeLang.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/messageDescription.js"></script>
+
+<script type="text/javascript">
+    var HNAP = new HNAP_XML();
+    var _ReciprocalNumber = 60;  //count down
+    
+    function Load_HTML()
+    { 
+        $("#header").load("header.html");
+    }
+    
+    function Initial()
+    {
+        initialMenu();
+        initialDetectRouterConnection();
+    }
+    
+    function ishex(value)
+    {
+        var re=/^[a-fA-F0-9]+$/;
+
+        if(re.test(value))
+            return 0;
+        else
+            return -1;
+    }
+    
+    /* set select box style */
+    $(function ()
+    {
+        $("#security_hotspot_client").selectbox();
+        $("#pwl_hotspot_client").selectbox();
+        $("#auth_24").selectbox();
+    });
+    
+    //pre-load ssid and pw
+    $(document).ready(function(){
+    security_mode(document.getElementById("pwl_hotspot_client").value);
+    security_mode(document.getElementById("security_hotspot_client").value);});
+    
+    //---------- start of tools for page
+    //get element by id
+    function OBJ(id)
+    {
+        if        (document.getElementById) return document.getElementById(id);
+        else if    (document.all) return document.all[id].style;
+        else if    (document.layers) return document.layers[id];
+        else return false;
+    }
+    //set select value
+    function set_select_value(obj, value)
+    {
+        for (var i=0; i < obj.length; i+=1)
+            if (obj[i].value == value)
+            {
+                obj.selectedIndex = i;
+                break;
+            }
+        return obj.selectedIndex;
+    }
+    //add select option
+    function add_select_option(obj, value, text)
+    {
+        var Option_Exist = false;
+        for(var i=0; i < obj.length; i++)
+        { 
+            if(obj.options[i].value == value)
+            {
+                Option_Exist = true;
+                break;
+            }
+        }
+        if(!Option_Exist)
+        {
+            var new_option = new Option(text, value); 
+            obj.options.add(new_option);                
+        }
+    }
+    //remove options
+    function remove_opt(obj)
+    {
+        if (obj == null) return;
+        if (obj.options == null) return;
+        obj.options.length = 0;
+    }
+    
+    var selected_ssid = null;
+    var def_security = null;
+    var selected_entype = null;
+    var selected_authtype = null;
+    
+    function InjectTable(tblID, uid, data, type)
+    {
+        var rows = OBJ(tblID).getElementsByTagName("tr");
+        var tagTR = null;
+        var tagTD = null;
+        var i;
+        var str;
+        var found = false;
+        selected_ssid = null;
+        def_security = null;
+        
+        /* Search the rule by UID. */
+        for (i=0; !found && i<rows.length; i++) if (rows[i].id == uid) found = true;
+        if (found)
+        {
+            for (i=0; i<data.length; i++)
+            {
+                tagTD = OBJ(uid+"_"+i);
+                switch (type[i])
+                {
+                    case "text":
+                        str = data[i];
+                        if(typeof(tagTD.innerText) !== "undefined")    tagTD.innerText = str;
+                        else if(typeof(tagTD.textContent) !== "undefined")    tagTD.textContent = str;
+                        else    tagTD.innerHTML = str;
+                        break;    
+                    default:
+                        str = data[i];
+                        tagTD.innerHTML = str;
+                        break;
+                }
+            }
+            return;
+        }
+    
+        /* Add a new row for this entry */
+        tagTR = OBJ(tblID).insertRow(rows.length);
+        tagTR.id = uid;
+        
+        tagTR.onclick = function (evt)
+        {
+        	document.getElementById("scan_list_slb").style.display = "block";
+            selected_ssid = data[0]; //ssid
+            
+            if(data[3]=="NONE") def_security = "NONE";
+            else if(data[3].indexOf("WEP") == 0) 
+            {   
+                selected_authtype=get_wep_auth_type(data[3]);
+                def_security = "WEP";
+            }
+            else 
+            {
+                if(data[3].match("WPA2") == "WPA2")
+                    def_security = "WPA2PSK";
+                else
+                    def_security = "WPAPSK";
+            }
+            selected_entype=data[4];
+            ChangeBgcolor(tblID, uid);
+        };
+        
+        /* save the rule in the table */
+        for (i=0; i<data.length-2; i++)
+        {
+            tagTD = tagTR.insertCell(i);
+            tagTD.id = uid+"_"+i;
+            tagTD.className = "content";
+            switch (type[i])
+            {
+                case "text":
+                    str = data[i];
+                    if(typeof(tagTD.innerText) !== "undefined")    tagTD.innerText = str;
+                    else if(typeof(tagTD.textContent) !== "undefined")    tagTD.textContent = str;
+                    else    tagTD.innerHTML = str;
+                    break;
+                default:
+                    str = data[i];
+                    tagTD.innerHTML = str; 
+                    break;
+            }
+        }
+    }
+    
+    function CleanTable(tblID)
+    {
+        table = OBJ(tblID);
+        var rows = table.getElementsByTagName("tr");
+        while (rows.length >= 1) table.deleteRow(rows.length - 1);
+    }
+    function get_wep_key_type(key)
+    {
+        var keylen=key.length;
+        var wep_type="error";
+        if(!ishex(key))
+            key_type="hex";
+        else
+            key_type="ascii";
+
+        switch (keylen)
+        {
+            case 5:
+            {
+                wep_type="64ASCII";
+                break;
+            }
+            case 10:
+            {
+                if(key_type=="hex")
+                    wep_type="64Hex";
+                break;
+            }
+            case 13:
+            {
+                wep_type="128ASCII";
+                break;
+            }
+            case 26:
+            {
+                if(key_type=="hex")
+                    wep_type="128Hex";
+                break;
+            }
+        }
+        return wep_type;
+    }
+    
+    function get_wep_auth_type(wep_auth)
+    {
+        var auth_type=null;
+        
+        if(wep_auth.match("OPEN") == "OPEN")
+            auth_type="OPEN";
+        else if(wep_auth.match("SHARED")== "SHARED")
+            auth_type="SHARED";
+        else
+            auth_type="WEPAUTO";
+        return auth_type;
+    }
+    
+    function Secutype_trans(auth_type)
+    {
+        var new_type="NONE";
+        if(auth_type.match("WPA")=="WPA") { new_type="WPAPSK"; }
+        else if(auth_type.match("WEP")=="WEP") { new_type="WEP"; }
+        return new_type;
+    }
+    //---------- end of tools for page
+        
+    function GetXML()
+    {
+        var xml_GetAPClient = HNAP.GetXML("GetAPClientSettings", new Array("RadioID", "RADIO_2.4GHz"));
+        var getAPCSSID_24 = xml_GetAPClient.Get("GetAPClientSettingsResponse/SSID");
+        var getAPC_PW = xml_GetAPClient.Get("GetAPClientSettingsResponse/Key");
+        var getAPC_Security=Secutype_trans(xml_GetAPClient.Get("GetAPClientSettingsResponse/SupportedSecurity/SecurityInfo/SecurityType"));
+
+        var getAPC_MAC = xml_GetAPClient.Get("GetAPClientSettingsResponse/MacAddress");
+        
+        if(getAPC_Security=="WPAPSK")
+        {
+        }
+        else if(getAPC_Security=="WEP")
+        {
+            var wep_type=get_wep_key_type(getAPC_PW);
+            var auth_type=get_wep_auth_type(getAPC_Security);
+            if(wep_type != "error")
+            {
+                $("#pwl_hotspot_client").selectbox("detach");
+                $("#auth_24").selectbox("detach");
+                set_select_value(document.getElementById("pwl_hotspot_client"), wep_type);
+                set_select_value(document.getElementById("auth_24"), auth_type);
+                $("#pwl_hotspot_client").selectbox();
+                $("#auth_24").selectbox();
+            }
+        }
+
+        document.getElementById("ssid_hotspot_client").value = getAPCSSID_24;
+        document.getElementById("passwd_hotspot_client").value = getAPC_PW;
+        $("#security_hotspot_client").selectbox("detach");
+        document.getElementById("security_hotspot_client").value = getAPC_Security;
+        $("#security_hotspot_client").selectbox();
+        security_mode(getAPC_Security);
+    }
+        
+    function SetXML()
+    {
+        var xml_SetAPClientSettings = HNAP.GetXML("SetAPClientSettings");
+        xml_SetAPClientSettings.Set("SetAPClientSettings/RadioID","RADIO_2.4GHz");
+        xml_SetAPClientSettings.Set("SetAPClientSettings/Enabled", "true");
+        xml_SetAPClientSettings.Set("SetAPClientSettings/SSID", OBJ("ssid_hotspot_client").value);
+                
+        var security_type = OBJ("security_hotspot_client").value;
+        xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/SecurityType", security_type);
+                
+        var WEP_len = document.getElementById("pwl_hotspot_client").value ;
+        if(security_type=="WEP")
+        {
+            xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/Encryptions/string",document.getElementById("auth_24").value);
+            xml_SetAPClientSettings.Set("SetAPClientSettings/Key", OBJ("passwd_hotspot_client").value);
+        }
+        if(security_type=="WPAPSK")
+        {
+            xml_SetAPClientSettings.Set("SetAPClientSettings/Key", OBJ("passwd_hotspot_client").value);
+            if((def_security==null) || (OBJ("ssid_hotspot_client").value!=selected_ssid))
+                xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/SecurityType", "WPAPSK");
+            else
+                xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/SecurityType", def_security);
+            if(selected_entype==null)
+                xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/Encryptions/string", "AES");
+            else
+                xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/Encryptions/string", selected_entype);
+        }
+        var xml_SetAPClientSettingsResult = HNAP.SetXMLAsync("SetAPClientSettings", xml_SetAPClientSettings);
+        document.getElementById("CreatePopAlertMessage2").style.display = "inline";
+    //    setTimeout('window.location.replace("./WiFi.html")', 5000);
+        
+    //    document.getElementById("CreatePopAlertMessage").style.display = "inline";
+        document.getElementById("waitSettingFinish").style.display = "inline";
+        Start_reciprocal_Number_RestoreConfiguration();
+    }
+    
+    function ChangeBgcolor(tblID, uid)
+    {
+        var elts = OBJ(tblID).getElementsByTagName("tr");
+        for(var i=0;i<elts.length;i++)
+        {
+            var hotspot_id = elts[i].getAttribute("id");
+            if(hotspot_id==uid)
+              OBJ(uid).style.backgroundColor = "#CCC";
+            else
+                OBJ(hotspot_id).style.backgroundColor = "#FFF";
+        }
+    }
+    
+    
+    function security_mode(mode)
+    {
+        switch (mode)
+        {
+            case "NONE":
+                OBJ("pwl_tr").style.display = "none";
+                OBJ("passwd_tr").style.display = "none";
+                OBJ("auth_tr").style.display = "none";
+                break;
+            case "WEP":
+                OBJ("pwl_tr").style.display = "table-row";
+                OBJ("passwd_tr").style.display = "table-row";
+                OBJ("auth_tr").style.display = "table-row";
+                break;
+            case "WPAPSK":
+                OBJ("pwl_tr").style.display = "none";
+                OBJ("passwd_tr").style.display = "table-row";
+                OBJ("auth_tr").style.display = "none";
+                break;
+            case "WPA2PSK":
+            case "WPA+2PSK":
+                OBJ("pwl_tr").style.display = "none";
+                OBJ("passwd_tr").style.display = "table-row";
+                OBJ("auth_tr").style.display = "none";
+                break;
+        }
+    }
+    
+    function OnClickSelect()
+    {   
+        if(def_security=="WPA2PSK")
+            set_select_value(OBJ("security_hotspot_client"), "WPAPSK");
+
+       // $("#security_hotspot_client").selectbox();
+        OBJ("CreatePopAlertMessage").style.display = "none";
+        OBJ("scan_waiting").style.display = "none";
+        OBJ("scan_list").style.display = "none";
+        if(def_security!="NONE")
+        {
+            var divHTML="A password is required to join ";
+            divHTML+='"'+selected_ssid+'"'+"<br>";
+            divHTML+="Password:";
+            
+            document.getElementById("div_WifiPassInput_msg").innerHTML=divHTML;
+            document.getElementById("CreatePopAlertMessage").style.display = "block";
+            document.getElementById("tb_WIFIPASSINPUT").style.display = "block";
+            document.getElementById("wifi_pass_input").value="";
+        }
+        else if(def_security != null)
+        {
+            $("#security_hotspot_client").selectbox("detach");
+            set_select_value(OBJ("security_hotspot_client"), def_security);
+            OBJ("ssid_hotspot_client").value = selected_ssid;
+            security_mode(def_security);
+            $("#security_hotspot_client").selectbox();
+            save_button_changed();
+        }
+    }
+    
+    function OnClickScan()
+    {
+        $("#security_hotspot_client").selectbox("detach");
+        OBJ("CreatePopAlertMessage").style.display = "block";
+        OBJ("scan_waiting").style.display = "block";
+    //    OBJ("ssid_hotspot_client").value = null;
+    //    set_select_value(OBJ("security_hotspot_client"), "NONE");
+    //    security_mode("NONE");
+        $("#security_hotspot_client").selectbox();
+        TriggerSiteSurvey();
+        var wait = TriggerSiteSurvey();
+        setTimeout("ShowSiteSurveyLists()", wait * 1000);
+    }
+    
+    function close_hotspot_list()
+    {
+        OBJ("CreatePopAlertMessage").style.display = "none";
+        OBJ("scan_waiting").style.display = "none";
+        OBJ("scan_list").style.display = "none";
+    }
+    
+    function close_wifi_pass_input()
+    {
+        $("#security_hotspot_client").selectbox();
+        OBJ("CreatePopAlertMessage").style.display = "none";
+        OBJ("tb_WIFIPASSINPUT").style.display = "none";
+    }
+    
+    function reload_hotspot_list()
+    {
+        OBJ("CreatePopAlertMessage").style.display = "block";
+        OBJ("scan_list").style.display = "none";
+        OBJ("scan_waiting").style.display = "block";
+      //  OBJ("ssid_hotspot_client").value = null;
+		TriggerSiteSurvey();
+        var wait = TriggerSiteSurvey();
+        setTimeout("ShowSiteSurveyLists()", wait * 1000);
+
+    }
+    
+    var HNAP = new HNAP_XML();
+        
+    function Array2DVar(x, y)
+    {
+        this.length = x;
+        this.x = x;
+        this.y = y;
+        for(var i = 0; i < this.length; i++)
+        {
+            this[i] = new Array(y);
+        }
+    }
+    
+    function EventSiteSurveyList()
+    {
+        var xml_GetSiteSurveyList = HNAP.GetXML("GetSiteSurvey", new Array("RadioID", "RADIO_2.4GHz"));
+        var res = xml_GetSiteSurveyList.Get("GetSiteSurveyResponse/GetSiteSurveyResult");
+        return res;
+    }
+    
+    var total_lists_24g = 0;
+    var total_lists_5g = 0;
+    var total_sslists = 0;
+    var list_arr = new Array();
+    var h=0;
+    
+    function TriggerSiteSurvey(){
+    var xml_SetTrig = HNAP.GetXML("SetTriggerWirelessSiteSurvey");
+        xml_SetTrig.Set("SetTriggerWirelessSiteSurvey/RadioID","RADIO_2.4GHz");
+    var xml_SetTriggerWirelessSiteSurveyResult = HNAP.SetXML("SetTriggerWirelessSiteSurvey", xml_SetTrig);
+    var wait_time = xml_SetTriggerWirelessSiteSurveyResult.Get("SetTriggerWirelessSiteSurveyResponse/WaitTime");
+        return wait_time;
+    }
+    
+    function ShowSiteSurveyLists()
+    {
+        CleanTable("content_tb");
+        
+        var sitesurvey_result = EventSiteSurveyList();
+        
+        if(sitesurvey_result=="OK")
+        {
+        //    setTimeout('AddSiteSurveyLists("5GHZ")', 2000);
+            setTimeout('AddSiteSurveyLists("2.4GHZ")', 2000);
+            setTimeout('DrawSiteSurveyList()', 3000);
+        }
+        else
+        //    setTimeout('EventSiteSurveyList()', 2000);
+            setTimeout("TriggerSiteSurvey()",3000);
+    }
+    
+    function AddSiteSurveyLists(radioid)
+    {
+        var xml_GetSiteSurveyList = HNAP.GetXML("GetSiteSurvey", new Array("RadioID", "RADIO_2.4GHz"));
+        var total_lists = xml_GetSiteSurveyList.Get("GetSiteSurveyResponse/APStatInfoLists/APStatInfo#");
+
+        for (var i=1; i<=total_lists; i++)
+        {
+            var hotspot_ssid=xml_GetSiteSurveyList.Get("GetSiteSurveyResponse/APStatInfoLists/APStatInfo:"+i+"/SSID");
+            var hotspot_rssi = xml_GetSiteSurveyList.Get("GetSiteSurveyResponse/APStatInfoLists/APStatInfo:"+i+"/SignalStrength")
+            var hotspot_security = xml_GetSiteSurveyList.Get("GetSiteSurveyResponse/APStatInfoLists/APStatInfo:"+i+"/SupportedSecurity/SecurityInfo/SecurityType");
+            var hotspot_entype = xml_GetSiteSurveyList.Get("GetSiteSurveyResponse/APStatInfoLists/APStatInfo:"+i+"/SupportedSecurity/SecurityInfo/Encryptions/string:1");
+            var hotspot_entype_2 = xml_GetSiteSurveyList.Get("GetSiteSurveyResponse/APStatInfoLists/APStatInfo:"+i+"/SupportedSecurity/SecurityInfo/Encryptions/string:2");
+            
+            if(hotspot_entype=="AES" || hotspot_entype_2=="AES")
+                hotspot_entype="AES";
+                
+            if(hotspot_security.match("-RADIUS")=="-RADIUS")
+            {   
+                continue;
+            }
+              
+            var security = null;
+            var rssi = null;
+            
+            if(hotspot_security!="NONE")
+                security = '<img src="image/wisp_security.png" width="12" height="21"/>';
+            else
+                security = null;
+            
+            if(parseInt(hotspot_rssi)<=35)
+                rssi = '<img src="image/wisp_strength_low.png" width="25" height="20"/>';
+            else if(parseInt(hotspot_rssi)<=70 && parseInt(hotspot_rssi)>35)
+                rssi = '<img src="image/wisp_strength_medium.png" width="25" height="20"/>';
+            else if(parseInt(hotspot_rssi)<=100 && parseInt(hotspot_rssi)>70)
+                rssi = '<img src="image/wisp_strength_high.png" width="25" height="20"/>';
+            
+            list_arr[h] = {
+                    ssid: hotspot_ssid,
+                    rssi_img: rssi,
+                    sec_img: security,
+                    sec_type:  hotspot_security,
+                    en_type: hotspot_entype,
+                    rssi_value: parseInt(hotspot_rssi)
+            };
+            h++;
+        }
+    }
+    
+	function SortSiteSurveyList()
+	{
+		function compare(a,b)
+		{
+			if (a.rssi_value < b.rssi_value)
+				return 1;
+			if (a.rssi_value > b.rssi_value)
+				return -1;
+			return 0;
+		}
+		list_arr.sort(compare);
+	}
+
+    function DrawSiteSurveyList()
+    {
+        var random_num = Math.floor((Math.random()*10)+1);
+		
+        //+++ Yao, Add SortSiteSurveyList.
+        SortSiteSurveyList();
+
+        for (var i=0; i<list_arr.length; i++)
+        {
+            var ssid = list_arr[i].ssid;
+            var rssi_img = list_arr[i].rssi_img;
+            var sec_img = list_arr[i].sec_img;
+            var security = list_arr[i].sec_type;
+            var en_type = list_arr[i].en_type
+            var data = [ssid, rssi_img, sec_img, security, en_type];
+            var type = ["text", "img", "img", "text", "text"];
+            InjectTable("content_tb", "hotspot"+random_num+"-"+i, data, type);
+        }
+        OBJ("CreatePopAlertMessage").style.display = "block";
+        OBJ("scan_waiting").style.display = "none";
+        OBJ("scan_list").style.display = "block";
+        h=0;
+    }
+    
+    
+    
+    function IsDigit(no)
+    {
+        if (no==""||no==null)
+            return false;
+        if (no.toString()!=parseInt(no, 10).toString())
+            return false;
+
+        return true;
+    }
+    
+    function check_ip_validity(ipstr)
+    {
+        var vals = ipstr.split(".");
+        if (vals.length!=4) 
+            return false;
+        
+        for (var i=0; i<4; i++)
+        {
+            if (!IsDigit(vals[i]) || vals[i]>255)
+                return false;
+        }
+        return true;
+    }
+    
+    function Start_reciprocal_Number_RestoreConfiguration()
+    {
+        if (_ReciprocalNumber >= 0)
+        {
+            document.getElementById("reciprocal_Number").innerHTML = _ReciprocalNumber + " " + I18N("j", "Sec");
+            _ReciprocalNumber --;
+            setTimeout("Start_reciprocal_Number_RestoreConfiguration()", 1000);
+        }
+        else
+        {
+            document.getElementById("waitSettingFinish").style.display = "none";
+            document.getElementById("SuccessSettings").style.display = "inline";
+            //setTimeout('window.location.replace("./WiFi.html")', 2000);
+        }
+    }
+    
+    function returnToHome()
+    {
+        window.location.reload();
+    }
+    
+    function WifiPassCheck()
+    {
+        var key=document.getElementById("wifi_pass_input").value;
+        
+        if(def_security=="WEP")
+        {
+            //alert(" 1.ssid: "+OBJ("ssid_hotspot_client").value+" 2.type: "+def_security+" 3.key: "+key+" 4.wep: "+selected_authtype);
+          
+            var wep_type = get_wep_key_type(key);
+           
+            if(wep_type=="error")
+            {
+                alert("The Wi-Fi Password field entered is invalid.");  //error
+                return;
+            }
+            else
+            {
+                $("#pwl_hotspot_client").selectbox("detach");
+                $("#auth_24").selectbox("detach");
+                set_select_value(document.getElementById("pwl_hotspot_client"), wep_type);
+                set_select_value(document.getElementById("auth_24"), selected_authtype);
+                $("#pwl_hotspot_client").selectbox();
+                $("#auth_24").selectbox();
+            }
+        }else if(key.length > 63 || key.length < 8){  //wpa
+            alert("The Wi-Fi Password must be 8~63 ASCII characters.");
+            return;
+        }
+        document.getElementById("passwd_hotspot_client").value = key;
+        document.getElementById("CreatePopAlertMessage").style.display = "none";
+        document.getElementById("tb_WIFIPASSINPUT").style.display = "none";
+        OBJ("ssid_hotspot_client").value = selected_ssid;
+        $("#security_hotspot_client").selectbox("detach");
+        set_select_value(OBJ("security_hotspot_client"), def_security);
+        $("#security_hotspot_client").selectbox();
+        security_mode(def_security);
+    }
+    
+    function CheckConnectionStatus()
+    {
+        $.ajax({
+            cache : false,
+            url : "./js/CheckConnection",
+            timeout : 2000,
+            type : "GET",
+            success : function(data) { SetXML(); }, 
+            error : function() { document.getElementById("DetectRouterConnection").style.display = "inline"; }
+        });
+    }
+
+        
+</script>
+<script language="JavaScript">
+        // 2013/08/15 Timmy Add
+        $(function() {
+            $("input, textarea, select").change(function () {
+                changeFlag = true;
+                save_button_changed();
+            });
+        });
+        
+        function save_button_changed()
+        {
+            document.getElementById("Save_Disable_btn").style.display = "none";
+            document.getElementById("Save_btn").style.display = "block";
+        }
+</script>
+
+
+
+<style>
+
+.button_radius
+{
+    border-radius: 5px;
+    border: solid 1px #4394A7;
+    COLOR: #FFFFFF;
+    background-color:#4394A7;
+    width:80px;
+    height:30px;
+    text-align:center; 
+}
+.button_radius2
+{
+    border-radius: 5px;
+    background-color:#007086;
+    border: solid 1px #FFF;
+    color: #FFFFFF;
+    width:80px;
+    height:30px;
+    text-align:center; 
+}
+.scanPopBox
+{
+    position: relative;
+    top: 100px;
+    width: 331px;
+    height: auto;
+    margin: 0 auto;
+}
+.wait_scan_box
+{
+    position: relative;
+    text-align: center;
+    top: 100px;
+    left: 80px;
+  width: 222px;
+  height: 206px;
+  background: url("../image/wisp_loading.png") left top repeat-y;
+}
+.scan_lists_box
+{
+    border-radius: 10px;
+    position: relative;
+    top: 100px;
+    background-color:#007086;
+    border: solid 1px #FFF;
+    color: #FFF;
+    padding: 10px;
+    width: 331px;
+    height: auto;
+    text-align: left;
+}
+.wifi_pass_box
+{
+    border-radius: 10px;
+    position: relative;
+    top: 100px;
+    background-color:#007086;
+    border: solid 1px #FFF;
+    color: #FFFFFF;
+    padding: 10px;
+    width: 480px;
+    height: auto;
+    text-align: left;
+    margin: 0 auto;
+}
+.content_div
+{
+    color: #333333;
+  background-color: #FFF;
+    width: 100%;
+  height: 250px;
+  overflow: auto;
+}
+div.emptyline
+{
+    height: 12px;
+}
+label.error
+{
+    background: url("./image/disconnected.png") no-repeat 0px 0px;
+    background-size: 16px 16px;
+    padding-left: 20px;
+    color: #FF0000;
+    margin: 0 0 0 5px;
+}
+
+</style>
+
+</head>
+
+<body>
+    <form name="wifi_form" id="wifi_form" method="POST" action="">
+    <div id="wrapper">
+        <!-------------------- Logo ------------------------->
+        <div id="header"></div>
+        <!-------------------- Menu ------------------------->
+        <div id="menu"></div>
+        <!-------------------- Content ---------------------->
+        <div id="content">
+        <!-------------------- info ---------------------->
+        <div id="info">             
+            <div id="FunctionName"><script>I18N("h", "Wi-Fi");</script></div>
+            <div id="wallimage"><img src="image/internet_page.png" alt="" width="195" height="119"/></div>
+            <div id="directions">
+                <script>I18N("h", "Use this section to configure the Wi-Fi Network you would like your DAP-1320b to connect to. Use Site Survey to scan available Wi-Fi networks and select the Wi-Fi Network you would like your DAP-1320b to connect to. Enter the Password of the Wi-Fi Network you selected and click Save.");</script>
+            </div>
+        </div> 
+        <!-------------------- funcBar ---------------------->   
+        <div id="funcBar">
+            <div id="pagePath">&nbsp;<script>I18N("h", "Settings");</script> >> <script>I18N("h", "Wi-Fi");</script></div>
+            <ul id="rightFunc">
+                <li style="display:block"><div id="Save_btn" onclick="document.getElementById('sumbit_CheckData').click()" style="cursor:pointer; display:none"><script>I18N("h", "Save");</script></div></li>
+                <li style="display:block"><div id="Save_Disable_btn"><script>I18N("h", "Save");</script></div></li>
+                <input id="sumbit_CheckData" class="submit" type="submit" value="Submit" style="display:none" />
+                <!--<li style="display:block"><a href="javascript:CheckHTMLStatus('Internet_IPv6');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "IPv6");</script></div></a></li> -->
+            </ul>
+        </div>        
+            <!-------------------- main ---------------------->   
+        <br />
+        <div id="main">
+            <table class="block" border="0" >
+                <tbody>
+                <tr>
+                    <th><script>I18N("h", "Wireless Mode");</script>:</th>
+                    <td><script>I18N("h", "Repeater");</script></td>
+                </tr>
+                <tr>
+                    <th><script>I18N("h", "Wi-Fi Network Name (SSID)");</script>:</th>
+                    <td width="230px">
+                        <input type="text" class="styled-text required" size="30" id="ssid_hotspot_client" name="ssid_hotspot_client" onClick="this.select();"/>
+                    </td>
+                    <td>
+                        <button type="button" class="button_radius" onClick="OnClickScan()" style="cursor:pointer"/><script>I18N("h", "SCAN");</script>
+                    </td>
+                </tr>
+                <tr>
+                    <th><script>I18N("h", "Security Mode");</script>:</th>
+                    <td>
+                        <div class="styled-select">
+                            <select name="security_hotspot_client" id="security_hotspot_client" onChange="security_mode(this.value)">
+                                <option value="NONE">None</option>
+                                <option value="WEP">WEP</option>
+                                <option value="WPAPSK">WPA-Personal</option>
+                            </select>
+                        </div>  
+                    </td>
+                </tr>
+                <tr id="pwl_tr" style="display:none;">
+                    <th><script>I18N("h", "Password Length");</script>:</th>
+                    <td>
+                        <div class="styled-select">
+                            <select id="pwl_hotspot_client">
+                                <option value="64Hex">64 bit(10 hex digits)</option>
+                                <option value="64ASCII">64 bit(5 ascii characters)</option>
+                                <option value="128Hex">128 bit(26 hex digits)</option>
+                                <option value="128ASCII">128 bit(13 ascii characters)</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr id="passwd_tr" style="display:none;">
+                    <th><script>I18N("h", "Password");</script>:</th>
+                    <td><input id="passwd_hotspot_client" name="passwd_hotspot_client" class="styled-text" type="text" size="27"></td>
+                    <td></td>
+                </tr>
+                <tr id="auth_tr" style="display:none;">
+                    <th><script>I18N("h", "Authentication");</script>:</th>
+                    <td>
+                        <div class="styled-select">
+                            <select id="auth_24">
+                                <option value="WEPAUTO">Both (Open/Shared Key)</option>
+                                <!--option value="OPEN">Open</option-->
+                                <option value="SHARED">Shared Key</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>          
+                </tbody>
+            </table>
+            <!--- start of scan wifi list block --->
+            <div id="CreatePopAlertMessage" style="display:none">
+                <div class="scanPopBox">
+                    <div id="scan_waiting" class="wait_scan_box" style="display:none">
+                        <br/>
+                        <br/>
+                        <br/>
+                        <center><img src="image/loading.gif" border="0"></center>
+                        <div><span><script>I18N("h", "Scanning");</script>...</span></div>
+                        <br/>
+                    </div>
+                    <div id="scan_list" class="scan_lists_box" style="display:none">
+                        <div id="scan_list_title">
+                            <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                                <tbody>
+                                    <tr>
+                                        <td><b><script>I18N("h", "Wi-Fi networks");</script></b></td>
+                                        <td style="text-align: right;">
+                                            <a href="javascript:reload_hotspot_list()"><img src="image/wisp_reload.gif" border="0"></a>
+                                            <a href="javascript:close_hotspot_list()"><img src="image/wisp_close.gif" width="24" height="25" border="0"></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="emptyline"></div>
+                        <div id="scan_list_content">
+                            <div class="content_div">
+                                <table id="content_tb" width="100%" cellspacing="0" cellpadding="6" border="0" style="cursor:pointer">
+                                </table>
+                            </div>
+                        </div>
+                        <div class="emptyline"></div>
+                        <div id="scan_list_slb" style="display:none;">
+                            <center><input type="button" class="button_radius2" value="Select" onClick="OnClickSelect()" style="cursor:pointer"/></center>
+                        </div>
+                        <div class="emptyline"></div>
+                    </div>
+                </div>
+                <div id="tb_WIFIPASSINPUT" class="wifi_pass_box" style="display:none">
+                    <table border="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td style="text-align: right;">
+                                    <a href="javascript:close_wifi_pass_input()"><img src="image/wisp_close.gif" width="24" height="25" border="0"></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td >
+                                    <div id=div_WifiPassInput_msg align="left"></div>
+                                </td>
+                                </tr>
+                            <tr>
+                                <td valign="center">
+                                    <input type="text" class="styled-text" size="64" id="wifi_pass_input" name="wifi_pass_input" onClick="this.select();">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <center><input type="button" class="button_radius2" value="Connect" onClick="WifiPassCheck()" style="cursor:pointer"/></center>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    <!--- start of scan wait saving block --->
+            <div id="CreatePopAlertMessage2" style="display:none">
+                <div id="AlertPopRect">
+                    <div id="AlertPopBody">
+                        <table class="myAlertPop_table_b" id="waitSettingFinish" border="0" cellspacing="0" style="display:none">
+                            <tbody>
+                                <tr>
+                                    <td><center><div id="Loading_pop_image2"></div></center></td>
+                                </tr>
+                                <tr>
+                                    <td><label id="reciprocal_Number"></label></td>
+                                </tr>
+                                <tr>
+                                    <td id="dialog_msg_black2"><script>I18N("h", "Your changes are being saved.");</script></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="myAlertPop_table_b" id="SuccessSettings" border="0" cellspacing="0"  style="display:none">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <center><div id="Information_pop_image"></div></center>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div id="dialog_msg_black"><script>I18N("h", "The new settings have been saved.");</script></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <center><div id="Confirm_btn" onclick="returnToHome()" style="cursor:pointer"><script>I18N("h", "OK");</script></div></center>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Detect Router Connection, Timmy Add 2013/08/15 -->
+            <div id="DetectRouterConnection" style="display:none"></div>
+        </div>
+        <div id="footer">Copyright &copy; 2013 D-Link Corporation/D-Link Systems, Inc.</div>
+    </div>
+</form>
+        
+<script type="text/javascript" charset="utf-8">
+    $(document).ready( function() {
+        $.validator.setDefaults( { submitHandler: function(form) { form.submit(); } } );
+            
+        //check SSID
+        $.validator.addMethod("checkSSID", function( value, element ) {
+            var GetSSID = document.getElementById("ssid_hotspot_client").value;
+            var returnVal = true;
+            if (GetSSID == "")
+            {
+                returnVal = false;
+            }
+            
+            return returnVal;
+        }, jQuery.validator.messages.ssid);
+            
+            $.validator.addMethod("checkWEPPassword", function( value, element ) {
+                var returnVal = true;
+                    var GetSecurityType = document.getElementById("security_hotspot_client").value;
+                    if (GetSecurityType != "WEP")
+                    {
+                        returnVal = true;
+                    }
+                    else
+                    {
+                        var GetPasswdType = document.getElementById("pwl_hotspot_client").value;
+                        if (GetPasswdType=="64Hex" && value.length != 10)
+                        {
+                            returnVal = false;
+                        }
+                        else if (GetPasswdType=="64ASCII" && value.length != 5)
+                        {
+                            returnVal = false;
+                        }    
+                        
+                    }
+                
+                return returnVal;
+            }, jQuery.validator.messages.password_WEPCheck); //create other js message ?
+            
+            
+            $.validator.addMethod("checkWEPPassword128", function( value, element ) {
+                var returnVal = true;
+                    var GetSecurityType = document.getElementById("security_hotspot_client").value;
+                    if (GetSecurityType != "WEP")
+                    {
+                        returnVal = true;
+                    }
+                    else
+                    {
+                        var GetPasswdType = document.getElementById("pwl_hotspot_client").value;
+                                                
+                        if (GetPasswdType=="128Hex" && value.length != 26)
+                        {
+                            returnVal = false;
+                        }
+                        else if (GetPasswdType=="128ASCII" && value.length != 13)
+                        {
+                            returnVal = false;
+                        }
+                    }
+                
+                return returnVal;
+            }, jQuery.validator.messages.password_WEPCheck128); //create other js message ?
+        
+        // Check Is WPA For RADIO_2.4GHz
+        $.validator.addMethod("checkWPAPassword", function( value, element ) {
+            var returnVal = true;
+            var GetSecurityType = document.getElementById("security_hotspot_client").value;
+            if (GetSecurityType != "WPAPSK")
+            {
+                returnVal = true;
+            }
+            else
+            {
+                if (value.length > 63 || value.length < 8)
+                {
+                    returnVal = false;
+                }
+            }
+            return returnVal;
+        }, jQuery.validator.messages.password_WPACheck);
+        
+            
+        $('#wifi_form').validate({
+            rules: {
+                ssid_hotspot_client: "required" ,
+                passwd_hotspot_client: {
+                    required: true,
+                    checkWEPPassword: true,
+                    checkWEPPassword128: true,
+                    checkWPAPassword: true
+                }
+            },
+            messages: {
+                    ssid_hotspot_client: jQuery.validator.messages.ssid,
+                    passwd_hotspot_client: {
+                    required: jQuery.validator.messages.check_Password
+                }
+                },
+            submitHandler: function(form) {
+                CheckConnectionStatus();
+                }
+            
+        });
+    });
+</script>
+</body>
+<script type="text/javascript">
+    Load_HTML();
+    Initial();
+    GetXML();
+    checkTimeout();
+</script>
+</html>

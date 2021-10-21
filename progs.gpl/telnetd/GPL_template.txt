@@ -1,0 +1,18 @@
+Module name: telnetd
+
+Module version: 1.1.1.1
+
+Copyright:
+(C) Copyright 2000, Axis Communications AB, LUND, SWEDEN
+
+License type: GPL
+
+Download URL:
+https://github.com/mozilla-b2g/busybox/blob/master/networking/telnetd.c
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: @@modday@@
+
+------------------------------------------------------------------------

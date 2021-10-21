@@ -1,0 +1,19 @@
+Module name: wireless_tools
+
+Module version: v29
+
+Copyright:
+Copyright (c) 1997-2007 Jean Tourrilhes <jt@hpl.hp.com>	
+Copyright (C) 1989, 1991 Free Software Foundation, Inc.
+
+License type: BSD, LGPL, GPL
+
+Download URL:
+http://www.labs.hpe.com/personal/Jean_Tourrilhes/Linux/wireless_tools.29.tar.gz
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: @@modday@@
+
+------------------------------------------------------------------------

@@ -1,0 +1,611 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml" xml:lang="zh_TW" lang="zh_TW">
+
+<head>
+<title>D-LINK</title>
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<link rel="stylesheet" type="text/css" href="css/style_pages.css" media="all" />
+<script type="text/javascript" charset="utf-8" src="./js/comm.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/hmac_md5.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/libajax.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/hnap.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/i18n.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/pagetool.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/checkTimeout.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/includeLang.js"></script>
+
+<script type="text/javascript">
+	
+	var HNAP = new HNAP_XML();
+	var _ReciprocalNumber = 75;
+	var _ReciprocalFactoryDefaultNumber = 75;
+	var _ReciprocalRebootNumber = 75;
+	
+	function Load_HTML()
+	{ 
+		$("#header").load("header.html");
+	}
+	
+	function Initial()
+	{
+		initialMenu();
+		initialDetectRouterConnection();
+	}
+	
+	function RCF_Check_btn()
+	{
+		document.getElementById("CreatePopAlertMessage").style.display = "inline";
+		document.getElementById("RCFCheck").style.display = "inline";
+	}
+	
+	function Device_RFC()
+	{
+		document.forms["ulcfgbin"].submit();
+	}
+	
+	function Start_reciprocal_Number_RestoreConfiguration()
+	{
+		if (_ReciprocalNumber >= 0)
+		{
+			document.getElementById("reciprocal_Number").innerHTML = _ReciprocalNumber + " " + I18N("j", "Sec");
+			_ReciprocalNumber --;
+			setTimeout("Start_reciprocal_Number_RestoreConfiguration()", 1000);
+		}
+		else
+		{
+			document.getElementById("RCF").style.display = "none";
+			document.getElementById("SuccessRCF").style.display = "inline";
+		}
+	}
+
+	function Device_Reboot_btn()
+	{
+		document.getElementById("CreatePopAlertMessage").style.display = "inline";
+		document.getElementById("REBOOTCheck").style.display = "inline";
+	}
+	
+	function Device_Reboot()
+	{
+		var xml_DeviceReboot = HNAP.GetXML("Reboot");
+		
+		var xml_DeviceRebootResult = HNAP.SetXML("Reboot", xml_DeviceReboot);
+		
+		document.getElementById("REBOOTCheck").style.display = "none";
+		document.getElementById("REBOOT").style.display = "inline";
+		Time_GetReciprocalTime = window.clearInterval(Time_GetReciprocalTime);
+		Start_reciprocal_Number_Reboot();
+	}
+	
+	function Start_reciprocal_Number_Reboot()
+	{
+		if (_ReciprocalRebootNumber >= 0)
+		{
+			document.getElementById("reciprocal_Number_Reboot").innerHTML = _ReciprocalRebootNumber + " " + I18N("j", "Sec");
+			_ReciprocalRebootNumber --;
+			setTimeout("Start_reciprocal_Number_Reboot()", 1000);
+		}
+		else
+		{
+			document.getElementById("REBOOT").style.display = "none";
+			document.getElementById("SuccessREBOOT").style.display = "inline";
+		}
+	}
+	
+	function SetFactory_Default()
+	{
+		document.getElementById("CreatePopAlertMessage").style.display = "inline";
+		document.getElementById("FACTORYDEFAULTCheck").style.display = "inline";
+	}
+	
+	function Device_FDReboot()
+	{
+		var xml_SetFactoryDefault = HNAP.GetXML("SetFactoryDefault");
+		
+		var xml_SetFactoryDefaultResult = HNAP.SetXML("SetFactoryDefault", xml_SetFactoryDefault);
+		
+		document.getElementById("FACTORYDEFAULTCheck").style.display = "none";
+		document.getElementById("FACTORYDEFAULT").style.display = "inline";
+		Time_GetReciprocalTime = window.clearInterval(Time_GetReciprocalTime);
+		Start_reciprocal_Number_FactoryDefault();
+	}
+	
+	function Start_reciprocal_Number_FactoryDefault()
+	{
+		if (_ReciprocalFactoryDefaultNumber >= 0)
+		{
+			document.getElementById("reciprocal_Number_FactoryDefault").innerHTML = _ReciprocalFactoryDefaultNumber + " " + I18N("j", "Sec");
+			_ReciprocalFactoryDefaultNumber --;
+			setTimeout("Start_reciprocal_Number_FactoryDefault()", 1000);
+		}
+		else
+		{
+			document.getElementById("FACTORYDEFAULT").style.display = "none";
+			document.getElementById("SuccessFACTORYDEFAULT").style.display = "inline";
+		}
+	}
+	
+	function Body_Onload()
+	{
+		if (COMM_GetURLParameter("RESULT") != "")
+		{
+			switch(COMM_GetURLParameter("RESULT"))
+			{
+				case "FAIL":
+					document.getElementById("CreatePopAlertMessage").style.display = "inline";
+					document.getElementById("FailedRCF").style.display = "inline";
+					break;
+				case "SUCCESS":
+					var xml_DeviceReboot = HNAP.GetXML("Reboot");
+					var xml_DeviceRebootResult = HNAP.SetXML("Reboot", xml_DeviceReboot);
+					
+					document.getElementById("CreatePopAlertMessage").style.display = "inline";
+					document.getElementById("RCF").style.display = "inline";
+					Start_reciprocal_Number_RestoreConfiguration();
+					break;
+				default:
+					break;
+			}
+		}
+	}
+	
+	function returnToMain()
+	{
+		document.getElementById("CreatePopAlertMessage").style.display = "none";
+		document.getElementById("RCFCheck").style.display = "none";
+		document.getElementById("FailedRCF").style.display = "none";
+		document.getElementById("SuccessRCF").style.display = "none";
+		document.getElementById("REBOOTCheck").style.display = "none";
+		document.getElementById("REBOOT").style.display = "none";
+		document.getElementById("SuccessREBOOT").style.display = "none";
+		document.getElementById("FACTORYDEFAULTCheck").style.display = "none";
+		document.getElementById("FACTORYDEFAULT").style.display = "none";
+		document.getElementById("SuccessFACTORYDEFAULT").style.display = "none";
+	}
+	
+	function returnToMain2()
+	{
+		self.location.href="System.html";
+	}
+	
+	function returnToHome()
+	{
+		window.location.replace("/Home.html");
+	}
+	
+	function SaveConfiguration()
+	{
+		document.forms["dlcfgbin"].submit();
+	}
+	
+	function ShowUploadButton(id, obj)
+	{
+		document.getElementById(id).value = obj.value.substr(obj.value.lastIndexOf('\\') + 1);
+		document.getElementById(id + "_Button").style.display = "";
+	}
+	
+	window.onresize = function(e)
+	{
+		var submitingDiv = document.getElementById("submiting");
+		submitingDiv.style.width = (window.innerWidth -20) + 'px';
+		submitingDiv.style.height = window.innerHeight + 'px';
+	}
+
+</script>
+
+</head>
+
+<body onload="Body_Onload()">
+	<div id="wrapper">
+		<!-------------------- Logo ------------------------->
+		<div id="header"></div>
+		<!-------------------- Menu ------------------------->
+		<div id="menu"></div>
+		<!-------------------- Content ---------------------->
+		<div id="content">
+			<!-------------------- info ---------------------->	
+	  		<div id="info"> 
+			  <div id="FunctionName"><script>I18N("h", "System");</script></div>
+	          <div id="wallimage"><img src="image/page_System.png" alt="" width="195" height="119"/></div>	
+		      <div id="directions">
+	                 <script>I18N("h", "This page lets you save your router\'s current settings to a file, restore your settings from a file, restore your router to factory default settings, or reboot the device. Please note that restoring the settings to the factory defaults will erase all settings, including any rules you have created.");</script>
+	    	  </div>
+			</div>
+			<!-------------------- funcBar ---------------------->   
+			<div id="funcBar">		
+				<div id="pagePath"><script>I18N("h", "Management");</script> >> <script>I18N("h", "System");</script></div>
+				<ul id="rightFunc">
+					
+					<!--<li style="display:block"><a href="javascript:CheckHTMLStatus('Admin');" style="text-decoration:none;"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "Admin");</script></div></a></li> -->
+				</ul>
+			</div>
+			<!----------------- Pop Alert Message --------------->
+			<div id="CreatePopAlertMessage" style="display:none">
+				<div id="AlertPopRect">
+					<div id="AlertPopBody">
+						<!---------- Restore Configuration File Check ---------->
+						<table class="myAlertPop_table_b" id="RCFCheck" border="0" cellspacing="0"  style="display:none">
+						   <tbody>
+								 <tr>
+								 	<td colspan="2">
+										<center><div id="Information_pop_image"></div></center>
+									</td>
+								 </tr>
+								 <tr>
+								 <td colspan="2">
+								 	<center><div id="dialog_msg_black"><script>I18N("h", "Are you sure you want to restore configuration file?");</script></div><center>
+								 </td>
+								 </tr>
+								 <tr>
+									 <td>
+									 	<div id="Confirm_btn" onclick="Device_RFC()" style="cursor:pointer"><script>I18N("h", "OK");</script></div>
+									 </td>
+									 <td>
+									 	<div id="Confirm_btn" onclick="returnToMain()" style="cursor:pointer"><script>I18N("h", "Cancel");</script></div>
+									 </td>
+								 </tr>
+						   </tbody>
+						</table>
+						<!---------- Restore Configuration File ---------->
+						<table class="myAlertPop_table_b" id="RCF" border="0" cellspacing="0"  style="display:none">
+						   <tbody>
+								 <tr>
+								 	<td>
+										<center><div id="Loading_pop_image"></div></center>
+									</td>
+								 </tr>
+								 <tr>
+								 	<td label id="reciprocal_Number"></td>
+								 </tr>
+								 <tr>
+								 <td id="dialog_msg_red"><script>I18N("h", "Do not close the page or power off the service until the restore configuration file is complete!");</script></td>
+								 </tr>
+						   </tbody>
+						</table>
+						<!---------- Failed - Restore Configuration File ---------->
+						<table class="myAlertPop_table_b" id="FailedRCF" border="0" cellspacing="0"  style="display:none">
+						   <tbody>
+								 <tr>
+								 	<td>
+										<center><div id="Warning_pop_image"></div></center>
+									</td>
+								 </tr>
+								 <tr>
+									 <td>
+									 	<center><div id="dialog_msg_red"><script>I18N("h", "Restore configuration file failed!");</script></div><center>
+									 </td>
+								 </tr>
+								 <tr>
+									 <td>
+									 	<center><div id="Confirm_btn" onclick="returnToMain2()" style="cursor:pointer"><script>I18N("h", "OK");</script></div><center>
+									 </td>
+								 </tr>
+						   </tbody>
+						</table>
+						<!---------- Success - Restore Configuration File ---------->
+						<table class="myAlertPop_table_b" id="SuccessRCF" border="0" cellspacing="0"  style="display:none">
+						   <tbody>
+								 <tr>
+								 	<td>
+										<center><div id="Information_pop_image"></div></center>
+									</td>
+								 </tr>
+								 <tr>
+									 <td>
+									 	<center><div id="dialog_msg_black"><script>I18N("h", "Restore configuration file success!");</script></div><center>
+									 </td>
+								 </tr>
+								 <tr>
+									 <td>
+									 	<center><div id="Confirm_btn" onclick="returnToHome()" style="cursor:pointer"><script>I18N("h", "OK");</script></div><center>
+									 </td>
+								 </tr>
+						   </tbody>
+						</table>
+						<!---------- Confirm Reboot ---------->
+						<table class="myAlertPop_table_b" id="REBOOTCheck" border="0" cellspacing="0"  style="display:none">
+						   <tbody>
+								 <tr>
+								 	<td colspan="2">
+										<center><div id="Information_pop_image"></div></center>
+									</td>
+								 </tr>
+								 <tr>
+									 <td colspan="2">
+									 	<center><div id="dialog_msg_black"><script>I18N("h", "Are you sure you want to reset the device?");</script></div><center>
+									 </td>
+								 </tr>
+								 <tr>
+									 <td>
+									 	<div id="Confirm_btn" onclick="Device_Reboot()" style="cursor:pointer"><script>I18N("h", "OK");</script></div>
+									 </td>
+									 <td>
+									 	<div id="Confirm_btn" onclick="returnToMain()" style="cursor:pointer"><script>I18N("h", "Cancel");</script></div>
+									 </td>
+								 </tr>
+						   </tbody>
+						</table>
+						<!---------- Reboot ---------->
+						<table class="myAlertPop_table_b" id="REBOOT" border="0" cellspacing="0"  style="display:none">
+						   <tbody>
+								 <tr>
+								 	<td>
+										<center><div id="Loading_pop_image"></div></center>
+									</td>
+								 </tr>
+								 <tr>
+								 	<td label id="reciprocal_Number_Reboot"></td>
+								 </tr>
+								 <tr>
+								 	<td id="dialog_msg_black"><script>I18N("h", "Rebooting");</script>...</td>
+								 </tr>
+						   </tbody>
+						</table>
+						<!---------- Success - Reboot ---------->
+						<table class="myAlertPop_table_b" id="SuccessREBOOT" border="0" cellspacing="0"  style="display:none">
+						   <tbody>
+								 <tr>
+								 	<td>
+										<center><div id="Information_pop_image"></div></center>
+									</td>
+								 </tr>
+								 <tr>
+									 <td>
+									 	<center><div id="dialog_msg_black"><script>I18N("h", "Reboot success!");</script></div><center>
+									 </td>
+								 </tr>
+								 <tr>
+									 <td>
+									 	<center><div id="Confirm_btn" onclick="returnToHome()" style="cursor:pointer"><script>I18N("h", "OK");</script></div><center>
+									 </td>
+								 </tr>
+						   </tbody>
+						</table>
+						<!---------- Confirm Factory Default ---------->
+						<table class="myAlertPop_table_b" id="FACTORYDEFAULTCheck" border="0" cellspacing="0"  style="display:none; top:70px;">
+						   <tbody>
+								 <tr>
+								 	<td colspan="2">
+										<center><div id="Information_pop_image"></div></center>
+									</td>
+								 </tr>
+								 <tr>
+								 	<td colspan="2" id="dialog_msg_black"><script>I18N("h", "Are you sure you want to reset the device to its factory default settings? This will cause current settings to be lost.");</script></td>
+								 </tr>
+								 <tr>
+									 <td>
+									 	<div id="Confirm_btn" onclick="Device_FDReboot()" style="cursor:pointer"><script>I18N("h", "OK");</script></div>
+									 </td>
+									 <td>
+									 	<div id="Confirm_btn" onclick="returnToMain()" style="cursor:pointer"><script>I18N("h", "Cancel");</script></div>
+									 </td>
+								 </tr>
+						   </tbody>
+						</table>
+						<!---------- Factory Default ---------->
+						<table class="myAlertPop_table_b" id="FACTORYDEFAULT" border="0" cellspacing="0"  style="display:none">
+						   <tbody>
+								 <tr>
+								 	<td>
+										<center><div id="Loading_pop_image"></div></center>
+									</td>
+								 </tr>
+								 <tr>
+									 <td label id="reciprocal_Number_FactoryDefault"></td>
+								 </tr>
+								 <tr>
+								 	<td id="dialog_msg_black">
+								 		<script>I18N("h", "Rebooting");</script>...<br/>
+								 		<script>I18N("h", "If you changed the device name you may need to change the IP address in browse to access the device.");</script>
+								 	</td>
+								 </tr>
+						   </tbody>
+						</table>
+						<!---------- Success - Factory ---------->
+						<table class="myAlertPop_table_b" id="SuccessFACTORYDEFAULT" border="0" cellspacing="0"  style="display:none">
+						   <tbody>
+								 <tr>
+								 	<td>
+										<center><div id="Information_pop_image"></div></center>
+									</td>
+								 </tr>
+								 <tr>
+									 <td>
+									 	<center><div id="dialog_msg_black"><script>I18N("h", "Restore to factory default success!");</script></div><center>
+									 </td>
+								 </tr>
+								 <tr>
+									 <td>
+									 	<center><div id="Confirm_btn" onclick="returnToHome()" style="cursor:pointer"><script>I18N("h", "OK");</script></div><center>
+									 </td>
+								 </tr>
+						   </tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+	    	<!-------------------- main ------------------------->
+	     	<div id="main">
+	     		<br />
+				<table class="block" border="0" cellspacing="0">
+				<tbody>
+				 <tr>
+				   	<th><script>I18N("h", "Save Settings To Local Hard Drive");</script>:</th>
+				   	<td width="200px">
+			   		<form id="dlcfgbin" action="dlcfg.cgi" method="post">
+			   			<div class="file-box">
+							<button type="button" class="styled_button_s" style="min-width:200px;" onclick="document.forms['dlcfgbin'].submit()" ><script>I18N("h", "Save");</script></button>
+						</div>
+			 		</form>
+			 		</td>
+				 </tr>
+				 <form id="ulcfgbin" action="seama.cgi" method="post" enctype="multipart/form-data">
+					 <tr id="First_LSFLHD">
+					   	<th><script>I18N("h", "Load Settings From Local Hard Drive");</script>:</th>
+					   	<td>
+					   		<div class="file-box">
+					   			<label for="select_Folder" id="browse_Button" class="trigger-file-input" style="min-width:168px; left:0px"><script>I18N("h", "Select File");</script></label>
+					   			<input type="file" name="select_Folder" id="select_Folder" style="display:none" onchange="ShowUploadButton('upload_File',this);" />
+					   		</div>
+					   	</td>
+					   	<td>
+					   		<input type="text" name="upload_File" id="upload_File" size="40" style="border:0px;height:40px;color:#4598AA" readonly>
+					   	</td>
+					</tr>
+					<tr id="upload_File_Button" style="display:none">
+						<th></th>
+						<td>
+							<button type="button" class="styled_button_s" style="min-width:200px;" onclick="RCF_Check_btn()"><script>I18N("h", "Restore");</script></button>
+								<input type="hidden" name="REPORT_METHOD" value="301" />
+								<input type="hidden" name="REPORT" value="System.html" />
+						</td>
+					</tr>
+				 </form>
+				 <form id="ulcfgbin2" action="seama.cgi" method="post" enctype="multipart/form-data">
+				 <tr id="Secondary_LSFLHD" style="display:none">
+				   	<th><script>I18N("h", "Load Settings From Local Hard Drive");</script>:</th>
+					<td>
+						<input type="hidden" name="REPORT_METHOD" value="301" />
+						<input type="hidden" name="REPORT" value="System.html" />
+						<input type="file" id="ulcfg" name="sealpac" size="24" />
+					</td>
+					<td>
+						<button type="submit"><script>I18N("h", "Restore Configuration From File");</script></button>
+					</td>
+				 </tr>
+				 </form>
+				 <tr>
+				   	<th><script>I18N("h", "Restore To Factory Default Settings");</script>:</th>
+				   	<td>
+				   		<div class="file-box">
+							<button type="button" class="styled_button_s" style="min-width:200px;" onclick="SetFactory_Default()"><script>I18N("h", "Restore");</script></button>
+						</div>
+			 		</td>
+				 </tr>
+				 <tr>
+				   	<th><script>I18N("h", "Reboot The Device");</script>:</th>
+				   	<td>
+				   		<div class="file-box">
+							<button type="button" class="styled_button_s" style="min-width:200px;" onclick="Device_Reboot_btn()"><script>I18N("h", "Reboot");</script></button>
+						</div>
+			 		</td>
+				 </tr>
+				</tbody>
+			    </table>
+			</div>
+		</div>
+		<!-- Detect Router Connection, Timmy Add 2013/08/15 -->
+		<div id="DetectRouterConnection" style="display:none"></div>
+		<div id="footer">Copyright &copy; 2013 D-Link Corporation/D-Link Systems, Inc.</div>
+	</div>
+</body>
+<script type="text/javascript">
+	
+	// Detect Browser
+	function DetectBrowserVersion()
+	{
+		var nVer = navigator.appVersion;
+		var navigatorAgent = navigator.userAgent;
+		var browserName  = navigator.appName;
+		var fullVersion  = ''+parseFloat(navigator.appVersion);
+		var majorVersion = parseInt(navigator.appVersion,10);
+		var nameShift,versionShift,trimSemicolon;
+		
+		if ((versionShift = navigatorAgent.indexOf("Opera")) != -1) {
+			browserName = "Opera";
+			fullVersion = navigatorAgent.substring(versionShift + 6);
+			if ((versionShift = navigatorAgent.indexOf("Version")) != -1)
+			fullVersion = navigatorAgent.substring(versionShift + 8);
+		}
+		else if ((versionShift = navigatorAgent.indexOf("MSIE")) != -1) {
+			browserName = "Microsoft Internet Explorer";
+			fullVersion = navigatorAgent.substring(versionShift + 5);
+		}
+		else if ((versionShift = navigatorAgent.indexOf("Sleipnir")) != -1) {
+			browserName = "Sleipnir";
+			fullVersion = navigatorAgent.substring(versionShift + 9);
+		}
+		else if ((versionShift = navigatorAgent.indexOf("Chrome")) != -1) {
+			browserName = "Chrome";
+			fullVersion = navigatorAgent.substring(versionShift + 7);
+		}
+		else if ((versionShift = navigatorAgent.indexOf("Safari")) != -1) {
+			browserName = "Safari";
+			fullVersion = navigatorAgent.substring(versionShift + 7);
+			if ((versionShift = navigatorAgent.indexOf("Version")) != -1)
+			fullVersion = navigatorAgent.substring(versionShift + 8);
+		}
+		else if ((versionShift = navigatorAgent.indexOf("Firefox")) != -1) {
+			browserName = "Firefox";
+			fullVersion = navigatorAgent.substring(versionShift + 8);
+		}
+		else if ((nameShift = navigatorAgent.lastIndexOf(' ') + 1) <
+			(versionShift = navigatorAgent.lastIndexOf('/'))) {
+			browserName = navigatorAgent.substring(nameShift, versionShift);
+			fullVersion = navigatorAgent.substring(versionShift + 1);
+			if (browserName.toLowerCase() == browserName.toUpperCase()) {
+				browserName = navigator.appName;
+			}
+		}
+		
+		if ((trimSemicolon = fullVersion.indexOf(";")) != -1)
+			fullVersion = fullVersion.substring(0, trimSemicolon);
+		if ((trimSemicolon = fullVersion.indexOf(" ")) != -1)
+			fullVersion = fullVersion.substring(0, trimSemicolon);
+			majorVersion = parseInt('' + fullVersion, 10);
+		if (isNaN(majorVersion)) {
+			fullVersion = '' + parseFloat(navigator.appVersion);
+			majorVersion = parseInt(navigator.appVersion, 10);
+		}
+		
+		if (browserName == "Microsoft Internet Explorer")
+		{
+			document.getElementById("browse_Button").style.left = "-2px";
+			if (majorVersion < 9)
+			{
+				// Not Support
+				document.getElementById("First_LSFLHD").style.display = "none";
+				document.getElementById("Secondary_LSFLHD").style.display = "table-row";
+			}
+		}
+		
+		if (browserName == "Safari")
+		{
+			if (majorVersion < 6)
+			{
+				// Not Support
+				document.getElementById("First_LSFLHD").style.display = "none";
+				document.getElementById("Secondary_LSFLHD").style.display = "table-row";
+			}
+		}
+		
+		if (browserName == "Opera")
+		{
+			if (majorVersion < 13)
+			{
+				// Not Support
+				document.getElementById("First_LSFLHD").style.display = "none";
+				document.getElementById("Secondary_LSFLHD").style.display = "table-row";
+			}
+		}
+	}
+	
+	DetectBrowserVersion();
+</script>
+
+<script type="text/javascript">
+	Load_HTML();
+	Initial();
+	checkTimeout();
+	
+	if($.browser.mozilla) {
+		$('.trigger-file-input').click(function() {
+			$('#select_Folder').click();
+		});
+	}
+</script>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml" xml:lang="zh_TW" lang="zh_TW">
+
+<head>
+<title>D-LINK</title>
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=1, user-scalable=no" />
+<link rel=stylesheet type="text/css" href="/css/jquery.selectbox.css?v=TimeStamp_QzwsxDcRfvTGByHn" />
+<script type="text/javascript" charset="utf-8" src="/js/initialJS.js?v=TimeStamp_QzwsxDcRfvTGByHn"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialCSS.js?v=TimeStamp_QzwsxDcRfvTGByHn"></script>
+<script type="text/javascript" charset="utf-8" src="/js/initialJQ.js?v=TimeStamp_QzwsxDcRfvTGByHn"></script>
+<script type="text/javascript" charset="utf-8" src="/js/Schedule.js?v=TimeStamp_QzwsxDcRfvTGByHn"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery-ui.custom.min.js?v=TimeStamp_QzwsxDcRfvTGByHn"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.ui.selectable.js?v=TimeStamp_QzwsxDcRfvTGByHn"></script>
+<script type="text/javascript" charset="utf-8" src="/js/jquery.ui.touch-punch.min.js?v=TimeStamp_QzwsxDcRfvTGByHn"></script>
+</head>
+<style>
+	.list		{	background-color: white;	}
+	.week .ui-selecting	{	background: #FECA40; color: #FECA40;	}
+	.week .ui-unselecting	{	background: #FEFFAF; color: #505050;	}
+	.week .ui-selected	{	background: #FFFA72; color: #FFFA72;	}
+	.week		{	list-style-type: none; margin: 0; padding: 0; width: 820px;	cursor:default;	}
+	.week li	{	margin: 4px 1px 3px 0; padding: 1px; float: left; width: 30px; height: 25px; font-size: 1em; text-align: center; color:white;	}
+</style>
+<script>
+	var SC_ListNumber = 0;	var Total_Rules = 0;	var Limit_Rules = 10;
+	function Load_HTML()	{	$("#header").load("header.html");	}
+	function Initial()	{	initialMenu();	initialDetectRouterConnection();	}
+	function save_button_changed()
+	{
+		document.getElementById("Save_Disable_btn").style.display = "none";
+		document.getElementById("Save_btn").style.display = "block";
+		changeFlag = true;
+		checkFlag = true;
+		GetClickTime();
+	}
+</script>
+<body>
+	<div id="wrapper">
+		<!-------------------- Logo ------------------------->
+		<div id="header"></div>
+		<!-------------------- Menu ------------------------->
+		<div id="menu"></div>
+		<div id="menu_edge"></div>
+		<!-------------------- Content ---------------------->
+		<div id="content">
+			<!-------------------- info ---------------------->	
+	  		<div id="info">
+			  	<div id="FunctionName"><script>I18N("h", "Schedule");</script></div>
+				<div id="wallimage"><img src="image/page_Schedule.png?v=TimeStamp_QzwsxDcRfvTGByHn" alt="" width="195" height="119"/></div>
+	    		<div id="directions">
+                 	<script>I18N("h", "Some features, such as the firewall and website filters, can be turned on or off based on a schedule. One common use of schedules is to control access to the Internet by a specified device during specified time periods.");</script>
+    				<label id="Get_Help" onClick="mouseClick(this);" style="cursor:pointer;display:none;text-Decoration:underline"><script>I18N("h", "Click here for help.");</script></label>
+    			</div>
+			</div>
+		    <!-------------------- funcBar ---------------------->
+		    <div id="funcBar">
+				<div id="pagePath"><script>I18N("h", "Management");</script> >> <script>I18N("h", "Schedule");</script></div>
+				<ul id="rightFunc">
+					<li style="display:block"><div id="Save_btn" onclick="CheckConnectionStatus();" style="cursor:pointer; display:none"><script>I18N("h", "Save");</script></div></li> 
+					<li style="display:block"><div id="Save_Disable_btn"><script>I18N("h", "Save");</script></div></li>
+					<li style="display:block"><a href="javascript:CheckHTMLStatus('Time');" style="text-decoration:none" onclick="return confirmExit()"><div id="page_btn"><script>I18N("h", "Time");</script></div></a></li>
+				</ul>
+			</div>
+			<!-------------------- main ---------------------->
+			<div id="main">
+			<table class="mainTable" border="1" cellspacing="0" rules="rows" id="tblSchedule">
+				<thead>
+				     <tr>
+						<th><script>I18N("h", "Name");</script></th>
+				     	<th><script>I18N("h", "Schedule");</script></th>
+				     	<th><script>I18N("h", "Edit");</script></th>
+						<th><script>I18N("h", "Delete");</script></th>
+				     </tr>
+			    </thead>
+				<tbody></tbody>
+			</table>
+			<table class="mainTable" border="0" cellspacing="0" rules="rows" id="tblSchedule2" style="display:none">
+					<thead><tr></tr></thead><tbody></tbody>
+			</table>
+				<br /><br />
+				<button type="button" name="createButton" id="createButton" class="styled_button_s" onclick="addRuleButton()"><script>I18N("h", "Add Rule");</script></button>
+		 		&nbsp;&nbsp;<script>I18N("h", "Remaining");</script>:&nbsp;<label id="RemainingRules">10</label>
+			</div>
+			<div id="createPop" style="display:none" onselectstart="return false;">
+			<div id="popRect3" class="dialogBox" style="width:850px">
+					<table class="myCreatePop3_table" border="0" cellspacing="0" id="tblSchedule3">
+						<tbody>
+							<td><script>I18N("h", "Name");</script>:<input class="styled-text" type="text" name="schedule_name" size="15" id="schedule_name" Maxlength="15"></td>
+							<td>&nbsp;&nbsp;&nbsp;&nbsp;<label id="schedule_Info" style="color:#FF0000"></label></td>
+							<td width="30px"><div id="closeCreatePopBtn" onclick="clearCreateRulePOP()"></div></td>
+						</tbody>
+					</table>
+					<div id="border" style="position:relative; top:20px; left:0px; height:280px; width:860px; background:url(image/scheduleTable.png) left top no-repeat;" >
+						<div id="calendar" style="position:relative; top:33px; left:56px;">
+							<div id="Monday"><ul class="week"></ul></div>
+							<div id="Tuesday"><ul class="week"></ul></div>
+							<div id="Wednesday"><ul class="week"></ul></div>
+							<div id="Thursday"><ul class="week"></ul></div>
+							<div id="Friday"><ul class="week"></ul></div>
+							<div id="Saturday"><ul class="week"></ul></div>
+							<div id="Sunday"><ul class="week"></ul></div>
+						</div>
+					</div>
+					<br/>
+					<table class="myCreatePop3_table" border="0" cellspacing="0" style="height:30px;">
+						<tbody>
+							<td id="save_td" colspan="4" style="width:850px;">
+								<center><button type="button" class="styled_button_s" onclick="checkSum();save_button_changed();"><script>I18N("h", "Apply");</script></button></center>
+							</td>
+						</tbody>
+					</table>
+			</div>
+		</div>
+			<!-- Edit Pop Window --->
+		<div id="editPop" style="display:none">
+			<div id="popRect3" class="dialogBox" style="width:850px">
+					<table class="myCreatePop3_table" border="0" cellspacing="0" id="tblSchedule4">
+						<tbody>
+							<td><script>I18N("h", "Name");</script>:<input class="styled-text" type="text" name="schedule_Editname" size="15" id="schedule_Editname" Maxlength="15"></td>
+							<td>&nbsp;&nbsp;&nbsp;&nbsp;<label id="schedule_EditInfo" style="color:#FF0000"></label></td>
+							<td width="30px"><div id="closeCreatePopBtn" onclick="clearEditRulePOP()"></div></td>
+						</tbody>
+					</table>
+					<div id="border" style="position:relative; top:20px; left:0px; height:280px; width:860px; background:url(image/scheduleTable.png) left top no-repeat;" >
+						<div id="EditCalendar" style="position:relative; top:33px; left:56px;">
+							<div id="EditMonday"><ul class="week"></ul></div>
+							<div id="EditTuesday"><ul class="week"></ul></div>
+							<div id="EditWednesday"><ul class="week"></ul></div>
+							<div id="EditThursday"><ul class="week"></ul></div>
+							<div id="EditFriday"><ul class="week"></ul></div>
+							<div id="EditSaturday"><ul class="week"></ul></div>
+							<div id="EditSunday"><ul class="week"></ul></div>
+						</div>
+					</div>
+					<br/>
+					<table class="myCreatePop3_table" border="0" cellspacing="0" style="height:30px;">
+						<tbody>
+							<td id="save_td" colspan="4" style="width:850px;">
+								<center><button type="button" class="styled_button_s" onclick="checkEditSum();save_button_changed();"><script>I18N("h", "Apply");</script></button></center>
+							</td>
+						</tbody>
+					</table>
+			</div>
+		</div>
+		<div id="CreatePopAlertMessage" style="display:none">
+			<div id="AlertPopRect">
+			<div id="AlertPopBody">
+					<table class="myAlertPop_table" id="REBOOT" border="0" cellspacing="0"  style="display:none">
+						<tbody>
+							<tr>
+								<td>
+									<center><div id="Loading_pop_image"></div></center>
+								</td>
+							</tr>
+							<tr>
+								<td><label id="reciprocal_Number_Reboot"></td>
+							</tr>
+							<tr>
+								<td id="dialog_msg_black2"><script>I18N("h", "Your changes are being saved.");</script></td>
+							</tr>
+						</tbody>
+					</table>
+				<table class="myAlertPop_table_b" id="waitSettingFinish" border="0" cellspacing="0">
+				   <tbody>
+							<tr>
+								<td>
+									<center><div id="Loading_pop_image"></div></center>
+								</td>
+							</tr>
+							<tr>
+								<td><label id="reciprocal_Number"></label></td>
+							</tr>
+							<tr>
+								<td id="dialog_msg_black2"><script>I18N("h", "Your changes are being saved.");</script></td>
+							</tr>
+				   </tbody>
+				</table>
+			</div>
+			</div>
+		 </div>
+		<div id="DetectRouterConnection" style="display:none"></div>
+		<div id="footer">
+			<div id="copyright"><script>I18N("h", "COPYRIGHT");</script></div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>
+<script>
+	Load_HTML();
+	Initial();
+	setMenu("menu_Management");
+	createSelector();
+	GetXML();
+	checkTimeout();
+</script>

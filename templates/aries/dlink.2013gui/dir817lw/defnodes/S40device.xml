@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<SiGnAtUrE>
+	<runtime>
+		<device>
+			<wlandriver>RTL819x</wlandriver>
+			<modelname>DIR-817LW</modelname>
+			<upnpvendor>D-Link Corporation</upnpvendor>
+			<producturl>http://www.dlink.com.tw</producturl>
+			<description>Wireless Broadband Router</description>
+		</device>
+	</runtime>
+</SiGnAtUrE>

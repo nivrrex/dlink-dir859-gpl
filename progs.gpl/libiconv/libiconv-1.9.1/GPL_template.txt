@@ -1,0 +1,43 @@
+Module name: libiconv
+
+Module version: 1.9.1
+
+Copyright:
+Copyright (C) 1999-2003 Free Software Foundation, Inc. This file is part of the GNU LIBICONV Library.
+Copyright (C) 2003 Free Software Foundation, Inc. Written by Bruno Haible <bruno@clisp.org>, 2003.
+Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003 Free Software Foundation, Inc.
+Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003 Free Software Foundation, Inc. Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
+Copyright 1996-2003 Free Software Foundation, Inc. Taken from GNU libtool, 2003 Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996	
+Copyright 1996, 1997, 1998, 1999, 2000, 2001 Free Software Foundation, Inc. Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
+Copyright 1991 by the Massachusetts Institute of Technology
+Copyright (C) 2003 Free Software Foundation, Inc. Volodymyr M. Lisivka <lvm@mystery.lviv.net>, 2003.	
+Copyright (C) 2003 Free Software Foundation, Inc. This file is distributed under the same license as the libiconv package. Kevin Patrick Scannell <scannell@SLU.EDU>, 2003.
+Copyright (C) 2002 Free Software Foundation, Inc. This file is distributed under the same license as the GNU libiconv package. Bruno Haible <bruno@clisp.org>, 2002.	
+Copyright (C) 2002 Free Software Foundation, Inc. Tedi Heriyanto <tedi_h@gmx.net>, 2002 This file is distributed under the same license as the PACKAGE package. Tedi Heriyanto <tedi_h@gmx.net>, 2002
+Copyright (C) 2002 Free Software Foundation, Inc. Matti Koskimies <matti@apulanta.fi>, 2002.	
+Copyright (C) 2002 Free Software Foundation, Inc. Marco Parrone <marc0@autistici.org>, 2002.	
+Copyright (C) 2002 Free Software Foundation, Inc. Marcel Telka <marcel@telka.sk>, 2002.	
+Copyright (C) 2002 Free Software Foundation, Inc. Keld Simonsen <keld@dkuug.dk>, 2002. Christian Rose <menthos@menthos.com>, 2002. This file is distributed under the same license as the libiconv package.	
+Copyright (C) 2002 Free Software Foundation, Inc. Jacobo Tarrio <jtarrio@trasno.net>, 2002.	
+Copyright (C) 2002 Free Software Foundation, Inc. Ivan Vilata i Balaguer <ivan@selidor.net>, 2002.	
+Copyright (C) 2002 Free Software Foundation, Inc. Emese Kovacs <emese@gnome.hu>, 2002. This file is distributed under the same license as the libiconv package.	
+Copyright (C) 2002 Free Software Foundation, Inc. Dmitry S. Sivachenko <mitya@cavia.pp.ru>, 2002. This file is distributed under the same license as the libiconv package. Dmitry S. Sivachenko <mitya@cavia.pp.ru>, 2002.	
+Copyright (C) 2002 Free Software Foundation, Inc. Deniz Akkus Kanca <deniz@arayan.com>, 2002. This file is distributed under the same license as the libiconv package. Deniz Akkus Kanca <deniz@arayan.com>, 2002.	
+Copyright (C) 2002 Free Software Foundation, Inc. Denis Lackovic <delacko@fly.srk.fer.hr>, 2002. This file is distributed under the same license as the libiconv package. Denis Lackovic <delacko@fly.srk.fer.hr>, 2002.	
+Copyright (C) 2002 Free Software Foundation, Inc. Christian Rose <menthos@menthos.com>, 2002. This file is distributed under the same license as the libiconv package. Christian Rose <menthos@menthos.com>, 2002.	
+Copyright (C) 2002 Free Software Foundation, Inc. Alexandre Folle de Menezes <afmenez@terra.com.br>, 2002. based on the translation to Galician (gl) by Jacobo Tarrio Barreiro <jtarrio@trasno.net>, 2002.
+Copyright 1996-2003 Free Software Foundation, Inc. Taken from GNU libtool, 2001 Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996	
+Copyright 1996, 1997, 2000, 2001 Free Software Foundation, Inc.	
+Copyright 1996, 1997, 1999, 2000 Free Software Foundation, Inc. Originally by Fran,cois Pinard <pinard@iro.umontreal.ca>, 1996.
+
+License type: LGPLv2
+
+Download URL:
+ftp://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.9.1.tar.gz
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: @@modday@@
+
+------------------------------------------------------------------------

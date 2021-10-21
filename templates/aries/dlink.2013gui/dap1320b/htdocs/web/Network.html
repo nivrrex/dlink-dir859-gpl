@@ -1,0 +1,1159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml" xml:lang="zh_TW" lang="zh_TW">
+
+<head>
+<title>D-LINK</title>
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<link rel="stylesheet" type="text/css" href="css/style_pages.css" media="all" />
+<link href="css/jquery.selectbox.css" type="text/css" rel="stylesheet" />
+
+<script type="text/javascript" charset="utf-8" src="./js/comm.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/hmac_md5.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/libajax.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/hnap.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/i18n.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/pagetool.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/checkTimeout.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/jquery.validate.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/includeLang.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/messageDescription.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/jquery.selectbox-0.2_new.js"></script>
+
+<script>
+$(document).ready(function(){
+	
+	//presetCheckBox("enableDNSRelay", true);
+	//presetCheckBox("dhcpServer_status", true);
+	//presetCheckBox("alwaysBroadcast", true);
+	
+	//jquery
+	$("div.checkbox_on" || "div.checkbox_off").click(function(e) {
+	 var checkboxId =  e.target.id +'_ck';	 
+		if(e.target.getAttribute("class") == "checkbox_on") {
+			var disable = I18N("j","Disabled");
+			e.target.setAttribute("class", "checkbox_off");
+			e.target.setAttribute("className", "checkbox_off");
+			document.getElementById(e.target.id).innerHTML='<input type="checkbox" name=' + e.target.id + ' id=' + checkboxId + ' checked>'+disable;
+			document.getElementById(checkboxId).checked=false;
+		
+			changeFlag = true;
+			save_button_changed();
+		}
+		else {
+			var enable = I18N("j","Enabled");
+			e.target.setAttribute("class", "checkbox_on");
+			e.target.setAttribute("className", "checkbox_on");
+			document.getElementById(e.target.id).innerHTML='<input type="checkbox" name=' + e.target.id + ' id=' + checkboxId + ' checked="">'+enable;
+			document.getElementById(checkboxId).checked=true;
+			
+			changeFlag = true;
+			save_button_changed();
+		}
+	});
+	
+	GetXML();
+	
+});
+
+</script>
+
+<script type="text/javascript">
+	
+	var HNAP = new HNAP_XML();
+	
+	var LanIPhasChanged = 0;
+	var SubnetMaskhasChanged = 0;
+	var GetPreThirdValue = "";
+	var GetThirdValueAndCheck = "";
+	var _ReciprocalRebootNumber = 50;
+	var DHCPRange;
+	
+	function Load_HTML()
+	{ 
+		$("#header").load("header.html");
+	}
+	
+	function Initial()
+	{
+		initialMenu();
+		initialDetectRouterConnection();
+	}
+	
+	function String_UC(str)
+	{
+			str = str.toUpperCase();
+
+			return str;
+	}
+		
+	function GetXML()	// Jump to function SetXML()
+	{
+		//WAN
+		var xml_GetWanSettings = HNAP.GetXML("GetWanSettings");
+		var getIPAddress = xml_GetWanSettings.Get("GetWanSettingsResponse/IPAddress");
+		var getSubnetmask = xml_GetWanSettings.Get("GetWanSettingsResponse/SubnetMask");
+		var getDefaultgateway = xml_GetWanSettings.Get("GetWanSettingsResponse/Gateway");
+		var getPridns = xml_GetWanSettings.Get("GetWanSettingsResponse/DNS/Primary");
+		var getSecdns = xml_GetWanSettings.Get("GetWanSettingsResponse/DNS/Secondary");
+		var getType = xml_GetWanSettings.Get("GetWanSettingsResponse/Type");
+		
+		
+		document.getElementById("iPAddress_StaticIP").value = getIPAddress;
+		document.getElementById("subnetMask_StaticIP").value = getSubnetmask;
+		document.getElementById("defaultGateway_StaticIP").value = getDefaultgateway;
+		document.getElementById("primaryDNSAddress_StaticIP").value = getPridns;
+		document.getElementById("secondaryDNSAddress_StaticIP").value = getSecdns;
+		
+		///detect connect type ,hill /2013/10/1
+		if( getType =="Static"){
+		
+			document.getElementById("connection_Type").value = "1";
+			document.getElementById("iPAddress_StaticIP").disabled = false;
+			document.getElementById("defaultGateway_StaticIP").disabled = false;
+			document.getElementById("subnetMask_StaticIP").disabled = false;
+			document.getElementById("primaryDNSAddress_StaticIP").disabled = false;
+			document.getElementById("secondaryDNSAddress_StaticIP").disabled = false;
+		}
+		else
+		{
+			document.getElementById("connection_Type").value = "2";
+			document.getElementById("iPAddress_StaticIP").disabled = true;
+			document.getElementById("defaultGateway_StaticIP").disabled = true;
+			document.getElementById("subnetMask_StaticIP").disabled = true;
+			document.getElementById("primaryDNSAddress_StaticIP").disabled = true;
+			document.getElementById("secondaryDNSAddress_StaticIP").disabled = true;
+		}
+		
+		//Get device name
+		var xml_GetNetworkSettings = HNAP.GetXML("GetNetworkSettings");
+		document.getElementById("deviceName").value = xml_GetNetworkSettings.Get("GetNetworkSettingsResponse/DeviceName");
+						
+		//+++ Jerry Kao, add IPv6.
+		var xml_GetIPv6WanType = HNAP.GetXML("GetIPv6WanType");
+				
+		var wan_IPv6type = xml_GetIPv6WanType.Get("GetIPv6WanTypeResponse/IPv6_ConnectionType");
+		//alert(wan_IPv6type); 
+		
+		switch (wan_IPv6type) 
+		{			
+			// ### GetXML - IPv6_Link-Local Only ###
+			case "IPv6_LinkLocalOnly":			
+				var xml_GetTypeProfile = HNAP.GetXML("GetIPv6LinkLocalOnlySettings");
+					
+				var Resp_XML = "GetIPv6LinkLocalOnlySettingsResponse";
+				
+				var Is_Current_Type = xml_GetTypeProfile.Get(Resp_XML+"/IPv6_IsCurrentConnectionType");
+				if (Is_Current_Type != "True")
+				{
+					GetXML();
+				}
+				else
+				{
+					document.getElementById("connectionIPv6Type").options[0].selected = true;
+				}
+				
+				// Link-local address				
+				var xml_GetIPv6Status = HNAP.GetXML("GetIPv6Status");	// Get IPv6 Status.
+				var IPv6_LinkLocalAddress = xml_GetIPv6Status.Get("GetIPv6StatusResponse/IPv6_LanLinkLocalAddress");			
+				document.getElementById("lan_IPv6_Link_Local_Address").innerHTML = IPv6_LinkLocalAddress;
+				
+				
+				onload = internetV6_show(0);			
+				break;
+			
+			// ### GetXML - IPv6_Static ###
+			case "IPv6_Static":
+				var xml_GetTypeProfile = HNAP.GetXML("GetIPv6StaticSettings");
+				
+				var Resp_XML = "GetIPv6StaticSettingsResponse";
+		
+				var Is_Current_Type = xml_GetTypeProfile.Get(Resp_XML+"/IPv6_IsCurrentConnectionType");
+			
+				if (Is_Current_Type != "True")
+				{
+					GetXML();
+				}
+				else
+				{
+					document.getElementById("connectionIPv6Type").options[1].selected = true;
+				}
+								
+				//+++ Grace Lin, Set Enable or Disable LL address.
+				var Address            = xml_GetTypeProfile.Get(Resp_XML+"/IPv6_Address");				
+				var SubnetPrefixLength = xml_GetTypeProfile.Get(Resp_XML+"/IPv6_SubnetPrefixLength");						
+				
+				document.getElementById("staticIPv6_IPv6Address").value        = Address;
+				document.getElementById("staticIPv6_subnetPrefixLength").value = SubnetPrefixLength;
+			
+			/*	
+				var UseLinkLocalAddress = xml_GetTypeProfile.Get(Resp_XML+"/IPv6_UseLinkLocalAddress");				
+			
+				if (UseLinkLocalAddress == "Enable")
+				{					
+					presetCheckBox("staticIPv6_useLinkLocalAddress", true);
+					//document.getElementById("staticIPv6_IPv6Address").disabled = true;
+					//document.getElementById("staticIPv6_subnetPrefixLength").disabled = true;
+					document.getElementById("show_StaticIPv6_IPv6Address").style.display = "none";
+					document.getElementById("show_StaticIPv6_SubnetPrefixLength").style.display = "none";					
+				}
+				else
+				{					
+					//presetCheckBox("staticIPv6_useLinkLocalAddress", false);
+					//document.getElementById("staticIPv6_IPv6Address").disabled = false;
+					//document.getElementById("staticIPv6_subnetPrefixLength").disabled = false;
+					//document.getElementById("show_StaticIPv6_IPv6Address").style.display = "table-row";
+					//document.getElementById("show_StaticIPv6_SubnetPrefixLength").style.display = "table-row";
+					document.getElementById("staticIPv6_IPv6Address").value        = Address;
+					document.getElementById("staticIPv6_subnetPrefixLength").value = SubnetPrefixLength;				
+				}
+			*/	
+							
+				var DefaultGateway = xml_GetTypeProfile.Get(Resp_XML+"/IPv6_DefaultGateway");
+				document.getElementById("staticIPv6_DefaultGateway").value = DefaultGateway;				
+				
+				var PrimaryDNS   = xml_GetTypeProfile.Get(Resp_XML+"/IPv6_PrimaryDNS");								
+				var SecondaryDNS = xml_GetTypeProfile.Get(Resp_XML+"/IPv6_SecondaryDNS");
+				document.getElementById("staticIPv6_PrimaryDNS").value   = PrimaryDNS;
+				document.getElementById("staticIPv6_SecondaryDNS").value = SecondaryDNS;			
+				
+				onload = internetV6_show(1);
+				break;
+			
+			
+			// ### GetXML - IPv6_AutoConfiguration ###
+			case "IPv6_AutoConfiguration":
+				var xml_GetTypeProfile = HNAP.GetXML("GetIPv6AutoConfigurationSettings");
+				
+				var Resp_XML = "GetIPv6AutoConfigurationSettingsResponse";
+				
+				var Is_Current_Type = xml_GetTypeProfile.Get(Resp_XML+"/IPv6_IsCurrentConnectionType");
+				if (Is_Current_Type != "True")
+				{
+					GetXML();
+				}
+				else
+				{
+					document.getElementById("connectionIPv6Type").options[2].selected = true;
+				}			
+			
+				var ObtainDNS = xml_GetTypeProfile.Get(Resp_XML+"/IPv6_ObtainDNS");				
+				if (ObtainDNS == "Automatic")
+				{					
+					cb_yes.setAttribute("class", "clicked");
+					cb_no.setAttribute("class",  "unclick");
+														
+					document.getElementById("show_AutoConfiguration_Primary_DNS_Server").style.display   = "none";					
+					document.getElementById("show_AutoConfiguration_Secondary_DNS_Server").style.display = "none";					
+				}
+				else
+				{					
+					cb_no.setAttribute("class",  "clicked");
+					cb_yes.setAttribute("class", "unclick");					
+					
+					document.getElementById("show_AutoConfiguration_Primary_DNS_Server").style.display   = "table-row";
+					document.getElementById("show_AutoConfiguration_Secondary_DNS_Server").style.display = "table-row";					
+				}						
+				
+				var PrimaryDNS   = xml_GetTypeProfile.Get(Resp_XML+"/IPv6_PrimaryDNS");
+				var SecondaryDNS = xml_GetTypeProfile.Get(Resp_XML+"/IPv6_SecondaryDNS");
+				document.getElementById("autoConfiguration_PrimaryDNS").value   = PrimaryDNS;
+				document.getElementById("autoConfiguration_SecondaryDNS").value = SecondaryDNS;												
+												
+				onload = internetV6_show(2);				
+				break;						
+		}		
+		
+		
+		$("#connection_Type").selectbox();
+		$("#connectionIPv6Type").selectbox();
+	//	$("#clone_ComputerIpByStaticIP").selectbox();
+	//	$("#clone_ComputerIp").selectbox();
+	//	$("#mtu_StaticIP").selectbox();
+	//	$("#mtu_DynamicIP").selectbox();
+		
+	}
+	
+	function CheckConnectionStatus()
+	{
+		$.ajax({
+			cache : false,
+			url : "./js/CheckConnection",
+			timeout : 2000,
+			type : "GET",
+			success : function(data) { SetXML(); },
+			error : function() { document.getElementById("DetectRouterConnection").style.display = "inline"; }
+		});
+	}
+	
+	function SetXML()	// Jump to function GetXML()
+	{
+		// Update HostName, Timmy 2013/07/1
+		var Current_DeviceName = document.getElementById("deviceName").value;
+		try
+		{
+			sessionStorage.setItem('hostname', Current_DeviceName + ".local");
+		}
+		catch (err) {}
+		
+		var xml_SetNetworkSettings = HNAP.GetXML("SetNetworkSettings");
+		var xml_GetNetworkSettings = HNAP.GetXML("GetNetworkSettings");
+		var temp_IPAddress = xml_GetNetworkSettings.Get("GetNetworkSettingsResponse/IPAddress");
+		var	temp_SubnetMask	= xml_GetNetworkSettings.Get("GetNetworkSettingsResponse/SubnetMask");
+		var	temp_LocalDomainName = xml_GetNetworkSettings.Get("GetNetworkSettingsResponse/LocalDomainName");
+		var	temp_IPRangeStart = xml_GetNetworkSettings.Get("GetNetworkSettingsResponse/IPRangeStart");
+		var	temp_IPRangeEnd = xml_GetNetworkSettings.Get("GetNetworkSettingsResponse/IPRangeEnd");
+		var	temp_LeaseTime = xml_GetNetworkSettings.Get("GetNetworkSettingsResponse/LeaseTime");
+		var	temp_Broadcast = xml_GetNetworkSettings.Get("GetNetworkSettingsResponse/Broadcast");
+		var	temp_DNSRelay = xml_GetNetworkSettings.Get("GetNetworkSettingsResponse/DNSRelay");
+		//document.getElementById("CreatePopAlertMessage").style.display = "inline";
+		//document.getElementById("REBOOT").style.display = "inline";
+		// DeviceName
+		// IPAddress
+			xml_SetNetworkSettings.Set("SetNetworkSettings/IPAddress",  temp_IPAddress);
+			// SubnetMask
+			xml_SetNetworkSettings.Set("SetNetworkSettings/SubnetMask", temp_SubnetMask);
+			// DeviceName
+			xml_SetNetworkSettings.Set("SetNetworkSettings/DeviceName", document.getElementById("deviceName").value);
+			// LocalDomainName
+			xml_SetNetworkSettings.Set("SetNetworkSettings/LocalDomainName", temp_LocalDomainName);
+			// Enable DNS Relay
+			xml_SetNetworkSettings.Set("SetNetworkSettings/DNSRelay", temp_DNSRelay);
+			// IPRangeStart
+			xml_SetNetworkSettings.Set("SetNetworkSettings/IPRangeStart", temp_IPRangeStart);
+			// IPRangeEnd
+			xml_SetNetworkSettings.Set("SetNetworkSettings/IPRangeEnd",temp_IPRangeEnd);
+			// Lease Time
+			xml_SetNetworkSettings.Set("SetNetworkSettings/LeaseTime", 	temp_LeaseTime);
+			// Broadcast
+			xml_SetNetworkSettings.Set("SetNetworkSettings/Broadcast", temp_Broadcast );
+			
+			
+			var xml_SetNetworkSettingsResult = HNAP.SetXMLAsync("SetNetworkSettings", xml_SetNetworkSettings);
+		
+		//WAN 
+		var xml_SetWanSettings = HNAP.GetXML("SetWanSettings");		
+		// Check Combobox who selected.
+		var selectedCombobox = document.getElementById("connection_Type").value;
+		
+		switch (selectedCombobox)
+		{
+			case "1":
+				xml_SetWanSettings.Set("SetWanSettings/Type", "Static");
+				xml_SetWanSettings.Set("SetWanSettings/IPAddress", document.getElementById("iPAddress_StaticIP").value);
+				xml_SetWanSettings.Set("SetWanSettings/SubnetMask", document.getElementById("subnetMask_StaticIP").value);
+				xml_SetWanSettings.Set("SetWanSettings/Gateway", document.getElementById("defaultGateway_StaticIP").value);
+				xml_SetWanSettings.Set("SetWanSettings/DNS/Primary", document.getElementById("primaryDNSAddress_StaticIP").value);
+				xml_SetWanSettings.Set("SetWanSettings/DNS/Secondary", document.getElementById("secondaryDNSAddress_StaticIP").value);
+				xml_SetWanSettings.Set("SetWanSettings/MTU","1500");
+			//	xml_SetWanSettings.Set("SetWanSettings/MacAddress", document.getElementById("macAddress_StaticIP").value);
+				break;
+			case "2":
+				xml_SetWanSettings.Set("SetWanSettings/Type", "DHCP");
+				xml_SetWanSettings.Set("SetWanSettings/MTU","1500");
+			//	xml_SetWanSettings.Set("SetWanSettings/HostName", document.getElementById("hostName_DynamicIP").value);
+			//	xml_SetWanSettings.Set("SetWanSettings/DNS/Primary", document.getElementById("primaryDNSAddress_DynamicIP").value);
+			//	xml_SetWanSettings.Set("SetWanSettings/DNS/Secondary", document.getElementById("secondaryDNSAddress_DynamicIP").value);
+			//	xml_SetWanSettings.Set("SetWanSettings/MacAddress", document.getElementById("macAddress_DynamicIP").value);
+				break;
+		}
+		var xml_SetWanSettingsResult = HNAP.SetXMLAsync("SetWanSettings", xml_SetWanSettings);
+		
+		
+		//+++ Jerry Kao, add IPv6 function.
+		var selectedIPv6Combobox = document.getElementById("connectionIPv6Type").value;
+		
+		switch (selectedIPv6Combobox)
+		{
+			// ### SetXML - IPv6_Link-Local Only ###
+			case "1":
+				var Set_XML = "SetIPv6LinkLocalOnlySettings";			
+				var xml_SetIPv6Profile = HNAP.GetXML(Set_XML);
+				
+				xml_SetIPv6Profile.Set(Set_XML+"/IPv6_ConnectionType", "IPv6_LinkLocalOnly");
+				xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanUniqueLocalAddressStatus", "Enable");
+				xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanUniqueLocalAddressDefaultPrefix", "Enable");
+								
+				//xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanUniqueLocalAddressPrefix", document.getElementById("LinkLocalOnly_LocalConnectivityOnly_ULAPrefix").value);
+				
+				var xml_SetIPv6SettingsResult = HNAP.SetXMLAsync(Set_XML, xml_SetIPv6Profile);				
+				
+				//alert("SetIPv6_LL Only_Save");
+				break;
+				
+			// ### SetXML - IPv6_Static ###
+			case "2":
+				var Set_XML = "SetIPv6StaticSettings";
+			
+				var xml_SetIPv6Profile = HNAP.GetXML(Set_XML);				
+				xml_SetIPv6Profile.Set(Set_XML+"/IPv6_ConnectionType", "IPv6_Static");				
+
+				//xml_SetIPv6Profile.Set(Set_XML+"/IPv6_UseLinkLocalAddress", "Disable");				
+				xml_SetIPv6Profile.Set(Set_XML+"/IPv6_Address", document.getElementById("staticIPv6_IPv6Address").value);				
+				xml_SetIPv6Profile.Set(Set_XML+"/IPv6_SubnetPrefixLength", document.getElementById("staticIPv6_subnetPrefixLength").value);			
+				xml_SetIPv6Profile.Set(Set_XML+"/IPv6_DefaultGateway",     document.getElementById("staticIPv6_DefaultGateway").value);
+				
+				xml_SetIPv6Profile.Set(Set_XML+"/IPv6_PrimaryDNS",   document.getElementById("staticIPv6_PrimaryDNS").value);
+				xml_SetIPv6Profile.Set(Set_XML+"/IPv6_SecondaryDNS", document.getElementById("staticIPv6_SecondaryDNS").value);
+				
+			/*	
+				xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanAddress", document.getElementById("staticIPv6_LanIPv6Address").value);				
+				
+				var GetStatic_LanIPv6AddressAutoAssignment = document.getElementById("staticIPv6_EnableAutomaticIPv6AddressAssignment_ck").checked;
+				if (GetStatic_LanIPv6AddressAutoAssignment == "1")
+				{
+					xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanIPv6AddressAutoAssignment", "Enable");
+				}
+				else
+				{
+					xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanIPv6AddressAutoAssignment", "Disable");
+				}
+				
+				var GetStatic_LanAutoConfigurationType = document.getElementById("staticIPv6_AutoconfigurationType").value;
+				switch (GetStatic_LanAutoConfigurationType)
+				{
+					case "1":
+						xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanAutoConfigurationType", "SLAAC_RDNSS");
+						xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanRouterAdvertisementLifeTime", document.getElementById("staticIPv6_RouterAdvertisementLifetime").value);
+						break;
+					case "2":
+						xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanAutoConfigurationType", "SLAAC_StatelessDhcp");
+						xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanRouterAdvertisementLifeTime", document.getElementById("staticIPv6_RouterAdvertisementLifetime").value);
+						break;
+					case "3":
+						xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanAutoConfigurationType", "Stateful");
+						xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanIPv6AddressRangeStart", document.getElementById("staticIPv6_IPv6Address_StartRangeSetting").value);
+						xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanIPv6AddressRangeEnd", document.getElementById("staticIPv6_IPv6Address_EndRangeSetting").value);
+						xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanDhcpLifeTime", document.getElementById("staticIPv6_IPv6Address_Lifetime").value);
+						break;
+				}
+			*/	
+				var xml_SetIPv6SettingsResult = HNAP.SetXMLAsync(Set_XML, xml_SetIPv6Profile);
+			
+				//alert("SetIPv6_Static_SAVE");
+				break;
+				
+			// ### SetXML - IPv6_AutoConfiguration ###	
+			case "3":
+				var Set_XML = "SetIPv6AutoConfigurationSettings";
+				
+				var xml_SetIPv6Profile = HNAP.GetXML(Set_XML);
+				xml_SetIPv6Profile.Set(Set_XML+"/IPv6_ConnectionType", "IPv6_AutoConfiguration");
+				
+				var GetAutodetection_DnsObtain_Select = document.getElementById('cb_yes').getAttribute('class');
+				
+				if (GetAutodetection_DnsObtain_Select == "clicked")
+				{					
+					xml_SetIPv6Profile.Set(Set_XML+"/IPv6_ObtainDNS", "Automatic");					
+				}
+				else
+				{					
+					xml_SetIPv6Profile.Set(Set_XML+"/IPv6_ObtainDNS",    "Manual");
+					xml_SetIPv6Profile.Set(Set_XML+"/IPv6_PrimaryDNS",   document.getElementById("autoConfiguration_PrimaryDNS").value);
+					xml_SetIPv6Profile.Set(Set_XML+"/IPv6_SecondaryDNS", document.getElementById("autoConfiguration_SecondaryDNS").value);					
+				}
+			
+			/*
+				var GetAutoConfiguration_DHCPPD = document.getElementById("autoConfiguration_enableDHCPPD_ck").checked;
+				if (GetAutoConfiguration_DHCPPD == "1")
+				{
+					xml_SetIPv6Profile.Set(Set_XML+"/IPv6_DhcpPd", "Enable");
+				}
+				else
+				{
+					xml_SetIPv6Profile.Set(Set_XML+"/IPv6_DhcpPd", "Disable");
+					xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanAddress", document.getElementById("autoConfiguration_LanIPv6Address").value);
+				}
+				
+				var GetAutodetection_AutoAssignment = document.getElementById("autoConfiguration_EnableAutomaticIPv6AddressAssignment_ck").checked;
+				if (GetAutodetection_AutoAssignment == "1")
+				{
+					xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanIPv6AddressAutoAssignment", "Enable");
+				}
+				else
+				{
+					xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanIPv6AddressAutoAssignment", "Disable");
+				}
+				
+				var GetAutodetection_AutoDHCPPD = document.getElementById("autoConfiguration_EnableAutomaticDHCPPDinLAN_ck").checked;
+				if (GetAutodetection_AutoDHCPPD == "1")
+				{
+					xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanAutomaticDhcpPd", "Enable");
+				}
+				else
+				{
+					xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanAutomaticDhcpPd", "Disable");
+				}
+				
+				var GetAutodetection_LanAutoConfigurationType = document.getElementById("autoConfiguration_AutoconfigurationType").value;
+				switch (GetAutodetection_LanAutoConfigurationType)
+				{
+					case "1":
+						xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanAutoConfigurationType", "SLAAC_RDNSS");
+						break;
+					case "2":
+						xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanAutoConfigurationType", "SLAAC_StatelessDhcp");
+						break;
+					case "3":
+						xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanAutoConfigurationType", "Stateful");
+						xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanIPv6AddressRangeStart", document.getElementById("autoConfiguration_IPv6Address_StartRangeSetting").value);
+						xml_SetIPv6Profile.Set(Set_XML+"/IPv6_LanIPv6AddressRangeEnd", document.getElementById("autoConfiguration_IPv6Address_EndRangeSetting").value);
+						break;
+				}
+			*/	
+				var xml_SetIPv6SettingsResult = HNAP.SetXMLAsync(Set_XML, xml_SetIPv6Profile);
+				
+				//alert("SetIPv6_Auto Configuration_Save");
+				break;
+				
+			}								
+		
+		document.getElementById("CreatePopAlertMessage").style.display = "inline";
+		document.getElementById("REBOOT").style.display = "inline";
+		Time_GetReciprocalTime = window.clearInterval(Time_GetReciprocalTime);
+		Start_reciprocal_Number_Reboot();
+	}
+	
+	function internetV4_show(sel)
+	{
+		var staticIP = document.getElementById("generalBlock_staticIP");
+		
+		
+		if (sel==0)
+		{
+			//alert("staticIP");
+			staticIP.style.display = "inline";	
+			document.getElementById("iPAddress_StaticIP").disabled = false;
+			document.getElementById("defaultGateway_StaticIP").disabled = false;
+			document.getElementById("subnetMask_StaticIP").disabled = false;
+			document.getElementById("primaryDNSAddress_StaticIP").disabled = false;
+			document.getElementById("secondaryDNSAddress_StaticIP").disabled = false;
+			changeFlag = true;
+			save_button_changed();
+			
+		}			
+		else if(sel==1)
+		{
+			//alert("Dynamic");
+			staticIP.style.display = "none";
+			document.getElementById("iPAddress_StaticIP").disabled = true;
+			document.getElementById("defaultGateway_StaticIP").disabled = true;
+			document.getElementById("subnetMask_StaticIP").disabled = true;
+			document.getElementById("primaryDNSAddress_StaticIP").disabled = true;
+			document.getElementById("secondaryDNSAddress_StaticIP").disabled = true;
+			changeFlag = true;
+			save_button_changed();
+		}
+		
+	}
+		
+	function internetV6_show(sel)
+		{
+		var staticv6 = document.getElementById("static_ipv6");
+		var localv6 = document.getElementById("local_ipv6");
+		var autov6 = document.getElementById("auto_ipv6");
+		
+		if (sel==0)
+			{
+			//alert("staticIP");
+			localv6.style.display = "inline";	
+			autov6.style.display = "none";
+			staticv6.style.display = "none";
+			}
+			
+		else if(sel==1)
+			{
+			//alert("Dynamic");
+			localv6.style.display = "none";	
+			autov6.style.display = "none";
+			staticv6.style.display = "inline";
+			}
+			else if(sel==2)
+			{
+			//alert("Dynamic");
+			localv6.style.display = "none";	
+			autov6.style.display = "inline";
+			staticv6.style.display = "none";
+			}
+		}	
+		
+	function DNSipv6(sel)
+	{	
+		if(sel == "yes" && document.getElementById('cb_yes').getAttribute('class') == 'unclick')
+		{
+			cb_yes.setAttribute("class", "clicked");
+			cb_no.setAttribute("class", "unclick");
+			document.getElementById("show_AutoConfiguration_Primary_DNS_Server").style.display   = "none";
+			document.getElementById("show_AutoConfiguration_Secondary_DNS_Server").style.display = "none";
+			changeFlag = true;
+			save_button_changed();						
+		}
+		else if (sel == "no" && document.getElementById('cb_no').getAttribute('class') == 'unclick')
+		{
+			cb_yes.setAttribute("class", "unclick");
+			cb_no.setAttribute("class", "clicked");
+			document.getElementById("show_AutoConfiguration_Primary_DNS_Server").style.display   = "table-row";
+			document.getElementById("show_AutoConfiguration_Secondary_DNS_Server").style.display = "table-row";
+			changeFlag = true;
+			save_button_changed();			
+		}
+	}
+	
+	
+	function Start_reciprocal_Number_Reboot()
+	{
+			
+		if (_ReciprocalRebootNumber == 46)
+		{
+			var xml_DeviceReboot = HNAP.GetXML("Reboot");
+			HNAP.SetXMLAsync("Reboot", xml_DeviceReboot);
+		}
+		
+		document.getElementById("reciprocal_Number_Reboot").innerHTML = _ReciprocalRebootNumber + " " + I18N("j", "Sec");
+		_ReciprocalRebootNumber --;
+		
+		if (_ReciprocalRebootNumber >= 0)
+		{
+			setTimeout("Start_reciprocal_Number_Reboot()", 1000);
+		}
+		else
+		{
+			returnToHome();
+			//document.getElementById("REBOOT").style.display = "none";
+			//document.getElementById("SuccessREBOOT").style.display = "inline";
+		}
+	}
+
+
+	function LanIP_hasChanged()
+	{
+		LanIPhasChanged = 1;
+	}
+	
+	function SubnetMask_hasChanged()
+	{
+		SubnetMaskhasChanged = 1;
+	}
+	
+	function returnToHome()
+	{
+		var Host_Name = sessionStorage.getItem('hostname');
+		self.location.href = "http://" + Host_Name + "/Network.html";
+	}
+	
+	function CheckString(element, value)
+	{
+		element.value = element.value.replace(/\s/g, "");
+	}
+	
+	function ChangeString(element, value)
+	{
+		var ValidRegex = /(^[0-9]+$)/;
+		
+		if (ValidRegex.test(value))
+		{
+			if (parseInt(value) == "0" || parseInt(value) >= "255")
+			{
+				element.value = "100";
+				DHCPRange = 100;
+			}
+			else
+			{
+				DHCPRange = element.value;
+			}
+		}
+		else
+		{
+			element.value = "100";
+			DHCPRange = 100;
+		}
+		
+		$( "#dhcpIPAddressRange2" ).rules( "remove" );
+		$( "#dhcpIPAddressRange2" ).rules( "add", {
+			required: true,
+			range: [DHCPRange, 254],
+			messages: {
+				required: jQuery.validator.messages.number
+			}
+		});
+	}
+</script>
+<script language="JavaScript">
+        // 2013/08/15 Timmy Add
+        $(function() {
+			$("input, textarea, select").change(function () {
+				changeFlag = true;
+				save_button_changed();
+			});
+        });
+        
+        function save_button_changed()
+		{
+			document.getElementById("Save_Disable_btn").style.display = "none";
+			document.getElementById("Save_btn").style.display = "block";
+		}
+		
+</script>
+<style>
+#advancedBlock1 {
+	display: none;
+}
+#local_ipv6 {
+	display: none;
+}
+#auto_ipv6 {
+	display: none;
+}
+#static_ipv6 {
+	display: none;
+}
+
+</style>
+</head>
+
+<body>
+	<form name="network_form" id="network_form" method="POST" action="">
+	<div id="wrapper">
+		<!-------------------- Logo ------------------------->
+		<div id="header"></div>
+		<!-------------------- Menu ------------------------->
+		<div id="menu"></div>
+		<!-------------------- Content ---------------------->
+		<div id="content">
+			<!-------------------- info ---------------------->
+			<div id="info">
+				<div id="FunctionName"><script>I18N("h", "Network");</script></div>
+				<div id="wallimage"><img src="image/page_network2.png" alt="" width="195" height="119"/></div>
+			    <div id="directions">
+			           <script>I18N("h", "Use this section to configure the internal network settings of your Extender. Device Name allows you to configure this device more easily when your network using TCP/IP protocol. You can enter the device name of the Extender into your web browser to access the instead of IP address for configuration. Recommend to change the device name if there're more than one D-Link devices within the subnet. ");</script>
+				</div>
+			</div>
+			<!-------------------- funcBar ---------------------->
+		    <div id="funcBar">		
+				<div id="pagePath">&nbsp;<script>I18N("h", "Settings");</script> >> <script>I18N("h", "Network");</script></div>
+				<ul id="rightFunc">
+					<li style="display:block"><div id="Save_btn" onclick="document.getElementById('sumbit_CheckData').click()" style="cursor:pointer; display:none"><script>I18N("h", "Save");</script></div></li>
+					<li style="display:block"><div id="Save_Disable_btn"><script>I18N("h", "Save");</script></div></li>
+					<input id="sumbit_CheckData" class="submit" type="submit" value="Submit" style="display:none" />
+					<!--<li style="display:block"><a href="javascript:CheckHTMLStatus('AdvancedNetwork');" style="text-decoration:none;" onclick="return confirmExit()"><div id="page_btn" class="linkstyle_1"><script>I18N("h", "Advanced");</script></div></a></li>-->
+				</ul>
+			</div>
+	     	<!-------------------- main ---------------------->
+	     	<div id="main">
+     		   <!-------------------- table ---------------------->
+	     		   
+				<table class="block" style="margin: 10px 0 0 0;">
+				   <tbody>
+					 <tr>
+						<td><div class ="title"><script>I18N("h", "Network Settings");</script></div></td>
+					 </tr>
+				   	<!-- <tr>
+				        <th><script>I18N("h", "LAN IP Address");</script>:</th>
+				        <td><input type="text" class="styled-text required" name="lanIP" size="27" id="lanIP" value="" onkeyup="changeDHCPRange(this.value);" onchange="CheckString(this, this.value);LanIP_hasChanged()" required></input></td>
+				     </tr> -->
+
+				     <tr>
+				        <th><script>I18N("h", "Device Name");</script>:</th>
+								<td width="190px">http:// <input class="styled-text required" name="deviceName" size="18" id="deviceName" value="" maxlength="15"></input></td>
+								<td>.local.</td>
+				     </tr>
+					</tbody>
+				 </table>
+					 <div class="advButton" onclick="showAdv('advancedBlock1');"><script>I18N("h", "Advanced Settings");</script>...</div>
+				  <hr />
+				  <!--------------------Advanced setting--------------->
+				<div id="advancedBlock1" style="display:none">
+					<table class="block">
+					<tbody>
+					 <tr>
+						<td><div class ="title"><script>I18N("h", "IPv4 Device Management Interface");</script></div></td>
+					</tr>
+					<tr>
+						<td colspan = "2"><script>I18N("h","Choose a IPv4 provisioning mechanism to be used by the device.");</script></td>
+					 </tr>
+					 <tr><td>&nbsp;</td></tr>
+					 <tr>
+					 <th><script>I18N("h", "My LAN Connection is");</script>:</th>
+						<td>
+						<div class="styled-select">
+							<select name="connection_Type" onChange="internetV4_show(this.selectedIndex);" id="connection_Type">
+							 	<option value="1">Static IP</option>
+							 	<option value="2">Dynamic IP (DHCP)</option>
+							</select>
+						</div>
+						</td>
+					</tr>
+					<div id="generalBlock_staticIP">
+						<tr>
+					     	<th><script>I18N("h", "IP Address");</script>:</th>
+					     	<td><input class="styled-text required" type="text" name="iPAddress_StaticIP" size="27" id="iPAddress_StaticIP" onchange="CheckString(this, this.value)"></td>
+					     </tr>
+					     <tr>
+					     	<th><script>I18N("h", "Subnet Mask");</script>:</th>
+					     	<td><input class="styled-text required" type="text" name="subnetMask_StaticIP" size="27" id="subnetMask_StaticIP" onchange="CheckString(this, this.value)"></td>
+					     </tr>
+					     <tr>
+					     	<th><script>I18N("h", "Gateway Address");</script>:</th>
+					     	<td><input class="styled-text required" type="text" name="defaultGateway_StaticIP" size="27" id="defaultGateway_StaticIP" onchange="CheckString(this, this.value)"></td>
+					     </tr>
+					   	 <tr>
+					     	<th><script>I18N("h", "Primary DNS Server");</script>:</th>
+							<td><input class="styled-text required" type="text" name="primaryDNSAddress_StaticIP" size="27" id="primaryDNSAddress_StaticIP" onchange="CheckString(this, this.value)"></td>
+					     </tr>
+						 <tr>
+					     	<th><script>I18N("h", "Secondary DNS Server");</script>:</th>
+							<td><input class="styled-text" type="text" name="secondaryDNSAddress_StaticIP" size="27" id="secondaryDNSAddress_StaticIP" onchange="CheckString(this, this.value)"></td>
+					     </tr>
+					</tbody>
+					</table>
+					
+					<br><img src="image/footer.png" alt="" width="900" height="2" /><br>
+					<table class="block" border="0" cellspacing="0" style="margin: 10px 0 0 0;">
+					<tr>
+						<td><div class ="title"><script>I18N("h", "IPv6 Device Management Interface");</script></div></td>
+					</tr>
+					<tr>
+						<td colspan = "2"><script>I18N("h","Choose a IPv6 provisioning mechanism to be used by the device.");</script></td>
+					 </tr>
+					 <tr><td>&nbsp;</td></tr>
+					 <tr>
+					 <th><script>I18N("h", "My IPv6 Connection is");</script>:</th>
+						<td>
+						<div class="styled-select">
+							<select name="connectionIPv6Type" id="connectionIPv6Type" onChange="internetV6_show(this.selectedIndex);">
+							 	<option value="1">Link-local only</option>
+							 	<option value="2">Static IPv6</option>
+								<option value="3">Autoconfiguration (SLAAC/DHCPv6)</option>
+							</select>
+						</div>
+					</tr>
+						<tr><td>&nbsp;</td></tr>
+					</table>
+					
+
+					<div id ="local_ipv6">
+						<table class="block" border="0">
+							<tr><td COLSPAN="2"><script>I18N("h", "The LAN IPv6 Link-Local Address is the IPv6 Address that you use to access the Web-based management interface.");</script></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "LAN IPv6 Link-Local Address");</script>:</th><td><label id="lan_IPv6_Link_Local_Address">N/A</td>
+							</tr>
+						</table>
+					</div>
+					<div id ="auto_ipv6">
+						<table class="block" border="0">
+							<tr><td COLSPAN="3"><script>I18N("h", "Obtain a DNS server address automatically or enter a specific DNS server address.");</script></td>
+							</tr>
+							<tr>	
+								<th></th>
+								<td><div id="cb_yes" class="clicked" OnClick="DNSipv6('yes');"></div></td>
+								<td><script>I18N("h", "Obtain IPV6 Servers automatically.");</script></td>
+							</tr>
+							<tr>
+								<th></th>
+								<td><div id="cb_no" class="unclick" OnClick="DNSipv6('no');"></div></td>
+								<td><script>I18N("h", "Use the following IPv6 DNS Servers.");</script></td>
+							</tr>
+						</table>
+						<table class="block" border="0">
+							<tr id="show_AutoConfiguration_Primary_DNS_Server" style="display:none;">
+								<th><script>I18N("h", "Primary DNS Server");</script>:</th>
+								<td><input class="styled-text required" type="text" name="autoConfiguration_PrimaryDNS" size="30" id="autoConfiguration_PrimaryDNS"></td>
+							</tr>
+							<tr id="show_AutoConfiguration_Secondary_DNS_Server" style="display:none;">
+								<th><script>I18N("h", "Secondary DNS Server");</script>:</th>
+								<td><input class="styled-text" type="text" name="autoConfiguration_SecondaryDNS" size="30" id="autoConfiguration_SecondaryDNS"></td>
+							</tr>
+						</table>
+					</div>
+					<div id ="static_ipv6" style="display:none">
+						<table class="block">
+							<tr>
+								<td COLSPAN=2><script>I18N("h", "Enter the IPv6 address information that you would like to use to access the Web-based management interface.");</script></td>
+							</tr>
+							<tr>  <!--rdy for ipv6 -->
+								<th><script>I18N("h", "IP Address");</script>:</th>
+								<td><input class="styled-text required" type="text" name="staticIPv6_IPv6Address" size="27" id="staticIPv6_IPv6Address" onchange="CheckString(this, this.value)"></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "Subnet Prefix Length");</script>:</th>
+								<td><input class="styled-text required" type="text" name="staticIPv6_subnetPrefixLength" size="27" id="staticIPv6_subnetPrefixLength" onchange="CheckString(this, this.value)"></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "Gateway Address");</script>:</th>
+								<td><input class="styled-text required" type="text" name="staticIPv6_DefaultGateway" size="27" id="staticIPv6_DefaultGateway" onchange="CheckString(this, this.value)"></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "Primary DNS Server");</script>:</th>
+								<td><input class="styled-text required" type="text" name="staticIPv6_PrimaryDNS" size="27" id="staticIPv6_PrimaryDNS" onchange="CheckString(this, this.value)"></td>
+							</tr>
+							<tr>
+								<th><script>I18N("h", "Secondary DNS Server");</script>:</th>
+								<td><input class="styled-text" type="text" name="staticIPv6_SecondaryDNS" size="27" id="staticIPv6_SecondaryDNS" onchange="CheckString(this, this.value)"></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			<div id="CreatePopAlertMessage" style="display:none">
+				<div id="AlertPopRect">
+				<div id="AlertPopBody">
+					<table class="myAlertPop_table" id="REBOOT" border="0" cellspacing="0"  style="display:none">
+						<tbody>
+							<tr>
+								<td>
+									<center><div id="Loading_pop_image"></div></center>
+								</td>
+							</tr>
+							<tr>
+								<td label id="reciprocal_Number_Reboot"></td>
+							</tr>
+							<tr>
+								<td id="dialog_msg_black2"><script>I18N("h", "Your changes are being saved, and the device will need to reboot.");</script></td>
+							</tr>
+						</tbody>
+					</table>
+					<table class="myAlertPop_table_b" id="SuccessREBOOT" border="0" cellspacing="0"  style="display:none">
+						   <tbody>
+								 <tr>
+								 	<td>
+										<center><div id="Information_pop_image"></div></center>
+									</td>
+								 </tr>
+								 <tr>
+									 <td>
+									 	<div id="dialog_msg_black"><script>I18N("h", "The new settings have been saved.");</script></div>
+									 </td>
+								 </tr>
+								 <tr>
+									 <td>
+									 	<center><div id="Confirm_btn" onclick="returnToHome()" style="cursor:pointer"><script>I18N("h", "OK");</script></div><center>
+									 </td>
+								 </tr>
+						   </tbody>
+						</table>
+				</div>
+				</div>
+			</div>
+			<div id="CreatePopAlertMessage2" style="display:none">
+			<div id="AlertPopRect">
+			<div id="AlertPopBody">
+				<table class="myAlertPop_table_b" id="waitSettingFinish" border="0" cellspacing="0">
+				   <tbody>
+						 <tr>
+						 	<td>
+								<center><div id="Loading_pop_image2"></div></center>
+							</td>
+						 </tr>
+						 <tr>
+						 	<td label id="reciprocal_Number"></label></td>
+						 </tr>
+						 <tr>
+						 	<td id="dialog_msg_black2"><script>I18N("h", "Your changes are being saved.");</script></td>
+						 </tr>
+				   </tbody>
+				</table>
+			</div>
+			</div>
+		 	</div>
+		 	<!-- Detect Router Connection, Timmy Add 2013/08/15 -->
+			<div id="DetectRouterConnection" style="display:none"></div>
+			<div id="footer">Copyright &copy; 2013 D-Link Corporation/D-Link Systems, Inc.</div>
+	</div>
+	</div>
+	</div>
+	</form>
+<script type="text/javascript" charset="utf-8">
+	$(document).ready( function() {
+		var customError = "";
+		$.validator.setDefaults( { submitHandler: function(form) { form.submit(); } } );
+		
+		// Check Illegal Char
+		$.validator.addMethod("checkIllegalChar", function( value, element ) {
+			var ValidIpAddressRegex = /(^[A-Za-z0-9]+$)/;
+			var returnVal = true;
+			if (ValidIpAddressRegex.test(value))
+			{
+				returnVal = true;
+			}
+			else
+			{
+				returnVal = false;
+			}
+			return returnVal;
+		}, jQuery.validator.messages.check_IllegalChar);
+		
+		// Check Subnet mask Address
+		$.validator.addMethod("checkSubnetMaskAddress", function( value, element ) {
+			var ValidIpAddressRegex = /(^(255.0.0.0)|(^255.(0|128|192|224|24[08]|25[245]).0.0)|(^255.255.(0|128|192|224|24[08]|25[245]).0)|(^255.255.255.(0|128|192|224|24[08]|25[245])))+$/;
+			var returnVal = true;
+			if (ValidIpAddressRegex.test(value))
+			{
+			//	alert(value);
+				returnVal = true;
+			}
+			else
+			{
+				returnVal = false;
+			}
+			return returnVal;
+		}, jQuery.validator.messages.address_CheckAllRange);
+		
+		// Check IP Address
+		$.validator.addMethod("checkIPAddress", function( value, element ) {
+			//var ValidIpAddressRegex = /(^(192\.168\.([0,1]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\.([0,1]?[1-9]{1,2}|2[0-4][0-9]|25[0-5]))|(^(10\.(([0,1]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\.){2}([0,1]?[1-9]{1,2}|2[0-4][0-9]|25[0-5])))|(^(172\.(1[6-9]|2[0-9]|3[0-1])\.([0,1]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\.([0,1]?[1-9]{1,2}|2[0-4][0-9]|25[0-5]))))+$/;
+			//var ValidIpAddressRegex = /(^(192\.168\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))|(^(10\.(([0,1]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\.){2}([0,1]?[1-9]{1,2}|2[0-4][0-9]|25[0-5])))|(^(172\.(1[6-9]|2[0-9]|3[0-1])\.([0,1]?[0-9]{1,2}|2[0-4][0-9]|25[0-5])\.([0,1]?[1-9]{1,2}|2[0-4][0-9]|25[0-5]))))+$/;
+			var ValidIpAddressRegex = /(^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))+$/;
+			var returnVal = true;
+			if (ValidIpAddressRegex.test(value))
+			{
+			//	alert(value);
+				returnVal = true;
+			}
+			else
+			{
+				returnVal = false;
+			}
+			return returnVal;
+		}, jQuery.validator.messages.address_Check);
+		
+		// Check Secondary DNS Server (Static)
+		$.validator.addMethod("checkStaticDNSServer", function( value, element ) {
+			var GetSecondaryDNSServer = document.getElementById("secondaryDNSAddress_StaticIP").value;
+			var returnVal = true;
+			if (GetSecondaryDNSServer == "")
+			{
+				returnVal = true;
+			}
+			else
+			{
+				var ValidIpAddressRegex = /(^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))+$/;
+				if (ValidIpAddressRegex.test(value))
+				{
+					returnVal = true;
+				}
+				else
+				{
+					returnVal = false;
+				}
+			}
+			return returnVal;
+		}, jQuery.validator.messages.address_Check);
+
+
+		$('#network_form').validate({
+			rules: {
+				// Check IPv4
+				iPAddress_StaticIP: {
+					required: true,
+					checkIPAddress: true
+				},
+				subnetMask_StaticIP: {
+					required: true,
+					checkSubnetMaskAddress: true
+				},
+				deviceName: {
+					required: true,
+					checkIllegalChar: true
+				},
+				defaultGateway_StaticIP: {
+					required: true,
+					checkIPAddress: true
+				},
+				primaryDNSAddress_StaticIP: {
+					required: true,
+					checkIPAddress: true
+				},
+				secondaryDNSAddress_StaticIP: {
+					required: false,
+					checkStaticDNSServer: true
+				},
+				// Check IPv6
+				staticIPv6_IPv6Address: {
+					required: true,
+					checkIPv6Format: true
+				},
+				staticIPv6_subnetPrefixLength: {
+					required: true,
+					checkNumber: true
+				},
+				staticIPv6_DefaultGateway: {
+					required: true,
+					checkIPv6Format: true
+				},
+				staticIPv6_PrimaryDNS: {
+					required: true,
+					checkIPv6Format: true
+				},
+				staticIPv6_SecondaryDNS: {
+					required: false,
+					checkSecondaryIPv6Format: true
+				},
+				autoConfiguration_PrimaryDNS: {
+					required: true,
+					checkIPv6Format: true
+				},
+				autoConfiguration_SecondaryDNS: {
+					required: false,
+					checkSecondaryIPv6Format: true
+				}
+			},
+			messages: {
+				// Check IPv4
+				iPAddress_StaticIP: {
+					required: jQuery.validator.messages.ip
+				},
+				subnetMask_StaticIP: {
+					required: jQuery.validator.messages.subnet_Mask
+				},
+				deviceName: {
+					required: jQuery.validator.messages.device_Name
+				},
+				defaultGateway_StaticIP: {
+					required: jQuery.validator.messages.ip
+				},
+				primaryDNSAddress_StaticIP: {
+					required: jQuery.validator.messages.ip
+				},
+				// Check IPv6
+				staticIPv6_IPv6Address: {
+					required: jQuery.validator.messages.ipv6
+				},
+				staticIPv6_subnetPrefixLength: {
+					required: jQuery.validator.messages.number
+				},
+				staticIPv6_DefaultGateway: {
+					required: jQuery.validator.messages.ipv6
+				},
+				staticIPv6_PrimaryDNS: {
+					required: jQuery.validator.messages.ipv6
+				},
+				staticIPv6_SecondaryDNS: {
+					required: jQuery.validator.messages.ipv6
+				},
+				autoConfiguration_PrimaryDNS: {
+					required: jQuery.validator.messages.ipv6
+				},
+				autoConfiguration_SecondaryDNS: {
+					required: jQuery.validator.messages.ipv6
+				},
+			//	dhcpIPAddressRange2: {
+			//		required: jQuery.validator.messages.number
+			//	}
+			},
+			submitHandler: function(form) {
+				CheckConnectionStatus();
+			},
+		});
+	});
+</script>
+</body>
+<script type="text/javascript">
+	Load_HTML();
+	Initial();
+	checkTimeout();
+</script>
+</html>

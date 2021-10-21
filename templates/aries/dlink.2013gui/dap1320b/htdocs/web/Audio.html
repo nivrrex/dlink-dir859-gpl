@@ -1,0 +1,318 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns= "http://www.w3c.org/1999/xhtml" xml:lang="zh_TW" lang="zh_TW">
+
+<head>
+<title>D-LINK</title>
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/css">
+<link rel="stylesheet" type="text/css" href="css/style_pages.css" media="all" />
+<link href="css/jquery.selectbox.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" charset="utf-8" src="./js/comm.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/hmac_md5.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/libajax.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/hnap.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/i18n.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/pagetool.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/checkTimeout.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/jquery.selectbox-0.2_new.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/jquery.validate.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/includeLang.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/messageDescription.js"></script>
+
+<script>
+$(document).ready(function(){
+	
+	presetCheckBox("dlnaMediaServer_status", true);
+	presetCheckBox("airplay_status", true);
+	
+	//jquery
+	$("div.checkbox_on" || "div.checkbox_off").click(function(e) {
+	 var checkboxId =  e.target.id +'_ck';	 
+		if(e.target.getAttribute("class") == "checkbox_on") {
+			var disable = I18N("j","Disabled");
+			e.target.setAttribute("class", "checkbox_off");
+			e.target.setAttribute("className", "checkbox_off");
+			document.getElementById(e.target.id).innerHTML='<input type="checkbox" name=' + e.target.id + ' id=' + checkboxId + ' checked>'+disable;
+			document.getElementById(checkboxId).checked=false;
+			
+			if (checkboxId == "dlnaMediaServer_status_ck")
+			{
+			
+			}
+			
+
+			
+			changeFlag = true;
+			save_button_changed();
+		}
+		else {
+			var enable = I18N("j","Enabled");
+			e.target.setAttribute("class", "checkbox_on");
+			e.target.setAttribute("className", "checkbox_on");
+			document.getElementById(e.target.id).innerHTML='<input type="checkbox" name=' + e.target.id + ' id=' + checkboxId + ' checked="">'+enable;
+			document.getElementById(checkboxId).checked=true;
+			
+			if (checkboxId == "dlnaMediaServer_status_ck")
+			{
+				
+			}
+			
+			changeFlag = true;
+			save_button_changed();
+		}
+	});
+	
+	GetXML();
+});
+</script>
+<script type="text/javascript">
+
+
+	var HNAP = new HNAP_XML();
+
+
+	function Load_HTML()
+	{ 
+		$("#header").load("header.html");
+	}
+	
+	function Initial()
+	{
+		initialMenu();
+		initialDetectRouterConnection();
+	}
+	
+		
+	function GetXML()
+	{
+		var xml_GetDLNA = HNAP.GetXML("GetAudioRenderSettings");
+
+		// DLNA Status
+		var dlnaEnabled = xml_GetDLNA.Get("GetAudioRenderSettingsResponse/DLNA");
+		var alrplayEnabled = xml_GetDLNA.Get("GetAudioRenderSettingsResponse/AirPlay");
+		var getDLNAServiceName = xml_GetDLNA.Get("GetAudioRenderSettingsResponse/MediaName");
+		
+		if (dlnaEnabled == "true")
+		{
+			presetCheckBox("dlnaMediaServer_status", true);
+		}
+		else
+		{
+			presetCheckBox("dlnaMediaServer_status", false);
+		}
+		
+		if (alrplayEnabled == "true")
+		{
+			presetCheckBox("airplay_status", true);
+		}
+		else
+		{
+			presetCheckBox("airplay_status", false);
+		}
+		document.getElementById("audio_name").value  = getDLNAServiceName;
+	}
+		
+	function SetXML()
+	{
+		var xml_SetDLNA = HNAP.GetXML("SetAudioRenderSettings");	
+		
+		// DLNA Status
+		if(document.getElementById("dlnaMediaServer_status_ck").checked === true)
+		{
+			xml_SetDLNA.Set("SetAudioRenderSettings/DLNA", "true");
+		}
+		else
+		{
+			xml_SetDLNA.Set("SetAudioRenderSettings/DLNA", "false");
+		}
+		
+		// airplay Status
+		
+		if(document.getElementById("airplay_status_ck").checked === true)
+		{
+			xml_SetDLNA.Set("SetAudioRenderSettings/AirPlay", "true");
+		}
+		else
+		{
+			xml_SetDLNA.Set("SetAudioRenderSettings/AirPlay", "false");
+		}
+		// DLNA Description
+		var dlna_MediaServerName = document.getElementById("audio_name").value;
+		xml_SetDLNA.Set("SetAudioRenderSettings/MediaName", dlna_MediaServerName);
+		
+		var xml_SetDLNAResult = HNAP.SetXMLAsync("SetAudioRenderSettings", xml_SetDLNA);
+		// alert(xml_SetDLNAResult.Get("SetDLNAResponse/SetDLNAResult"));
+		
+		document.getElementById("CreatePopAlertMessage").style.display = "inline";
+		setTimeout("waitSettingFinished()", 1000);
+	}
+	
+
+	
+	function waitSettingFinished()
+	{
+		window.location.reload();
+	}
+	
+	function CheckConnectionStatus()
+	{
+		$.ajax({
+			cache : false,
+			url : "./js/CheckConnection",
+			timeout : 2000,
+			type : "GET",
+			success : function(data) { SetXML(); }, 
+			error : function() { document.getElementById("DetectRouterConnection").style.display = "inline"; }
+		});
+	}
+
+		
+</script>
+<script language="JavaScript">
+        // 2013/08/15 Timmy Add
+        $(function() {
+			$("input, textarea, select").change(function () {
+				changeFlag = true;
+				save_button_changed();
+			});
+        });
+        
+        function save_button_changed()
+		{
+			document.getElementById("Save_Disable_btn").style.display = "none";
+			document.getElementById("Save_btn").style.display = "block";
+		}
+</script>
+
+
+
+<style>
+
+</style>
+
+</head>
+
+<body>
+	<form name="audio_form" id="audio_form" method="POST" action="">
+	<div id="wrapper">
+		<!-------------------- Logo ------------------------->
+		<div id="header"></div>
+		<!-------------------- Menu ------------------------->
+		<div id="menu"></div>
+		<!-------------------- Content ---------------------->
+		<div id="content">
+		<!-------------------- info ---------------------->
+         <div id="info"> 			
+				<div id="FunctionName"><script>I18N("h", "Audio Renderer");</script></div>
+				<div id="wallimage"><img src="image/Audio_Renderer.png" alt="" width="195" height="119"/></div>
+		      	<div id="directions">
+					<script>I18N("h", "DLNA technology allows you to enjoy your media anywhere, anytime in your home with DLNA-certified devices. Your music can be streamed wirelessly from DLNA-certified DMS (Digital Media Server) devices. You can also stream music to the speaker connects to your device through iOS device at home effortlessly.");</script>
+				</div>
+	     </div> 
+	     <!-------------------- funcBar ---------------------->   
+	     <div id="funcBar">
+			<div id="pagePath">&nbsp;<script>I18N("h", "Settings");</script> >> <script>I18N("h", "Audio Renderer");</script></div>
+			<ul id="rightFunc">
+				<li style="display:block"><div id="Save_btn" onclick="document.getElementById('sumbit_CheckData').click()" style="cursor:pointer; display:none"><script>I18N("h", "Save");</script></div></li>
+				<li style="display:block"><div id="Save_Disable_btn"><script>I18N("h", "Save");</script></div></li>
+				<input id="sumbit_CheckData" class="submit" type="submit" value="Submit" style="display:none" />
+			</ul>
+		</div>		
+	   	 <!-------------------- main ---------------------->   
+		<br />
+	    <div id="main">
+		   <table class="block" border="0" >
+			   <tbody>
+
+				<tr>
+								<th><script>I18N("h", "DLNA Renderer Status");</script>:</th>
+								<td><div id="dlnaMediaServer_status" class="checkbox_on"><input type="checkbox" name="dlnaMediaServer_status" id="dlnaMediaServer_status_ck" checked></div></td>
+				</tr>
+				<tr>
+							<th><script>I18N("h", "AirPlay Status");</script>:</th>
+							<td><div id="airplay_status" class="checkbox_on"><input type="checkbox" name="airplay_status" id="airplay_status_ck" checked></div></td>
+				</tr>			
+				<tr>			
+							<th><script>I18N("h", "Device Name");</script>:</th>
+							<td>
+							<input type="text" class="styled-text required" size="30" id="audio_name" name="audio_name" onClick="this.select();">
+							</td>
+				 </tr>
+			   </tbody>
+			</table> 
+		<div id="CreatePopAlertMessage" style="display:none">
+			<div id="AlertPopRect">
+			<div id="AlertPopBody">
+				<table class="myAlertPop_table_b" id="waitSettingFinish" border="0" cellspacing="0">
+				   <tbody>
+						 <tr>
+						 	<td>
+								<center><div id="Loading_pop_image2"></div></center>
+							</td>
+						 </tr>
+						 <tr>
+						 	<td label id="reciprocal_Number"></label></td>
+						 </tr>
+						 <tr>
+						 	<td id="dialog_msg_black2"><script>I18N("h", "Your changes are being saved.");</script></td>
+						 </tr>
+				   </tbody>
+				</table>
+			</div>
+			</div>
+		 </div>
+		<!-- Detect Router Connection, Timmy Add 2013/08/15 -->
+		
+		<div id="DetectRouterConnection" style="display:none"></div>
+	</div>
+	</div>	
+		<div id="footer">Copyright &copy; 2013 D-Link Corporation/D-Link Systems, Inc.</div>
+	
+	</div>
+</form>
+		
+<script type="text/javascript" charset="utf-8">
+	$(document).ready( function() {
+		$.validator.setDefaults( { submitHandler: function(form) { form.submit(); } } );
+			
+		// Check Device Password
+		$.validator.addMethod("checkDeviceName", function( value, element ) {
+			var returnVal = true;
+			if (value.length > 0)
+			{
+				returnVal = false;
+			}
+			return returnVal;
+		}, jQuery.validator.messages.device_Name);
+		
+		$('#audio_form').validate({
+		rules: {
+				audio_name: {
+					required: true,
+				
+				}
+			},
+			messages: {
+				audio_name: {
+					required: jQuery.validator.messages.device_Name
+				}
+			},
+			
+			submitHandler: function(form) {
+				CheckConnectionStatus();
+				}
+			
+		});
+	});
+</script>
+</body>
+<script type="text/javascript">
+	Load_HTML();
+	Initial();
+	GetXML();
+	checkTimeout();
+</script>
+</html>

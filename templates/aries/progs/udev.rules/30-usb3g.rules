@@ -1,0 +1,17 @@
+# Before Mode Switch
+ACTION=="add",KERNEL=="sr*",SUBSYSTEM=="block",SUBSYSTEMS=="usb",DRIVERS=="usb",RUN+="/usr/sbin/usb3gkit -v 0x%s{idVendor} -p 0x%s{idProduct}"
+ACTION=="add",KERNEL=="sd*",SUBSYSTEM=="block",ATTRS{removable}=="0",ATTRS{idVendor}=="07d1",ATTRS{idProduct}=="a800",RUN+="/usr/sbin/usb3gkit -v 0x%s{idVendor} -p 0x%s{idProduct}"
+ACTION=="add",KERNEL=="sd*[0-9]",ATTRS{idVendor}=="0408",ATTRS{idProduct}=="1000",RUN+="/usr/sbin/usb3gkit -v 0x%s{idVendor} -p 0x%s{idProduct}"
+ACTION=="add",KERNEL=="sd*",SUBSYSTEM=="block",ATTRS{removable}=="0",ATTRS{idVendor}=="0408",ATTRS{idProduct}=="f000",RUN+="/usr/sbin/usb3gkit -v 0x%s{idVendor} -p 0x%s{idProduct}"
+ACTION=="add",KERNEL=="sd*",ATTRS{idVendor}=="1fac",ATTRS{idProduct}=="0130",RUN+="/usr/sbin/usb3gkit -v 0x%s{idVendor} -p 0x%s{idProduct}"
+
+ACTION=="add",KERNEL=="sd*[0-9]",ATTRS{idVendor}=="0fce",ATTRS{idProduct}=="d103",RUN+="/usr/sbin/usb3gkit -v 0x%s{idVendor} -p 0x%s{idProduct}"
+ACTION=="add",KERNEL=="sd*[0-9]",ATTRS{idVendor}=="0fce",ATTRS{idProduct}=="d0cf",RUN+="/usr/sbin/usb3gkit -v 0x%s{idVendor} -p 0x%s{idProduct}"
+ACTION=="add",KERNEL=="sd*",ATTRS{idVendor}=="2001",ATTRS{idProduct}=="98ff",RUN+="/usr/sbin/usb3gkit -v 0x%s{idVendor} -p 0x%s{idProduct}"
+ACTION=="add",KERNEL=="sda",ATTRS{idVendor}=="1bbb",ATTRS{idProduct}=="f000",RUN+="/usr/sbin/usb3gkit -v 0x%s{idVendor} -p 0x%s{idProduct}"
+
+#3g data device
+DEVPATH=="/devices/platform/*/usb*/*",KERNEL=="ttyUSB*",SUBSYSTEM=="tty",RUN+="/usr/sbin/usb3gkit -v 0x%s{idVendor} -p 0x%s{idProduct} -s USB-1 -d %s{devnum} -i %s{bInterfaceNumber}"
+DEVPATH=="/devices/platform/*/usb*/*",KERNEL=="ttyACM*",SUBSYSTEM=="tty",RUN+="/usr/sbin/usb3gkit -v 0x%s{idVendor} -p 0x%s{idProduct} -s USB-1 -d %s{devnum} -i %s{bInterfaceNumber}"
+# For LTE
+DEVPATH=="/devices/platform/*",KERNEL=="wan*",SUBSYSTEM=="net",RUN+="/usr/sbin/usb3gkit -g LTE_QMI -v 0x%s{idVendor} -p 0x%s{idProduct} -s USB-1 -d %s{devnum} -i %s{bInterfaceNumber}"

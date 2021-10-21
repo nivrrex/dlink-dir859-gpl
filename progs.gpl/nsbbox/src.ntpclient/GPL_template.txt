@@ -1,0 +1,19 @@
+Module name: ntpclient
+
+Module version: 2000.345
+
+Copyright:
+Copyright 2000 Larry Doolittle <LRDoolittle@lbl.gov> Last hack: 28 November, 2000	
+Copyright 1997, 1999, 2000 Larry Doolittle <larry@doolittle.boa.org> Last hack: 2 December, 2000
+
+License type: GPLv2
+
+Download URL:
+http://doolittle.icarus.com/ntpclient/
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: @@modday@@
+
+------------------------------------------------------------------------

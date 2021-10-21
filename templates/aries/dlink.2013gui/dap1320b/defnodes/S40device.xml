@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<SiGnAtUrE>
+	<runtime>
+		<device>
+			<wlandriver>BGN band: MT7620A</wlandriver>
+			<modelname>DAP-1320</modelname>
+			<producturl>http://www.dlink.com</producturl>
+			<description>D-Link Wireless Range Extender</description>
+		</device>
+	</runtime>
+</SiGnAtUrE>

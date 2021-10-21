@@ -1,0 +1,19 @@
+Module name: libnl-tiny
+
+Module version: 0.1
+
+Copyright:
+Copyright (c) 2003-2008 Thomas Graf <tgraf@suug.ch>	
+(c) UCB 1982-1988 Ross Biro Fred N. van Kempen, <waltje@uWalt.NL.Mugnet.ORG>	
+
+License type: LGPL-2.1
+
+Download URL:
+https://gitlab.labs.nic.cz/turris/openwrt/tree/228d1c4df21088ffb0f2e087eae8c4323ad05760/package/libs/libnl-tiny
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: @@modday@@
+
+------------------------------------------------------------------------

@@ -1,0 +1,7 @@
+#Get uevent from gpio button module(button-hotplug.ko)
+# Reset button
+SUBSYSTEM=="button_reset", ACTION=="pressed" , RUN+="/etc/scripts/gpio-button.sh reset pressed"
+SUBSYSTEM=="button_reset", ACTION=="released" , RUN+="/etc/scripts/gpio-button.sh reset released"
+# WPS button
+SUBSYSTEM=="button_wps", ACTION=="pressed" , RUN+="/etc/scripts/gpio-button.sh wps pressed"
+SUBSYSTEM=="button_wps", ACTION=="released" , RUN+="/etc/scripts/gpio-button.sh wps released"

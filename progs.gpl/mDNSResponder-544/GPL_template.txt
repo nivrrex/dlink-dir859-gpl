@@ -1,0 +1,24 @@
+Module name: mDNSResponder
+
+Module version: 544
+
+Copyright:
+Copyright (c) 1997-2013 Apple Computer, Inc. All rights reserved.
+Copyright (C) 1995-1999 WIDE Project. All rights reserved.	
+Copyright (C) 2004 National ICT Australia Ltd	
+Copyright (c) 1999-2002 The OpenSSL Project. All rights reserved.	
+Copyright (c) 1997 - 1999 Microsoft Corporation All rights reserved	
+Copyright (c) 1997 - 1999 Hewlett-Packard Company.	
+Copyright (C) 1995-1998 Eric Young (eay@cryptsoft.com) All rights reserved.
+
+License type: Apachev2, BSD-3-Clause, APSL, OpenSSL
+
+Download URL:
+https://opensource.apple.com/tarballs/mDNSResponder/mDNSResponder-544.tar.gz
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: @@modday@@
+
+------------------------------------------------------------------------

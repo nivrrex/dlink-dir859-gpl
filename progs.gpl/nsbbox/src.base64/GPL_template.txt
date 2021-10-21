@@ -1,0 +1,18 @@
+Module name: base64
+
+Module version: 1.00
+
+Copyright:
+Copyright (c) GoAhead Software Inc., 1995-2000. All Rights Reserved.
+
+License type: GoAhead
+
+Download URL:
+http://smileos.googlecode.com/svn/trunk/GoAhead/src/goahead
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: @@modday@@
+
+------------------------------------------------------------------------

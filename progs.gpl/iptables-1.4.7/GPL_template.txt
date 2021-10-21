@@ -1,0 +1,71 @@
+Module name: iptables
+
+Module version: 1.4.7
+
+Copyright:
+Copyright (c) 1986 by University of Toronto. Written by Henry Spencer. Not derived from licensed software.	
+(C) 2000 Emmanuel Roger <winfield@freegates.be>	
+(C) 2003 Matthew Strait, Ethan Sommer, Justin Levandoski	
+Copyright (C) 2003-2004 Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>	
+Copyright (C) 2000-2002 Joakim Axelsson <gozem@linux.nu> Patrick Schaaf <bof@bof.de> Martin Josefsson <gandalf@wlug.westbo.se>	
+Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 Free Software Foundation, Inc. This Makefile.in is free software; the Free Software Foundation gives unlimited permission to copy and/or distribute it, with or without modifications, as long as this notice is preserved.	
+(C) 2002 Harald Welte and cls_layer7.c (C) 2003 Matthew Strait, Ethan Sommer, Justin Levandoski.	
+(C) 2000 Emmanuel Roger <winfield@freegates.be>,	
+c Eychenne <rv@wallfire.org>	
+Copyright c CC Computer Consultants GmbH, 2007 Contact: <jengelh@computergmbh.de>	
+Copyright c CC Computer Consultants GmbH, 2007 Contact: Jan Engelhardt <jengelh@computergmbh.de>	
+Copyright c CC Computer Consultants GmbH, 2007 - 2008 Jan Engelhardt <jengelh@computergmbh.de>	
+Copyright (C) 2006 Red Hat, Inc., James Morris <jmorris@redhat.com>	
+Copyright (C) 2004, 2005, 2007, 2008 Free Software Foundation, Inc. Written by Gary V. Vaughan, 2004	
+Copyright (C) 2002,2004 MARA Systems AB <http://www.marasystems.com> by Henrik Nordstrom <hno@marasystems.com>	
+Copyright (C) 2000, Jean-Marc Saffroy <saffroy@mail.com>	
+Copyright (C) 2000, Ga?l Roualland <gael.roualland@iname.com>	
+Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 Free Software Foundation, Inc.	
+(C) 2005 by Harald Welte <laforge@netfilter.org>	
+(C) 2003 by Harald Welte <laforge@gnumonks.org>	
+(C) 2003, 2004, 2005, 2006, 2007 Matthew Strait and Ethan Sommer.	
+(C) 2002,2004 MARA Systems AB <http://www.marasystems.com> by Henrik Nordstrom <hno@marasystems.com>	
+(C) 2001 Marc Boucher (marc@mbsi.ca).	
+(C) 2000 Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>	
+(C) 2000-2002 by Harald Welte <laforge@gnumonks.org> based on previous code from Rusty Russell <rusty@linuxcare.com.au>	
+Copyright c Martin F. Krafft <madduck@madduck.net> Released under the terms of the Artistic Licence 2.0	
+Copyright c CC Computer Consultants GmbH, 2007 Jan Engelhardt <jengelh@computergmbh.de>
+Copyright (C) 2008 Matthew Strait, Ethan Sommer
+Copyright (c) 2007 Sven Schnelle <svens@bitebene.org>	
+Copyright (C) 2007 BalaBit IT Ltd.	
+Copyright (C) 2006 USAGI/WIDE Project	
+Copyright (c) 2003+ Evgeniy Polyakov <zbr@ioremap.net>	
+Copyright (c) 2003+ Evgeniy Polyakov <johnpol@2ka.mxt.ru>	
+Copyright (C) 2002-2008 BalaBit IT Ltd.	
+Copyright (c) 2000 Marc Boucher	
+Copyright (C) 2000 Emmanuel Roger <winfield@freegates.be>	
+Copyright (C) 1996, 1997, 1999, 2000, 2002, 2003, 2004, 2005, 2006, 2008, 2009 Free Software Foundation, Inc. Originally by Fran,cois Pinard <pinard@iro.umontreal.ca>, 1996.	
+Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 Free Software Foundation, Inc. This file is Copyright (C) 1994 X Consortium	
+Copyright (C) 1989, 1991 Free Software Foundation, Inc. 675 Mass Ave, Cambridge, MA 02139, USA Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.	
+copyright by Martin F. Krafft. PP This manual page was written by Martin F. Krafft <madduck@madduck.net> PP Permission is granted to copy, distribute and/or modify this document under the terms of the Artistic License 2.0.	
+Copyright 2006 UfoMechanic Author: azez@ufomechanic.net This code is distributed and licensed under the terms of GNU GPL v2	
+(C) 2009 Kwest Wan <kwest_wan@cn.alphanetworks.com>	
+(C) 2009 by Pablo Neira Ayuso <pablo@netfilter.org>	
+(C) 2006 Ufo Mechanic <azez@ufomechanic.net>	
+(C) 2005 Harald Welte <laforge@netfilter.org>	
+(C) 2003-2009 Matthew Strait and Ethan Sommer.	
+(C) 2003-2004 by Harald Welte <laforge@netfilter.org>	
+(C) 2002 by Don Cohen <don-netf@isis.cs3-inc.com> Released under the terms of GNU GPL v2	
+(C) 2000 by Matthew G. Marsh <mgm@paktronix.com> This software is distributed under GNU GPL v2, 1991	
+(C) 2000 by Harald Welte <laforge@netfilter.org> */	
+(C) 2000-2006 by the netfilter coreteam <coreteam@netfilter.org>:	
+(C) 2000- 2002 by Matthew G. Marsh <mgm@paktronix.com>, Harald Welte <laforge@gnumonks.org>	
+(C) 1999 Paul ``Rusty'' Russell - Placed under the GNU GPL (See COPYING for details).	
+(C) 1999 by Paul 'Rusty' Russell <rusty@rustcorp.com.au>
+
+License type: GPLv2
+
+Download URL:
+http://www.netfilter.org/downloads.html
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: @@modday@@
+
+------------------------------------------------------------------------

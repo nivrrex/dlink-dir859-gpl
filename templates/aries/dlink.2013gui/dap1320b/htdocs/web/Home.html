@@ -1,0 +1,3275 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns= "http://www.w3c.org/1999/xhtml" xml:lang="zh_TW" lang="zh_TW">
+
+<head>
+	<title>D-LINK</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=9">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="Content-Type" content="text/css">
+	<link rel=stylesheet type="text/css" href="css/style_h.css" media="all" />
+	<link href="css/jquery.selectbox.css" type="text/css" rel="stylesheet" />
+	<script type="text/javascript" charset="utf-8" src="./js/comm.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/hmac_md5.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/libajax.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/hnap.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/i18n.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/jquery-1.8.2.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/jquery.validate.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/pagetool.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/checkTimeout.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/includeLang.js"></script>
+	<script type="text/javascript" charset="utf-8" src="./js/messageDescription.js"></script>
+
+	<script type="text/javascript">
+
+		function ini() {
+			// JQuery: Map
+			$("#internetIcon").css("display", "none");
+			$("#internetIcon").fadeIn(1000);
+			$("#extenderIcon").css("display", "none");
+			$("#extenderIcon").delay(100).fadeIn(1000);
+		  	$("#wirelessIcon2").css("display", "none");
+			$("#wirelessIcon2").delay(300).fadeIn(1000);
+			$("#line_wan").css("display", "none");
+			$("#line_wan").delay(500).fadeIn(1000);
+			$("#wan_light").css("display", "none");
+			$("#wan_light").delay(500).fadeIn(1000);
+		  	$("#line_wifi2").css("display", "none");
+			$("#line_wifi2").delay(500).fadeIn(1000);
+			$("#wan_Light").css("display", "none");
+			$("#wan_Light").delay(600).fadeIn(1500);
+			$("#audioIcon").css("display", "none");
+			$("#audioIcon").delay(400).fadeIn(1000);
+			$("#line_usb").css("display", "none");
+			$("#line_usb").delay(500).fadeIn(1000);
+		}
+
+		window.onload = ini;
+
+		function Load_HTML()
+		{
+			$("#header").load("header.html");
+		}
+
+		function Initial()
+		{
+			initialMenu();
+			initialDetectRouterConnection();
+		}
+		
+		//Betty Test: Information
+		var oldFlag;
+		var newFlag;
+		function showList(element) {
+			newFlag = element;
+			if(oldFlag!=newFlag)
+			{
+				document.getElementById("extenderInfo").style.display = 'none';
+				document.getElementById("InternetInfo").style.display = 'none';
+				document.getElementById("AudioInfo").style.display = 'none';
+				document.getElementById(newFlag).style.display = 'inline';
+		  	}
+		  oldFlag = element;
+		}
+
+		// Timmy Add:
+		function mouseOver(obj, status)
+		{
+			switch(status)
+			{
+				case "CONNECTED":
+					obj.src = "./image/router.gif";
+					break;
+				case "DISCONNECTED":
+					obj.src = "./image/internet.gif"; //need router_.gif 
+					break;
+				default:
+					obj.src = "./image/router.gif";
+					break;
+			}
+		}
+
+		function mouseOut(obj, status)
+		{
+			switch(status)
+			{
+				case "CONNECTED":
+					obj.src = "./image/router.gif";
+					break;
+				case "DISCONNECTED":
+					obj.src = "./image/internet.gif"; //need router_.gif 
+					break;
+				default:
+					obj.src = "./image/router.gif";
+					break;
+			}
+		}
+
+
+
+		function mouseOverW(obj, status)
+		{
+			switch(status)
+			{
+				case "CONNECTED":
+					obj.src = "./image/wifiClient_.gif";
+					break;
+				case "DISCONNECTED":
+					obj.src = "./image/wifiClient.gif";
+					break;
+				default:
+					obj.src = "./image/wifiClient.gif";
+					break;
+			}
+		}
+
+		function mouseOutW(obj, status)
+		{
+			switch(status)
+			{
+				case "CONNECTED":
+					obj.src = "./image/wifiClient_.gif";
+					break;
+				case "DISCONNECTED":
+					obj.src = "./image/wifiClient.gif";
+					break;
+				default:
+					obj.src = "./image/wifiClient.gif";
+					break;
+			}
+		}
+		
+				function mouseOverA(obj, status)
+		{
+			switch(status)
+			{
+				case "CONNECTED":
+					obj.src = "./image/audio_topology_.gif";
+					break;
+				case "DISCONNECTED":
+					obj.src = "./image/audio_topology.gif";
+					break;
+				default:
+					obj.src = "./image/audio_topology.gif";
+					break;
+			}
+		}
+
+		function mouseOutA(obj, status)
+		{
+			switch(status)
+			{
+				case "CONNECTED":
+					obj.src = "./image/audio_topology_.gif";
+					break;
+				case "DISCONNECTED":
+					obj.src = "./image/audio_topology.gif";
+					break;
+				default:
+					obj.src = "./image/audio_topology.gif";
+					break;
+			}
+		}
+	
+	</script>
+
+	<script type="text/javascript">
+
+		var HNAP = new HNAP_XML();
+		var GetFlagA = new Boolean();
+		var GetFlagB = new Boolean();
+
+		GetFlagA = false;
+		GetFlagB = false;
+		//ipv4 WAN time
+		var wan_Uptime_Sec;
+		var wan_Uptime_Min;
+		var wan_Uptime_Hour;
+		var wan_Uptime_Day;
+		//ipv6 WAN time
+		var wanv6_Uptime_Sec;
+		var wanv6_Uptime_Min;
+		var wanv6_Uptime_Hour;
+		var wanv6_Uptime_Day;
+
+		var _ReciprocalRebootNumber = 60;
+		var _WPSNumber = 120;
+			
+		var wizard_Step = 0;
+		var DetectTimerNumber = 0;
+		var GetTriggerResult = "0";
+		var GetStatusResult = "0";
+		var GetStatusCount = 0;
+		var GetStatusRestart = 0;
+		var DetectStatusResult = 0;
+		var DetectStatusCount = 0;
+		var DetectStatusRestart = 0;
+		var IsAlreadyGetWireless = "0";
+		var IsRegristed = "0";
+		var GetFirmwareStatusTimeOut = 0;
+		var xml_GetFirmwareStatus;
+		var IsClickedWizard = 0;
+		var Time_GetWanConnectionType;
+		var Time_GetInternetConnectionStatus;
+		var Time_GetConnectionUpTime;
+		var Time_GetConnectionUpTime_IPv6;
+		
+		var IsWPS = "0";
+
+		function String_UC(str)
+		{
+			str = str.toUpperCase();
+
+			return str;
+		}
+		
+
+		function GetStatusXML()
+		{
+			var xml_GetWanStatus = HNAP.GetXML("GetWanStatus");
+			var xml_GetAPClient = HNAP.GetXML("GetAPClientSettings", new Array("RadioID", "RADIO_2.4GHz"));
+			var getAPCSSID_24 = xml_GetAPClient.Get("GetAPClientSettingsResponse/SSID");
+			var getAPC_MAC = xml_GetAPClient.Get("GetAPClientSettingsResponse/MacAddress");
+			
+			document.getElementById("index_ShowAPC24GSSID").innerHTML = getAPCSSID_24;
+			
+			
+	////////////////////////////not correct status ////////////////////////////
+	///////////////////////////temp use display    /////////////////////////////
+			// Network Status       			
+			var xml_GetWanStatus = HNAP.GetXML("GetWanStatus");
+						
+			var getNetworkStatus = xml_GetWanStatus.Get("GetWanStatusResponse/Status");
+						 
+			if (getNetworkStatus == "CONNECTED")
+			{
+				var xml_GetWanSettings = HNAP.GetXML("GetWanSettings"); 
+
+				document.getElementById("index_ShowNetworkStatus").innerHTML = I18N("j", "Connected");
+				
+					var getIPAddress = xml_GetWanSettings.Get("GetWanSettingsResponse/IPAddress");
+					var getSubnetmask = xml_GetWanSettings.Get("GetWanSettingsResponse/SubnetMask");
+					var getDefaultgateway = xml_GetWanSettings.Get("GetWanSettingsResponse/Gateway");
+
+				if (getIPAddress != "")
+				{
+					document.getElementById("index_ShowIPAddress").innerHTML = getIPAddress;
+					document.getElementById("internet_image").src = "./image/router.gif";
+					document.getElementById("internet_image").onmouseover = function () { mouseOver(this, getNetworkStatus) };
+					document.getElementById("internet_image").onmouseout = function () { mouseOut(this, getNetworkStatus) };
+					document.getElementById("wan_Light").src = "./image/connected.png";
+					document.getElementById("internet_warning").style.display = "none";
+					document.getElementById("internetIcon").onmousedown= function(){showList('InternetInfo');GetInternetInformation();return false;};
+				}
+				else
+				{
+					document.getElementById("index_ShowIPAddress").innerHTML = "N/A";
+					document.getElementById("internet_image").src = "./image/internet.gif";
+					document.getElementById("internet_image").onmouseover = function () { mouseOver(this, "DISCONNECTED") };
+					document.getElementById("internet_image").onmouseout = function () { mouseOut(this, "DISCONNECTED") };
+					document.getElementById("wan_Light").src = "./image/warning.png";
+					document.getElementById("internet_warning").style.display = "inline";
+					document.getElementById("internetIcon").onmousedown= function(){ showList('uplink_warning'); Uplinkdontlink();return false;};
+					
+					
+				}
+				//Submask
+				if (getSubnetmask != "")
+				{
+					document.getElementById("index_ShowSubnetMask").innerHTML = getSubnetmask;
+				}
+				else
+				{
+					document.getElementById("index_ShowSubnetMask").innerHTML = "N/A";
+				}
+				//Gateway
+				if (getDefaultgateway != "")
+				{
+					document.getElementById("index_ShowDefaultGateway").innerHTML = getDefaultgateway;
+				}
+				else
+				{
+					document.getElementById("index_ShowDefaultGateway").innerHTML = "N/A";
+				}
+				//DNS
+				var getPridns = xml_GetWanSettings.Get("GetWanSettingsResponse/DNS/Primary");
+				if (getPridns != "")
+				{
+					document.getElementById("index_ShowPrimaryDNS").innerHTML = getPridns;
+				}
+				else
+				{
+					document.getElementById("index_ShowPrimaryDNS").innerHTML = "N/A";
+				}
+			}
+			else if (getNetworkStatus == "DISCONNECTED")
+			{
+				document.getElementById("index_ShowNetworkStatus").innerHTML = I18N("j", "Disconnected");
+				document.getElementById("index_ShowIPAddress").innerHTML = "N/A";
+				document.getElementById("index_ShowSubnetMask").innerHTML = "N/A";
+				document.getElementById("index_ShowDefaultGateway").innerHTML = "N/A";
+				document.getElementById("index_ShowPrimaryDNS").innerHTML = "N/A";
+				document.getElementById("internet_image").src = "./image/internet.gif";
+				document.getElementById("internet_image").onmouseover = function () { mouseOver(this, getNetworkStatus) };
+				document.getElementById("internet_image").onmouseout = function () { mouseOut(this, getNetworkStatus) };
+				document.getElementById("wan_light").style.display = "inline";
+				document.getElementById("wan_Light").src = "./image/disconnected.png";
+				document.getElementById("internet_warning").style.display = "inline";
+				document.getElementById("internetIcon").onmousedown= function(){ showList('uplink_warning'); Uplinkdontlink();return false;};
+			}
+		}
+
+
+		function GetXML_Load()
+		{
+			var xml_GetClientinfo = HNAP.GetXML("GetClientInfo");
+			var Clients = xml_GetClientinfo.Get("GetClientInfoResponse/ClientInfoLists/ClientInfo#");
+			var WirelessClientNumber = 0;
+
+			for (var i = 1; i <= Clients; i ++)
+			{
+				var GetClientType = xml_GetClientinfo.Get("GetClientInfoResponse/ClientInfoLists/ClientInfo:" + i + "/Type");
+				if (GetClientType == "WiFi_2.4G" || GetClientType == "WiFi_5G" || GetClientType == "WiFi_2.4G_Guest" || GetClientType == "WiFi_5G_Guest")
+				{
+					WirelessClientNumber ++;
+				}
+			}
+			var WirelessStatus;
+			if (WirelessClientNumber != 0)
+			{
+				WirelessStatus = "CONNECTED";
+				document.getElementById("wireless_image").src = "./image/wifiClient_.gif";
+				document.getElementById("wireless_image").onmouseover = function () { mouseOverW(this, WirelessStatus) };
+				document.getElementById("wireless_image").onmouseout = function () { mouseOutW(this, WirelessStatus) };
+			}
+			else
+			{
+				WirelessStatus = "DISCONNECTED";
+				document.getElementById("wireless_image").src = "./image/wifiClient.gif";
+				document.getElementById("wireless_image").onmouseover = function () { mouseOverW(this, WirelessStatus) };
+				document.getElementById("wireless_image").onmouseout = function () { mouseOutW(this, WirelessStatus) };
+			}
+
+			///////AudioRender Icon
+			var xml_GetAudioInfo = HNAP.GetXML("GetAudioRenderSettings");
+
+			var getAudioCablePlug = xml_GetAudioInfo.Get("GetAudioRenderSettingsResponse/AudioCablePlug");
+			
+			
+			if (getAudioCablePlug =="true")
+			{
+				var status = "CONNECTED";
+				document.getElementById("Audio_image").src = "./image/audio_topology_.gif";
+				document.getElementById("Audio_image").onmouseover = function () { mouseOverA(this, status) };
+				document.getElementById("Audio_image").onmouseout = function () { mouseOutA(this, status) };
+			}
+			else
+			{
+				var status = "DISCONNECTED";
+				document.getElementById("Audio_image").src = "./image/audio_topology.gif";
+				document.getElementById("Audio_image").onmouseover = function () { mouseOverA(this, status) };
+				document.getElementById("Audio_image").onmouseout = function () { mouseOutA(this, status) };
+			}
+		
+		}
+
+		function GetextenderInformation()
+		{
+			Time_GetConnectionUpTime = window.clearInterval(Time_GetConnectionUpTime);
+			Time_GetConnectionUpTime_IPv6 = window.clearInterval(Time_GetConnectionUpTime_IPv6);
+
+			if (GetFlagA == false)
+			{
+				GetXML_C(); // to router
+				GetXML_D(); // 2.4g
+				GetXML_E(); // 2.4g pw
+				GetXML_L(); // FW ver
+				
+	
+				GetFlagA = true;
+			}
+			close_hotspot_list();
+		}
+
+		function GetInternetInformation()
+		{
+			Time_GetConnectionUpTime = window.clearInterval(Time_GetConnectionUpTime);
+			Time_GetConnectionUpTime = self.setInterval("GetConnectionUpTime()", 1000);
+
+			if (GetFlagB == false)
+			{
+				GetXML_A(); // get wan type and Connect status.
+				//GetXML_B(); // connect status
+			}
+
+			GetFlagB = true;
+		}
+		
+		function GetConnectionUpTime()
+		{
+
+			var xml_GetConnUpTime = HNAP.GetXML("GetInternetConnUpTime"); //connect time for bridge ?
+
+			var getConnectionUpTime = xml_GetConnUpTime.Get("GetInternetConnUpTimeResponse/UpTime");
+		
+			if (getConnectionUpTime > 0)
+			{
+				wan_Uptime_Sec = getConnectionUpTime % 60;
+				wan_Uptime_Min = Math.floor(getConnectionUpTime / 60) % 60;
+				wan_Uptime_Hour = Math.floor(getConnectionUpTime / 3600) % 24;
+				wan_Uptime_Day = Math.floor(getConnectionUpTime / 86400);
+
+				if (wan_Uptime_Sec < 0)
+				{
+					wan_Uptime_Sec = 0;
+					wan_Uptime_Min = 0;
+					wan_Uptime_Hour = 0;
+					wan_Uptime_Day = 0;
+				}
+			}
+			else
+			{
+				wan_Uptime_Sec = 0;
+				wan_Uptime_Min = 0;
+				wan_Uptime_Hour = 0;
+				wan_Uptime_Day = 0;
+			}
+
+			document.getElementById("index_ShowConnectionUpTime").innerHTML = wan_Uptime_Day + " " + I18N("j", "Day") + " " + wan_Uptime_Hour + " " + I18N("j", "Hour") + " " + wan_Uptime_Min + " " + I18N("j", "Min") + " " + wan_Uptime_Sec + " " + I18N("j", "Sec");
+		}
+
+		function GetConnectionUpTime_IPv6()
+		{
+
+			var xml_GetConnUpTime = HNAP.GetXML("GetIPv6Status"); //same as ipv4 , it's connect time to WAN
+
+			var getConnectionUpTime = xml_GetConnUpTime.Get("GetIPv6StatusResponse/IPv6_ConnectionTime");
+
+			if (getConnectionUpTime > 0)
+			{
+				wanv6_Uptime_Sec = getConnectionUpTime % 60;
+				wanv6_Uptime_Min = Math.floor(getConnectionUpTime / 60) % 60;
+				wanv6_Uptime_Hour = Math.floor(getConnectionUpTime / 3600) % 24;
+				wanv6_Uptime_Day = Math.floor(getConnectionUpTime / 86400);
+
+				if (wanv6_Uptime_Sec < 0)
+				{
+					wanv6_Uptime_Sec = 0;
+					wanv6_Uptime_Min = 0;
+					wanv6_Uptime_Hour = 0;
+					wanv6_Uptime_Day = 0;
+				}
+			}
+			else
+			{
+				wanv6_Uptime_Sec = 0;
+				wanv6_Uptime_Min = 0;
+				wanv6_Uptime_Hour = 0;
+				wanv6_Uptime_Day = 0;
+			}
+
+			document.getElementById("index_ShowConnectionUpTime_IPv6").innerHTML = wanv6_Uptime_Day + " " + I18N("j", "Day") + " " + wanv6_Uptime_Hour + " " + I18N("j", "Hour") + " " + wanv6_Uptime_Min + " " + I18N("j", "Min") + " " + wanv6_Uptime_Sec + " " + I18N("j", "Sec");
+		}
+
+		function GetXML_A() //APClient Status.
+		{
+			
+			var xml_GetAPClient = HNAP.GetXML("GetAPClientSettings", new Array("RadioID", "RADIO_2.4GHz"));
+			
+			var getAPCSSID_24 = xml_GetAPClient.Get("GetAPClientSettingsResponse/SSID");
+			var getAPCPW = xml_GetAPClient.Get("GetAPClientSettingsResponse/Key");
+			var getAPC_MAC = xml_GetAPClient.Get("GetAPClientSettingsResponse/MacAddress");
+			
+			var xml_GetDeviceType = HNAP.GetXML("GetDeviceSettings");
+			
+			//+++ Jerry Kao, Hard code to show "Extender" for wireless mode.
+			document.getElementById("index_ShowDeviceType").innerHTML = I18N("j", "Extender");
+			/*
+			var Device_Type = xml_GetDeviceType.Get("GetDeviceSettingsResponse/Type");			
+			if (Device_Type == "WirelessRepeaterExtender")
+			{
+				document.getElementById("index_ShowDeviceType").innerHTML = I18N("j", "Extender");
+			}
+			else
+			{
+				document.getElementById("index_ShowDeviceType").innerHTML = I18N("j", "GatewayWithWiFi");
+			}
+			*/		
+				
+			document.getElementById("index_ShowAPC24GSSID").innerHTML = getAPCSSID_24;
+			if (getAPCPW ==""){
+				document.getElementById("index_ShowAPC24GPW").innerHTML ="None";
+			}
+			else{
+				var password_length =  getAPCPW.length;
+				var password_start = 0;
+				var password_start2 = 0;
+				var password_end = getAPCPW.length-1;
+				var password_old = getAPCPW;
+				var password_hide_middle = new Array(password_end);
+			
+				while(password_start < password_length){
+						if(password_start >= 2 && password_start <= password_length-3){
+							password_hide_middle[password_start++] = "*";
+							password_start2++;
+							}
+						else
+						password_hide_middle[password_start++] = password_old.charAt(password_start2++);
+				}
+					
+				var new_password_hide =  password_hide_middle.join('');	
+				document.getElementById("index_ShowAPC24GPW").innerHTML = new_password_hide;
+
+			}
+			
+		
+		 	// Network Status, it detects WAN, modify it to bridge.
+			var xml_GetWanStatus = HNAP.GetXML("GetWanStatus");
+		
+			// Network Status			
+			var getNetworkStatus = xml_GetWanStatus.Get("GetWanStatusResponse/Status");			
+			if (getNetworkStatus == "CONNECTED")
+			{
+				document.getElementById("index_ShowNetworkStatus").innerHTML = I18N("j", "Connected");
+			}
+			else if (getNetworkStatus == "CONNECTING")
+			{
+				document.getElementById("index_ShowNetworkStatus").innerHTML = I18N("j", "Connecting");
+			}
+			else if (getNetworkStatus == "DISCONNECTED")
+			{
+				document.getElementById("index_ShowNetworkStatus").innerHTML = I18N("j", "Disconnected");
+			}
+			else if (getNetworkStatus == "LIMITED_CONNECTION")
+			{
+				document.getElementById("index_ShowNetworkStatus").innerHTML = "Bad request";
+			}
+		}
+
+		function GetXML_C() //Extender_info  HNAP:GetAPClientSettings 
+		{		
+			var xml_GetAPClient24GWLanRadioSettings = HNAP.GetXML("GetAPClientSettings", new Array("RadioID", "RADIO_2.4GHz"));
+			var getAPC_MacAddress = xml_GetAPClient24GWLanRadioSettings.Get("GetAPClientSettingsResponse/MacAddress");
+			document.getElementById("index_ShowAPC_MacAddress").innerHTML = getAPC_MacAddress;
+		
+		}
+
+		function GetXML_D()  //Extender_info  HNAP :GetWLanRadioSettings
+		{
+			var xml_Get24GWLanRadioSettings = HNAP.GetXML("GetWLanRadioSettings", new Array("RadioID", "2.4GHZ"));
+			// 2.4G Wi-Fi Information		
+			// SSID
+			var getSSID_24 = xml_Get24GWLanRadioSettings.Get("GetWLanRadioSettingsResponse/SSID");
+			document.getElementById("index_Show24GSSID").innerHTML = getSSID_24;
+		}
+
+		function GetXML_E()  //Extender_info HNAP:GetWLanRadioSecurity
+		{
+			var xml_Get24GWLanRadioSecurity = HNAP.GetXML("GetWLanRadioSecurity", new Array("RadioID", "2.4GHZ"));
+			// Password
+			var getPassword_24 = xml_Get24GWLanRadioSecurity.Get("GetWLanRadioSecurityResponse/Key");
+			if (getPassword_24 == "")
+			{
+				document.getElementById("index_Show24GPassword").innerHTML = "N/A";
+			}
+			else
+			{
+				document.getElementById("index_Show24GPassword").innerHTML = getPassword_24;
+			}
+		}
+
+
+		function GetXML_L() //FW
+		{
+			var xml_GetFirmwareSettings = HNAP.GetXML("GetFirmwareSettings");
+			var getHardwareVersion = xml_GetFirmwareSettings.Get("GetFirmwareSettingsResponse/ModelRevision");
+			var getFirmwareVersion = xml_GetFirmwareSettings.Get("GetFirmwareSettingsResponse/FirmwareVersion");
+
+			var split_getFirmwareVersion = getFirmwareVersion.split(",");
+			var last_FirmwareVersion = split_getFirmwareVersion[split_getFirmwareVersion.length - 2];
+
+			document.getElementById("HWVersion").innerHTML = getHardwareVersion;
+			document.getElementById("FWVersion").innerHTML = last_FirmwareVersion;
+		}
+
+		function GetXML_M() //ModelName
+		{
+			var xml_GetFirmwareSettings = HNAP.GetXML("GetFirmwareSettings");
+			var getModelName = xml_GetFirmwareSettings.Get("GetFirmwareSettingsResponse/ModelName");
+			document.getElementById("modelName").innerHTML = getModelName;
+			document.getElementById("modelName2").innerHTML = getModelName;
+			document.getElementById("modelName3").innerHTML = getModelName;
+		}
+
+		var extendedWarning = 0; //if our extended not setting password, light it warning.
+		function GetSecurityXML()
+		{
+			var xml_Get24GWLanRadioSecurity = HNAP.GetXML("GetWLanRadioSecurity", new Array("RadioID", "2.4GHZ"));
+
+			// Password
+			var getPassword_24 = xml_Get24GWLanRadioSecurity.Get("GetWLanRadioSecurityResponse/Key");
+
+			if (getPassword_24 == "")
+			{
+				document.getElementById("extended_warning").style.display = "inline";
+				extendedWarning = 1;
+			}
+			else
+			{
+				document.getElementById("extended_warning").style.display = "none";
+				extendedWarning = 0;
+			}
+		}
+		function showWarning()
+		{
+			if(extendedWarning == 1)
+			{
+				document.getElementById("extended_warning_msg").style.display = "inline";
+				document.getElementById("w_this").style.display = "inline";
+			}
+		}
+		function clearCreateWPOP()
+		{
+			document.getElementById("extended_warning_msg").style.display = "none";
+			document.getElementById("w_this").style.display = "none";
+		}
+
+		function GetWirelessParameter()
+		{
+			if (IsAlreadyGetWireless == "0")
+			{
+				var xml_Get24Wireless = HNAP.GetXML("GetWLanRadioSettings", new Array("RadioID", "2.4GHZ"));
+				var getSSID_24W = xml_Get24Wireless.Get("GetWLanRadioSettingsResponse/SSID");
+				var xml_Get24WirelessSecurity = HNAP.GetXML("GetWLanRadioSecurity", new Array("RadioID", "2.4GHZ"));
+				var getPassword_24W = xml_Get24WirelessSecurity.Get("GetWLanRadioSecurityResponse/Key");
+
+				document.getElementById("extend_wifi_networkName24G").value = getSSID_24W;
+				document.getElementById("extend_wifi_password").value = getPassword_24W;
+
+				IsAlreadyGetWireless = 1;
+			}
+		}
+		
+	
+		
+	 function GetWirelessFinal()
+    {
+       if(IsWPS == "1")
+		WPS_getAPClientSetting();
+
+		document.getElementById("final_extend_networkName24G").innerHTML = document.getElementById("extend_wifi_networkName24G").value; //APClient ID
+        document.getElementById("final_extend_password").innerHTML = document.getElementById("extend_wifi_password").value;            //APClient password
+            
+        document.getElementById("final_audioname").innerHTML = document.getElementById("audio_name").value;
+		
+        document.getElementById("final_ShowAPC24GSSID").innerHTML = document.getElementById("ssid_hotspot_client").value;  //as AP Client
+		document.getElementById("final_ShowAPC24GPW").innerHTML = document.getElementById("wifi_pw_apc").value;
+		
+		
+    }
+	
+	function WPS_getAPClientSetting()
+	{
+		var xml_GetAPClient = HNAP.GetXML("GetAPClientSettings", new Array("RadioID", "RADIO_2.4GHz"));
+        var getAPCSSID_24 = xml_GetAPClient.Get("GetAPClientSettingsResponse/SSID");
+        var getAPCPW = xml_GetAPClient.Get("GetAPClientSettingsResponse/Key");
+        var getAPC_MAC = xml_GetAPClient.Get("GetAPClientSettingsResponse/MacAddress");
+		var getAPC_security = xml_GetAPClient.Get("GetAPClientSettingsResponse/SupportedSecurity/SecurityInfo/SecurityType");
+	
+			document.getElementById("ssid_hotspot_client").value = getAPCSSID_24; //select empty or WPS
+			document.getElementById("wifi_pw_apc").value = getAPCPW; //"None" and get from WPS
+		
+		 	if(getAPC_security.match("WPA2"))
+            OBJ("security_hotspot_client").value = "WPAPSK";
+			else if(getAPC_security.match("WPA"))
+			OBJ("security_hotspot_client").value = "WPAPSK";
+			else if(getAPC_security=="NONE")
+			OBJ("security_hotspot_client").value = "NONE";
+			else
+			OBJ("security_hotspot_client").value = "WEP";
+	
+	}
+	
+
+	 function Copy_ssid_pw()
+    {
+        var xml_Get24Wireless = HNAP.GetXML("GetWLanRadioSettings", new Array("RadioID", "2.4GHZ"));
+        var getSSID_24W = xml_Get24Wireless.Get("GetWLanRadioSettingsResponse/SSID");
+        var xml_GetAPClient = HNAP.GetXML("GetAPClientSettings", new Array("RadioID", "RADIO_2.4GHz"));
+        var getAPCSSID_24 = xml_GetAPClient.Get("GetAPClientSettingsResponse/SSID");
+        var getAPCPW = xml_GetAPClient.Get("GetAPClientSettingsResponse/Key");
+		var getPassword_APC = OBJ("wifi_pw_apc").value; 
+		var getSSID_APC = OBJ("ssid_hotspot_client").value;
+		
+        var xml_Get24WirelessSecurity = HNAP.GetXML("GetWLanRadioSecurity", new Array("RadioID", "2.4GHZ"));
+        var getPassword_24W = xml_Get24WirelessSecurity.Get("GetWLanRadioSecurityResponse/Key");
+        
+   
+        
+        if (document.getElementById("Copy_pwd2").checked == true)
+        {
+            document.getElementById("extend_wifi_networkName24G").value = getSSID_APC;
+            document.getElementById("extend_wifi_password").value = getPassword_APC;//getPassword_24W;
+            document.getElementById("Copy_pwd2").checked = true;
+			document.getElementById("extend_wifi_networkName24G_copy").innerHTML = document.getElementById("extend_wifi_networkName24G").value;
+			document.getElementById("wifi1").style.display ="none";
+			document.getElementById("wifi2").style.display ="none";
+			document.getElementById("wifi3").style.display ="none";
+			document.getElementById("wifi4").style.display ="none";
+			document.getElementById("wifi5").style.display ="block";
+			
+        }
+        else
+        {
+            document.getElementById("extend_wifi_networkName24G").value = getSSID_24W;
+            document.getElementById("extend_wifi_password").value = getPassword_24W;
+            document.getElementById("Copy_pwd2").checked = false;
+			document.getElementById("wifi1").style.display ="block";
+			document.getElementById("wifi2").style.display ="block";
+			document.getElementById("wifi3").style.display ="block";
+			document.getElementById("wifi4").style.display ="block";
+			document.getElementById("wifi5").style.display ="none";
+			
+        }
+		
+
+   }
+		
+		function popupWizard()
+		{
+			document.getElementById("createPop").style.display = "inline";
+			document.getElementById("CreatePopAlertMessage3").style.display = "none";
+			close_hotspot_list();
+			Time_GetXML = window.clearInterval(Time_GetXML);
+			Time_GetStatusXML = window.clearInterval(Time_GetStatusXML);
+			Time_GetConnectionUpTime = window.clearInterval(Time_GetConnectionUpTime);
+			Time_GetConnectionUpTime_IPv6 = window.clearInterval(Time_GetConnectionUpTime_IPv6);
+			GetXML_Load = window.clearInterval(GetXML_Load);
+			wizard_Step = 0;
+			IsClickedWizard = 1;
+			wizard_update();
+		}
+		function closeWizard()
+		{
+			document.getElementById("createPop").style.display = "none";
+			document.getElementById('Site_Survey').style.display = "none";
+			Time_GetWanConnectionType = window.clearInterval(Time_GetWanConnectionType);
+			Time_GetConnectionUpTime_IPv6 = window.clearInterval(Time_GetConnectionUpTime_IPv6);
+			$("#audio_Settings").validate().resetForm();
+			$("#extend_wifi_Settings").validate().resetForm();
+			$("#wifi_Settings").validate().resetForm();
+			$("#APC_Settings").validate().resetForm();
+			wizard_Step = 0;
+			wizard_update();
+		}
+
+	function selectWirelessConnectionType(type)
+	{
+		// alert(type);
+		if (type == "WPS" && document.getElementById('cb_wps').getAttribute('class') == 'unclick')
+		{
+			//selected WPS
+			cb_wps.setAttribute("class", "clicked");
+			cb_survey.setAttribute("class", "unclick");
+		
+		}
+		else if (type == "survey" && document.getElementById('cb_survey').getAttribute('class') == 'unclick')
+		{
+			//selected Site survey
+			cb_wps.setAttribute("class", "unclick");
+			cb_survey.setAttribute("class", "clicked");
+		
+		}
+	}
+	
+	 function get_wep_auth_type(wep_auth)
+    {
+        var auth_type=null;
+        
+        if(wep_auth.match("OPEN") == "OPEN")
+            auth_type="OPEN";
+        else if(wep_auth.match("SHARED")== "SHARED")
+            auth_type="SHARED";
+        else
+            auth_type="WEPAUTO";
+        return auth_type;
+    }
+	
+	
+		function Set_APClient()
+	{
+				var xml_SetAPClientSettings = HNAP.GetXML("SetAPClientSettings");
+				xml_SetAPClientSettings.Set("SetAPClientSettings/RadioID","RADIO_2.4GHz");
+				xml_SetAPClientSettings.Set("SetAPClientSettings/Enabled", "true");
+				xml_SetAPClientSettings.Set("SetAPClientSettings/SSID", OBJ("ssid_hotspot_client").value);
+				
+				var security_type = OBJ("security_hotspot_client").value;
+				xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/SecurityType", security_type);
+				
+				var WEP_len = document.getElementById("select_APC_PW").value ;
+				// var auth_type=get_wep_auth_type(getAPC_Security);
+				if(security_type=="WEP")
+				{
+					xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/Encryptions/string","WEPAUTO");
+					if(WEP_len =="64HEX"){
+						//	xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/Encryptions/string", "");
+					}
+					if(WEP_len =="64ASCII"){
+						//	xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/Encryptions/string", "");
+					}
+					if(WEP_len =="128HEX"){
+						//	xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/Encryptions/string", "");
+					}
+					if(WEP_len =="128ASCII"){
+						//	xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/Encryptions/string", "");
+					}
+						xml_SetAPClientSettings.Set("SetAPClientSettings/Key", OBJ("select_APC_PW").value);
+				//		var xml_SetAPClientSettingsResult = HNAP.SetXMLAsync("SetAPClientSettings", xml_SetAPClientSettings);
+				}
+				if(security_type=="WPAPSK")
+				{
+					xml_SetAPClientSettings.Set("SetAPClientSettings/Key", OBJ("select_APC_PW").value);
+					//xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/Encryptions/string", "TKIPORAES");
+					if(selected_entype==null)
+						xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/Encryptions/string", "TKIP");
+					else
+						xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/Encryptions/string", selected_entype);
+				}
+					var xml_SetAPClientSettingsResult = HNAP.SetXMLAsync("SetAPClientSettings", xml_SetAPClientSettings);
+				
+				
+				document.getElementById("CreatePopAlertMessage").style.display = "inline";
+				document.getElementById("createPop").style.display = "none";
+				close_hotspot_list();
+				Start_reciprocal_Number_Reboot();
+				
+				
+	}
+			
+		function GetAudioInformation()
+		{
+			
+			var xml_GetAudioInfo = HNAP.GetXML("GetAudioRenderSettings");
+
+			var getAirPlay = xml_GetAudioInfo.Get("GetAudioRenderSettingsResponse/AirPlay");
+			var getDLNA = xml_GetAudioInfo.Get("GetAudioRenderSettingsResponse/DLNA");
+			//var getAudioCablePlug = xml_GetAudioInfo.Get("GetAudioRenderSettingsResponse/AudioCablePlug");
+			var getMediaName = xml_GetAudioInfo.Get("GetAudioRenderSettingsResponse/MediaName");
+			
+			document.getElementById("index_audio_name").innerHTML = getMediaName;
+			
+			if (getDLNA =="true"){
+				document.getElementById("dlna_Status").innerHTML = I18N("j", "Enabled");
+				}
+			else
+				{
+				document.getElementById('dlna_Status').innerHTML = I18N("j", "Disabled");
+				}
+			
+			if (getAirPlay =="true"){
+			document.getElementById("airplay_Status").innerHTML = I18N("j", "Enabled");
+				}
+			else
+			{
+			document.getElementById('airplay_Status').innerHTML = I18N("j", "Disabled");
+			}
+						
+			close_hotspot_list();
+		}
+
+		function waitSettingFinished()
+		{
+			readyLogout();
+		}
+
+		function changeButtonStatus()
+		{
+			if(document.getElementById("option1").checked)
+			{
+				document.getElementById("btn_next").setAttribute("class", "styled-button_enable");
+				document.getElementById("btn_next").disabled = false;
+			}
+			else
+			{
+				document.getElementById("btn_next").setAttribute("class", "styled-button_disable");
+				document.getElementById("btn_next").disabled = true;
+			}
+		}
+
+			
+		function gotoIPv6Info() {
+			// alert("gotoIPv6Info");
+			document.getElementById("infor_LAN").style.display = "none";
+			document.getElementById("Wi-Fi_24").style.display = "none";
+			
+
+			// show IPv6
+			document.getElementById("infor_LAN_ipv6").style.display = "inline";
+			
+			document.getElementById("v4_btn_LAN").setAttribute("class", "v4v6_linkstyle_2");
+			document.getElementById("v6_btn_LAN").setAttribute("class", "v4v6_linkstyle_1");
+
+			// Get IPv6 Status.
+			var xml_GetIPv6Status = HNAP.GetXML("GetIPv6Status");			
+			
+			// Connection Type
+			var IPv6_ConnectType = xml_GetIPv6Status.Get("GetIPv6StatusResponse/IPv6_ConnectionType");		
+			//document.getElementById("lan_IPv6_config").innerHTML = IPv6_ConnectType;
+			
+			switch (IPv6_ConnectType)
+			{
+				case "IPv6_LinkLocalOnly":
+					document.getElementById("lan_IPv6_config").innerHTML = I18N("j", "Local Connectivity Only");
+					break;
+					
+				case "IPv6_Static":
+					document.getElementById("lan_IPv6_config").innerHTML = I18N("j", "Static IPv6");
+					break;
+				
+				case "IPv6_AutoConfiguration":
+					document.getElementById("lan_IPv6_config").innerHTML = I18N("j", "Auto Configuration (SLAAC/DHCPv6)");
+					break;						
+			}
+						
+			// IPv6 Address
+			var IPv6_Address = xml_GetIPv6Status.Get("GetIPv6StatusResponse/IPv6_Address");			
+			document.getElementById("lan_IPv6_Address").innerHTML = IPv6_Address;
+						
+			
+			// Default Gateway 
+			var IPv6_default_GW = xml_GetIPv6Status.Get("GetIPv6StatusResponse/IPv6_DefaultGateway");		
+			document.getElementById("lan_IPv6_default_gateway").innerHTML = IPv6_default_GW;
+			
+			// Link-local address
+			var IPv6_LinkLocalAddress = xml_GetIPv6Status.Get("GetIPv6StatusResponse/IPv6_LanLinkLocalAddress");			
+			document.getElementById("lan_IPv6_Link_Local_Address").innerHTML = IPv6_LinkLocalAddress;
+			
+			
+			// DNS
+			var IPv6_DNS = xml_GetIPv6Status.Get("GetIPv6StatusResponse/IPv6_PrimaryDNS");				
+			document.getElementById("lan_IPv6_DNS").innerHTML = IPv6_DNS;									
+		
+		}
+
+		function gotoIPv4Info() {
+			// alert("gotoIPv4Info");
+			document.getElementById("infor_LAN").style.display = "inline";
+			document.getElementById("Wi-Fi_24").style.display = "inline";
+
+			// show IPv4
+			document.getElementById("infor_LAN_ipv6").style.display = "none";
+			
+			document.getElementById("v6_btn_LAN").setAttribute("class", "v4v6_linkstyle_2");
+			document.getElementById("v4_btn_LAN").setAttribute("class", "v4v6_linkstyle_1");
+
+		}
+
+		function ignore_UpgradeFW()
+		{
+			document.getElementById("CreatePopAlertMessage2").style.display = "none";
+			sessionStorage.setItem('hasNewFirmware', 'ignore');
+		}
+
+		function goto_UpgradeFW()
+		{
+			sessionStorage.setItem('hasNewFirmware', 'true');
+			self.location.href = "UpdateFirmware.html";
+		}
+
+		function CheckNewFirmware()
+		{
+			var CurrentFW = sessionStorage.getItem('currentFWVersion');
+			var NewFW = sessionStorage.getItem('newFWVersion');
+
+			if (parseFloat(NewFW) > parseFloat(CurrentFW))
+			{
+				if (sessionStorage.getItem('hasNewFirmware') != "ignore")
+				{
+					document.getElementById("CreatePopAlertMessage2").style.display = "inline";
+					document.getElementById("newFirmwareIcon").style.display = "inline";
+					document.getElementById("firmwareVersion").href = "UpdateFirmware.html";
+
+					firmwareVersion.setAttribute("class", "firmwareVersion_newfw");			//for firefox
+					firmwareVersion.setAttribute("className", "firmwareVersion_newfw");		//for IE
+				}
+				else
+				{
+					document.getElementById("newFirmwareIcon").style.display = "inline";
+					document.getElementById("firmwareVersion").href = "UpdateFirmware.html";
+
+					firmwareVersion.setAttribute("class", "firmwareVersion_newfw");			//for firefox
+					firmwareVersion.setAttribute("className", "firmwareVersion_newfw");		//for IE
+				}
+			}
+		}
+
+		function Start_reciprocal_Number_Reboot()
+		{
+			if (_ReciprocalRebootNumber >= 0)
+			{
+				document.getElementById("reciprocal_Number").innerHTML = _ReciprocalRebootNumber + " " + I18N("j", "Sec");
+				_ReciprocalRebootNumber --;
+				setTimeout("Start_reciprocal_Number_Reboot()", 1000);
+			}
+			else
+			{
+				waitSettingFinished();
+			}
+		}
+		
+				
+	function wizard_update()
+	{
+		switch(wizard_Step)
+		{
+			case 0:
+				/*/////////////////////////// Page: Welcome Page ////////////////////////////*/
+				document.getElementById('wizard_title').innerHTML = I18N("j", "WI-FI CONNECTION SETUP WIZARD");
+				document.getElementById('wizard_wording').innerHTML = I18N("j", "This wizard is designed to assist you in your Wi-Fi network setup. It will guide you through step-by step instructions on how to set up your Wi-Fi network and how to make it secure.");
+				/*/////////////////////////////// Topology //////////////////////////////////*/
+				document.getElementById('wizard_topology').style.display = "inline";
+				//WAN
+				var wan_line = document.getElementById('wizard_wan_line');
+				wan_line.setAttribute("class", "wizard_wan_line_off");			//for firefox
+				wan_line.setAttribute("className", "wizard_wan_line_off");		//for IE
+				//Wi-Fi
+				var wifi_line = document.getElementById('wizard_wifi_line');
+				wifi_line.setAttribute("class", "wizard_wifi_line_off");		//for firefox
+				wifi_line.setAttribute("className", "wizard_wifi_line_off");	//for IE
+				//Router
+				var router_icon = document.getElementById('wizard_router');
+				router_icon.setAttribute("class", "wizard_router_off");			//for firefox
+				router_icon.setAttribute("className", "wizard_router_off");		//for IE
+				
+				document.getElementById('wizard_wifi').style.display ="inline"; //Wifi icon
+				document.getElementById('wizard_speaker').style.display ="none";//speaker icon
+				/*/////////////////////////////////////////////////////////////////////////*/
+				var areaSize = document.getElementById('wizard_settings_area');
+				areaSize.setAttribute("class", "wizard_area1");					//for firefox
+				areaSize.setAttribute("className", "wizard_area1");				//for IE
+				document.getElementById('wizard_setupTable').style.display = "inline";
+				document.getElementById('WPS_detection').style.display = "none";
+				document.getElementById('wps_fail').style.display = "none";
+				document.getElementById('audio_setupTable').style.display = "none";
+				document.getElementById('Final_setupTable').style.display = "none";
+				document.getElementById('wifi_setupTable').style.display = "none";
+				document.getElementById('selectWirelessConnectionType').style.display = "none";
+				document.getElementById('wifi_password_setup').style.display = "none";
+				/*////////////////////////// Button Status Change ///////////////////////////*/
+				document.getElementById('btn_back').innerHTML = I18N("j", "Back");
+				document.getElementById('btn_next').innerHTML = I18N("j", "Next");
+				document.getElementById('btn_back').setAttribute("class", "styled-button_disable");
+				document.getElementById('btn_next').setAttribute("class", "styled-button_enable");
+				document.getElementById("btn_back").disabled = true;
+				document.getElementById("btn_next").disabled = false;
+				break;
+			case 1:
+				/*///////////////////////////////// Page: Connection Type //////////////////////////////////*/
+				document.getElementById('wizard_title').innerHTML = I18N("j", "SELECT CONFIGURATION METHOD");
+				document.getElementById('wizard_wording').innerHTML = I18N("j", "");
+				/*///////////////////////////////Topology//////////////////////////////////*/
+				document.getElementById('wizard_topology').style.display = "inline";
+				//WAN
+				var wan_line = document.getElementById('wizard_wan_line');
+				wan_line.setAttribute("class", "wizard_wan_line_on");			//for firefox
+				wan_line.setAttribute("className", "wizard_wan_line_on");		//for IE
+				//Wi-Fi
+				var wifi_line = document.getElementById('wizard_wifi_line');
+				wifi_line.setAttribute("class", "wizard_wifi_line_off");		//for firefox
+				wifi_line.setAttribute("className", "wizard_wifi_line_off");	//for IE
+				//Router
+				var router_icon = document.getElementById('wizard_router');
+				router_icon.setAttribute("class", "wizard_router_off");			//for firefox
+				router_icon.setAttribute("className", "wizard_router_off");		//for IE
+				
+				document.getElementById('wizard_wifi').style.display ="inline"; //Wifi icon
+				document.getElementById('wizard_speaker').style.display ="none";//speaker icon
+				/*///////////////////////////////// Settings ////////////////////////////////////////*/
+				var areaSize = document.getElementById('wizard_settings_area');
+				areaSize.setAttribute("class", "wizard_area1");				//for firefox
+				areaSize.setAttribute("className", "wizard_area1");				//for IE
+				//document.getElementById('dialogBox').style.top = "50px";
+				document.getElementById('wizard_setupTable').style.display = "none";
+				document.getElementById('WPS_detection').style.display = "none";
+				document.getElementById('wps_fail').style.display = "none";
+				document.getElementById('selectWirelessConnectionType').style.display = "inline";
+				document.getElementById('audio_setupTable').style.display = "none";
+				document.getElementById('Final_setupTable').style.display = "none";
+				document.getElementById('wifi_setupTable').style.display = "none";
+				document.getElementById('wifi_password_setup').style.display = "none";
+				document.getElementById('Site_Survey').style.display = "none";
+									OBJ("scan_list_wizard").style.display = "none";
+				/*/////////////////////////// Button Status Change ///////////////////////////*/
+				document.getElementById('btn_back').innerHTML = I18N("j", "Back");
+				document.getElementById('btn_next').innerHTML = I18N("j", "Next");
+				document.getElementById('btn_back').setAttribute("class", "styled-button_enable");
+				document.getElementById('btn_next').setAttribute("class", "styled-button_enable");
+				document.getElementById("btn_back").disabled = false;
+				document.getElementById("btn_next").disabled = false;
+				break;
+				
+					
+			case 2: 
+				/*///////////////////////////////// Page: WPS fail //////////////////////////////////*/
+				document.getElementById('wizard_title').innerHTML = I18N("j", "VIRTUAL");
+				document.getElementById('wizard_wording').innerHTML = I18N("j", "You have failed to connect to the Wi-Fi network within the given timeframe, please click on the button below to do it again.");
+				/*/////////////////////////////// Topology //////////////////////////////////*/
+				document.getElementById('wizard_topology').style.display = "inline";
+				//WAN
+				var wan_line = document.getElementById('wizard_wan_line');
+				wan_line.setAttribute("class", "wizard_wan_line_on");			//for firefox
+				wan_line.setAttribute("className", "wizard_wan_line_on");		//for IE
+				//Wi-Fi
+				var wifi_line = document.getElementById('wizard_wifi_line');
+				wifi_line.setAttribute("class", "wizard_wifi_line_off");		//for firefox
+				wifi_line.setAttribute("className", "wizard_wifi_line_off");	//for IE
+				//Router
+				var router_icon = document.getElementById('wizard_router');
+				router_icon.setAttribute("class", "wizard_router_off");			//for firefox
+				router_icon.setAttribute("className", "wizard_router_off");		//for IE
+				
+				document.getElementById('wizard_wifi').style.display ="inline"; //Wifi icon
+				document.getElementById('wizard_speaker').style.display ="none";//speaker icon				
+				
+				/*/////////////////////////////////////////////////////////////////////////*/
+				var areaSize = document.getElementById('wizard_settings_area');
+				areaSize.setAttribute("class", "wizard_area1");				//for firefox
+				areaSize.setAttribute("className", "wizard_area1");			//for IE
+				//document.getElementById('dialogBox').style.top = "100px";
+				document.getElementById('wizard_setupTable').style.display = "none";
+				document.getElementById('WPS_detection').style.display = "none";
+				document.getElementById('wps_fail').style.display = "inline";
+				document.getElementById('selectWirelessConnectionType').style.display = "none";
+				document.getElementById('audio_setupTable').style.display = "none";
+				document.getElementById('Final_setupTable').style.display = "none";
+				document.getElementById('wifi_setupTable').style.display = "none";
+				document.getElementById('wifi_password_setup').style.display = "none";
+				document.getElementById('buttonTable').style.display = "inline";
+				/*/////////////////////////// Button Status Change ///////////////////////////*/
+				document.getElementById('buttonTable').style.display ="inline";
+				document.getElementById('btn_back').style.display ="none";
+				//document.getElementById('btn_back').innerHTML = I18N("j", "Back");
+				document.getElementById('btn_next').innerHTML = I18N("j", "Retry");
+				//document.getElementById('btn_back').setAttribute("class", "styled-button_enable");
+				document.getElementById('btn_next').setAttribute("class", "styled-button_enable");
+				//document.getElementById("btn_back").disabled = false;
+				document.getElementById("btn_next").disabled = false;
+				break;
+			case 3:
+				/*////////////////////// Page: Detecting WPS //////////////////////*/
+				document.getElementById('wizard_title').innerHTML = I18N("j", "VIRTUAL PUSH BUTTON");
+				document.getElementById('wizard_wording').innerHTML = I18N("j", ""); 
+				/*///////////////////////////////Topology//////////////////////////////////*/
+				document.getElementById('wizard_topology').style.display = "inline";
+				//WAN
+				var wan_line = document.getElementById('wizard_wan_line');
+				wan_line.setAttribute("class", "wizard_wan_line_on");			//for firefox
+				wan_line.setAttribute("className", "wizard_wan_line_on");		//for IE
+				//Wi-Fi
+				var wifi_line = document.getElementById('wizard_wifi_line');
+				wifi_line.setAttribute("class", "wizard_wifi_line_off");		//for firefox
+				wifi_line.setAttribute("className", "wizard_wifi_line_off");	//for IE
+				//Router
+				var router_icon = document.getElementById('wizard_router');
+				router_icon.setAttribute("class", "wizard_router_off");			//for firefox
+				router_icon.setAttribute("className", "wizard_router_off");		//for IE
+				
+				document.getElementById('wizard_wifi').style.display ="inline"; //Wifi icon
+				document.getElementById('wizard_speaker').style.display ="none";//speaker icon
+
+				
+				/*/////////////////////////////////////////////////////////////////////////*/
+				var areaSize = document.getElementById('wizard_settings_area');
+				areaSize.setAttribute("class", "wizard_area1");					//for firefox
+				areaSize.setAttribute("className", "wizard_area1");				//for IE
+				//document.getElementById('dialogBox').style.top = "100px";
+				document.getElementById('wizard_setupTable').style.display = "none";
+				document.getElementById('WPS_detection').style.display = "inline";
+				document.getElementById('selectWirelessConnectionType').style.display = "none";
+				document.getElementById('wps_fail').style.display = "none";
+				document.getElementById('audio_setupTable').style.display = "none";
+				document.getElementById('Final_setupTable').style.display = "none";
+				document.getElementById('wifi_setupTable').style.display = "none";
+				document.getElementById('wifi_password_setup').style.display = "none";
+				/*/////////////////////////// Button Status Change ///////////////////////////*/
+				document.getElementById('buttonTable').style.display ="none";
+				//document.getElementById('btn_next').style.dislay ="none";
+				//document.getElementById('btn_back').innerHTML = I18N("j", "Back");
+				//document.getElementById('btn_next').innerHTML = I18N("j", "Next");
+				//document.getElementById('btn_back').setAttribute("class", "styled-button_disable");
+				//document.getElementById('btn_next').setAttribute("class", "styled-button_disable");
+				//document.getElementById("btn_back").disabled = true;
+				//document.getElementById("btn_next").disabled = true;
+				WPS_submit('PBC');
+				break;
+				
+			case 4:
+				/*/////////////////////////// Page: Wi-Fi SSID Setting ////////////////////////////*/
+				document.getElementById('wizard_title').innerHTML = I18N("j", "SELECT WI-FI NETWORK");
+				document.getElementById('wizard_wording').innerHTML = I18N("j", " ");
+				/*///////////////////////////////Topology//////////////////////////////////*/
+				document.getElementById('wizard_topology').style.display = "inline";
+				//WAN
+				var wan_line_icon = document.getElementById('wizard_wan_line');
+				wan_line_icon.setAttribute("class", "wizard_wan_line_on");			//for firefox
+				wan_line_icon.setAttribute("className", "wizard_wan_line_on");		//for IE
+				//Wi-Fi
+				var wifi_line_icon = document.getElementById('wizard_wifi_line');
+				wifi_line_icon.setAttribute("class", "wizard_wifi_line_off");		//for firefox
+				wifi_line_icon.setAttribute("className", "wizard_wifi_line_off");	//for IE
+				//Router
+				var router_icon = document.getElementById('wizard_router');
+				router_icon.setAttribute("class", "wizard_router_off");				//for firefox
+				router_icon.setAttribute("className", "wizard_router_off");			//for IE
+				
+				var areaSize = document.getElementById('wizard_settings_area');
+				areaSize.setAttribute("class", "wizard_area1");					//for firefox
+				areaSize.setAttribute("className", "wizard_area1");				//for IE
+				//document.getElementById('dialogBox').style.top = "100px";
+				document.getElementById('wizard_wifi').style.display ="inline"; //Wifi icon
+				document.getElementById('wizard_speaker').style.display ="none";//speaker icon
+				
+				/*///////////////////////////////// Settings ////////////////////////////////////////*/
+				document.getElementById('wizard_setupTable').style.display = "none";
+				document.getElementById('WPS_detection').style.display = "none";
+				document.getElementById('wps_fail').style.display = "none";
+				document.getElementById('selectWirelessConnectionType').style.display = "none";
+				document.getElementById('audio_setupTable').style.display = "none";
+				document.getElementById('Final_setupTable').style.display = "none";
+				document.getElementById('wifi_setupTable').style.display = "none";
+				document.getElementById('wifi_password_setup').style.display = "none";
+				document.getElementById('Site_Survey').style.display = "inline";
+				/*/////////////////////////// Button Status Change ///////////////////////////*/
+				document.getElementById('btn_back').innerHTML = I18N("j", "Back");
+				document.getElementById('btn_next').innerHTML = I18N("j", "Select");
+				document.getElementById('btn_back').setAttribute("class", "styled-button_enable");
+				document.getElementById('btn_next').setAttribute("class", "styled-button_enable");
+				document.getElementById("btn_back").disabled = false;
+				document.getElementById("btn_next").disabled = false;
+				
+				break;
+				
+			case 5:
+				/*///////////////////////////// Page: Wi Fi password Setting ///////////////////////////////*/
+				document.getElementById('wizard_title').innerHTML = I18N("j", "ENTER WIFI PASSWORD");
+				document.getElementById('wizard_wording').innerHTML = I18N("j", "Please enter Wi-Fi Password to establish wireless connection");
+				/*/////////////////////////////// Topology //////////////////////////////////*/
+				document.getElementById('wizard_topology').style.display = "inline";
+				//WAN
+				var wan_line_icon = document.getElementById('wizard_wan_line');
+				wan_line_icon.setAttribute("class", "wizard_wan_line_off");			//for firefox
+				wan_line_icon.setAttribute("className", "wizard_wan_line_off");		//for IE
+				//Wi-Fi
+				var wifi_line = document.getElementById('wizard_wifi_line');
+				wifi_line.setAttribute("class", "wizard_wifi_line_on");			//for firefox
+				wifi_line.setAttribute("className", "wizard_wifi_line_on");		//for IE
+				//Router
+				var router_icon = document.getElementById('wizard_router');
+				router_icon.setAttribute("class", "wizard_router_off");				//for firefox
+				router_icon.setAttribute("className", "wizard_router_off");			//for IE
+				
+				var areaSize = document.getElementById('wizard_settings_area');
+				areaSize.setAttribute("class", "wizard_area1");					//for firefox
+				areaSize.setAttribute("className", "wizard_area1");				//for IE
+				
+				document.getElementById('wizard_wifi').style.display ="inline"; //Wifi icon
+				document.getElementById('wizard_speaker').style.display ="none";//speaker icon
+				
+				//document.getElementById('dialogBox').style.top = "100px";
+				/*/////////////////////////////////Settings////////////////////////////////////////*/
+				document.getElementById('wizard_setupTable').style.display = "none";
+				document.getElementById('WPS_detection').style.display = "none";
+				document.getElementById('wps_fail').style.display = "none";
+				document.getElementById('selectWirelessConnectionType').style.display = "none";
+				document.getElementById('audio_setupTable').style.display = "none";
+				document.getElementById('Final_setupTable').style.display = "none";
+				document.getElementById('wifi_setupTable').style.display = "none";
+				document.getElementById('wifi_password_setup').style.display = "inline";
+				document.getElementById('Site_Survey').style.display = "none";
+				document.getElementById('buttonTable').style.display = "inline";
+				////////////////////////////////////////////////////////////////////////////////////////
+				document.getElementById('btn_back').innerHTML = I18N("j", "Back");
+				document.getElementById('btn_next').innerHTML = I18N("j", "Next");
+				document.getElementById('btn_back').setAttribute("class", "styled-button_enable");
+				document.getElementById('btn_next').setAttribute("class", "styled-button_enable");
+				document.getElementById("btn_back").disabled = false;
+				document.getElementById("btn_next").disabled = false;
+				break;
+			
+			case 6:
+				/*////////////////////////// Page: Extended Wi-Fi Settings ////////////////////////////*/
+				document.getElementById('wizard_title').innerHTML = I18N("j", "PLEASE ENTER THE SETTINGS FOR THE EXTENDED NETWORK");
+				document.getElementById('wizard_wording').innerHTML = I18N("j", "");
+				document.getElementById('client_name').innerHTML = I18N("j", "Wi-Fi Client");
+				/*/////////////////////////////// Topology //////////////////////////////////*/
+				document.getElementById('wizard_topology').style.display = "inline";
+				//WAN
+				var wan_line = document.getElementById('wizard_wan_line');
+				wan_line.setAttribute("class", "wizard_wan_line_off");			//for firefox
+				wan_line.setAttribute("className", "wizard_wan_line_off");		//for IE
+				//Wi-Fi
+				var wifi_line = document.getElementById('wizard_wifi_line');
+				wifi_line.setAttribute("class", "wizard_wifi_line_on");			//for firefox
+				wifi_line.setAttribute("className", "wizard_wifi_line_on");		//for IE
+				//Router
+				var router_icon = document.getElementById('wizard_router');
+				router_icon.setAttribute("class", "wizard_router_off");			//for firefox
+				router_icon.setAttribute("className", "wizard_router_off");		//for IE
+				
+				document.getElementById('wizard_wifi').style.display ="inline"; //Wifi icon
+				document.getElementById('wizard_speaker').style.display ="none";//speaker icon
+				
+				document.getElementById('wizard_wifi_line').style.display = "inline";
+				document.getElementById('wizard_speaker_line').style.display = "none";
+				
+				/*////////////////////////////////// Settings ///////////////////////////////////////*/
+				var areaSize = document.getElementById('wizard_settings_area');
+				areaSize.setAttribute("class", "wizard_area1");				//for firefox
+				areaSize.setAttribute("className", "wizard_area1");				//for IE
+				//document.getElementById('dialogBox').style.top = "50px";
+				document.getElementById('wizard_setupTable').style.display = "none";
+				document.getElementById('WPS_detection').style.display = "none";
+				document.getElementById('wps_fail').style.display = "none";
+				document.getElementById('selectWirelessConnectionType').style.display = "none";
+				document.getElementById('audio_setupTable').style.display = "none";
+				document.getElementById('Final_setupTable').style.display = "none";
+				document.getElementById('wifi_setupTable').style.display = "inline";
+				document.getElementById('wifi_password_setup').style.display = "none";
+				document.getElementById('buttonTable').style.display = "inline";
+				/*/////////////////////////// Button Status Change ///////////////////////////*/
+				document.getElementById('btn_back').innerHTML = I18N("j", "Back");
+				document.getElementById('btn_next').innerHTML = I18N("j", "Next");
+				document.getElementById('btn_back').setAttribute("class", "styled-button_enable");
+				document.getElementById('btn_next').setAttribute("class", "styled-button_enable");
+				document.getElementById("btn_back").disabled = false;
+				document.getElementById("btn_next").disabled = false;
+				
+				GetWirelessParameter();
+				break;
+			
+				
+			case 7:
+
+				/*/////////////////////////// Page: Audio device setting ////////////////////////////*/
+				document.getElementById('wizard_title').innerHTML = I18N("j", "DEVICE NAME SETUP");
+				document.getElementById('wizard_wording').innerHTML = I18N("j", "You can change the default device name with another unique name for audio renderer service. Eg. Living Room.");
+				/*/////////////////////////////// Topology //////////////////////////////////*/
+				document.getElementById('wizard_topology').style.display = "inline";
+				//WAN
+				var wan_line = document.getElementById('wizard_wan_line');
+				wan_line.setAttribute("class", "wizard_wan_line_off");			//for firefox
+				wan_line.setAttribute("className", "wizard_wan_line_off");		//for IE
+				//Wi-Fi
+				//var wifi_line = document.getElementById('wizard_wifi_line');
+				//wifi_line.setAttribute("class", "wizard_wifi_line_off");		//for firefox
+				//wifi_line.setAttribute("className", "wizard_wifi_line_off");	//for IE
+				document.getElementById('wizard_wifi_line').style.display = "none";
+				//Router
+				var router_icon = document.getElementById('wizard_router');
+				//var router_icon = document.getElementById('wizard_speaker');
+				document.getElementById('wizard_wifi').style.display ="none";
+				
+				//speaker icon
+				document.getElementById('wizard_speaker').style.display ="inline";
+				document.getElementById('client_name').innerHTML = I18N("j", "Speaker");
+				
+				//speaker line
+				var speaker_line = document.getElementById('wizard_speaker_line');
+				speaker_line.style.display = "inline";
+				
+				router_icon.setAttribute("class", "wizard_router_off");			//for firefox
+				router_icon.setAttribute("className", "wizard_router_off");		//for IE
+				/*///////////////////////////////// Settings ////////////////////////////////////////*/
+				var areaSize = document.getElementById('wizard_settings_area');
+				areaSize.setAttribute("class", "wizard_area1");				//for firefox
+				areaSize.setAttribute("className", "wizard_area1");				//for IE
+				//document.getElementById('dialogBox').style.top = "100px";
+				document.getElementById('wizard_setupTable').style.display = "none";
+				document.getElementById('WPS_detection').style.display = "none";
+				document.getElementById('wps_fail').style.display = "none";
+				document.getElementById('selectWirelessConnectionType').style.display = "none";
+				document.getElementById('audio_setupTable').style.display = "inline";
+				document.getElementById('Final_setupTable').style.display = "none";
+				document.getElementById('wifi_setupTable').style.display = "none";
+				document.getElementById('wifi_password_setup').style.display = "none";
+				document.getElementById('buttonTable').style.display = "inline";
+				/*/////////////////////////// Button Status Change ///////////////////////////*/
+				document.getElementById('btn_back').innerHTML = I18N("j", "Back");
+				document.getElementById('btn_next').innerHTML = I18N("j", "Next");
+				document.getElementById('btn_back').setAttribute("class", "styled-button_enable");
+				document.getElementById('btn_next').setAttribute("class", "styled-button_enable");
+				document.getElementById("btn_back").disabled = false;
+				document.getElementById("btn_next").disabled = false;
+				GetAudioMediaName();
+				break;
+				
+			case 8: 
+				/*/////////////////////////// Page: Show Final setting information ////////////////////////////*/
+				document.getElementById('wizard_title').innerHTML = I18N("j", "SETUP COMPLETE");
+				document.getElementById('wizard_wording').innerHTML = I18N("j", "Please Take a note of the following summary of your Wi-Fi Security setting for furture reference");
+				document.getElementById('client_name').innerHTML = I18N("j", "Wi-Fi Client");
+
+				/*/////////////////////////////// Topology //////////////////////////////////*/
+				document.getElementById('wizard_topology').style.display = "inline";
+				//WAN
+				var wan_line = document.getElementById('wizard_wan_line');
+				wan_line.setAttribute("class", "wizard_wan_line_on");			//for firefox
+				wan_line.setAttribute("className", "wizard_wan_line_on");	    //for IE
+				//Wi-Fi
+				var wifi_line = document.getElementById('wizard_wifi_line');
+				wifi_line.setAttribute("class", "wizard_wifi_line_on");		//for firefox
+				wifi_line.setAttribute("className", "wizard_wifi_line_on");	//for IE
+				//Router
+				var router_icon = document.getElementById('wizard_router');
+				router_icon.setAttribute("class", "wizard_router_off");			//for firefox
+				router_icon.setAttribute("className", "wizard_router_off");		//for IE
+				
+				document.getElementById('wizard_wifi').style.display ="inline";
+				document.getElementById('wizard_speaker').style.display ="none";
+				
+				document.getElementById('wizard_wifi_line').style.display = "inline";
+				document.getElementById('wizard_speaker_line').style.display = "none";
+				
+				
+				/*/////////////////////////////////Settings////////////////////////////////////////*/
+				var areaSize = document.getElementById('wizard_settings_area');
+				areaSize.setAttribute("class", "wizard_area1");				//for firefox
+				areaSize.setAttribute("className", "wizard_area1");				//for IE
+				//document.getElementById('dialogBox').style.top = "50px";
+				document.getElementById('wizard_setupTable').style.display = "none";
+				document.getElementById('WPS_detection').style.display = "none";
+				document.getElementById('wps_fail').style.display = "none";
+				document.getElementById('selectWirelessConnectionType').style.display = "none";
+				document.getElementById('audio_setupTable').style.display = "none";
+				document.getElementById('Final_setupTable').style.display = "inline";
+				document.getElementById('wifi_setupTable').style.display = "none";
+				document.getElementById('wifi_password_setup').style.display = "none";
+				document.getElementById('buttonTable').style.display = "inline";
+			
+				/*/////////////////////////// Button Status Change ///////////////////////////*/
+				document.getElementById('btn_back').innerHTML = I18N("j", "Back");
+				document.getElementById('btn_next').innerHTML = I18N("j", "Save");
+				document.getElementById('btn_back').setAttribute("class", "styled-button_enable");
+				document.getElementById('btn_next').setAttribute("class", "styled-button_enable");
+				document.getElementById("btn_back").disabled = false;
+				document.getElementById("btn_next").disabled = false;
+				
+				GetWirelessFinal();
+				break;
+		}
+	}
+
+	function wizard_back(num)
+	{
+		switch (num)
+		{
+			case 0:
+				break;
+			case 1:
+				wizard_Step = 0;
+				wizard_update();
+				break;
+			case 2:
+				//wizard_Step = 0;
+				wizard_update();
+				break;
+			case 3:
+				//wizard_Step = 0;
+				wizard_update();
+				break;
+			case 4:
+				if (document.getElementById('cb_wps').getAttribute('class') == 'clicked')
+				{
+	 				wizard_Step = 1;
+				}
+	 			else if (document.getElementById('cb_survey').getAttribute('class') == 'clicked')
+	 			{
+					wizard_Step = 1;		
+	 			}
+				
+				wizard_update();
+				break;
+			case 5:
+				wizard_Step = 1;
+				wizard_update();
+				break;
+			case 6:
+				wizard_Step = 1;
+				wizard_update();
+				break;
+			case 7:
+				wizard_Step = 6;
+				wizard_update();
+				break;
+			case 8:
+				wizard_Step = 7;
+				wizard_update();
+				break;
+		}
+	}
+
+
+function wizard_next(num)
+	{
+		switch (num)
+		{
+			case 0:
+				wizard_Step = 1;
+				wizard_update();
+				break;
+			case 1:
+					if(document.getElementById('cb_wps').getAttribute('class') == 'clicked')
+				{
+					wizard_Step = 3;
+					
+				}
+				else if (document.getElementById('cb_survey').getAttribute('class') == 'clicked')
+				{
+					OnClickScan_wizard();
+					wizard_Step = 4;
+				}
+				wizard_update();
+				break;
+
+			case 2:
+				wizard_Step = 3;
+				wizard_update();
+				break;
+			case 3:
+				wizard_update();
+				break;
+			case 4: //ssid
+				OnClickSelect_wizard();
+				if (document.getElementById('security_hotspot_client').value == "NONE"){
+				wizard_Step = 6;
+				}
+				else{
+				wizard_Step = 5;
+				}
+				
+				if(OBJ("ssid_hotspot_client").value == "null" || OBJ("ssid_hotspot_client").value == ""){
+					//var test = I18N("h", "Please choose one site to connect to.");
+					//alert("Please choose one site to connect to."); /////////////
+					wizard_Step = 4;
+					wizard_update();
+					break;
+					}
+				
+				
+				
+				wizard_update();
+				break;
+			case 5: //password 
+				document.getElementById("sumbit_CheckData1").click();
+				break;
+			case 6: //extended wifi
+				document.getElementById("sumbit_CheckData2").click();		
+				break;
+			case 7: //audio set
+				document.getElementById("sumbit_CheckData3").click();
+				break;
+			case 8: //check and write
+				//HNAP write
+				//SetAPClientSetting
+				var xml_SetAPClientSettings = HNAP.GetXML("SetAPClientSettings");
+				xml_SetAPClientSettings.Set("SetAPClientSettings/RadioID","RADIO_2.4GHz");
+				xml_SetAPClientSettings.Set("SetAPClientSettings/Enabled", "true");
+				xml_SetAPClientSettings.Set("SetAPClientSettings/SSID", OBJ("final_ShowAPC24GSSID").innerHTML);
+				var security_type = OBJ("security_hotspot_client").value;
+				xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/SecurityType", security_type);
+				//var WEP_len = document.getElementById("final_ShowAPC24GPW").innerHTML;
+				if(security_type=="WEP")
+				{
+					xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/Encryptions/string","WEPAUTO");
+				/*	if(WEP_len =="64HEX"){
+						//	xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/Encryptions/string", "");
+					}
+					if(WEP_len =="64ASCII"){
+						//	xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/Encryptions/string", "");
+					}
+					if(WEP_len =="128HEX"){
+						//	xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/Encryptions/string", "");
+					}
+					if(WEP_len =="128ASCII"){
+						//	xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/Encryptions/string", "");
+					}*/
+						xml_SetAPClientSettings.Set("SetAPClientSettings/Key", OBJ("final_ShowAPC24GPW").innerHTML);
+				}
+				if(security_type=="WPAPSK")
+				{
+					xml_SetAPClientSettings.Set("SetAPClientSettings/Key", OBJ("final_ShowAPC24GPW").innerHTML);
+					if(selected_entype==null)
+						xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/Encryptions/string", "TKIP");
+					else
+						xml_SetAPClientSettings.Set("SetAPClientSettings/SupportedSecurity/SecurityInfo/Encryptions/string", selected_entype);
+				}
+	
+				var xml_SetAPClientSettingsResult = HNAP.SetXMLAsync("SetAPClientSettings", xml_SetAPClientSettings);
+					
+				//no copy ssid from APC and extend wifi have password self	
+				if (document.getElementById("Copy_pwd2").checked == false && document.getElementById("final_ShowAPC24GPW").innerHTML != "") 
+				{	
+				// 2.4G Extend
+				var xml_SetWLanRadioSettings = HNAP.GetXML("SetWLanRadioSettings");
+				xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/RadioID", "RADIO_2.4GHz");
+				xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Enabled", "true");
+				xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/SSID", document.getElementById("final_extend_networkName24G").innerHTML);///
+				xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Mode", "802.11bgn");
+				xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Channel", "0");
+				xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/TXPower", "100");
+				xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/ChannelWidth", "0");
+				xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/SSIDBroadcast", "true");
+				var xml_SetWLanRadioSettingsResult = HNAP.SetXMLAsync("SetWLanRadioSettings", xml_SetWLanRadioSettings);
+				
+				//extend password
+				var xml_SetWLanRadioSecurity = HNAP.GetXML("SetWLanRadioSecurity");
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/RadioID", "RADIO_2.4GHz");
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Enabled", "true");
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Type", "WPAORWPA2-PSK");
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Encryption", "TKIPORAES");
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Key", document.getElementById("final_extend_password").innerHTML);
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/KeyRenewal", "3600");
+				var xml_SetWLanRadioSecurityResult = HNAP.SetXMLAsync("SetWLanRadioSecurity", xml_SetWLanRadioSecurity);
+				//alert(xml_SetWLanRadioSecurityResult.Get("SetWLanRadioSecurityResponse/SetWLanRadioSecurityResult"));
+				}
+				
+				else if (document.getElementById("Copy_pwd2").checked == false && document.getElementById("final_ShowAPC24GPW").innerHTML == "") // no copy , dont have password
+				{
+					// 2.4G Extend
+				var xml_SetWLanRadioSettings = HNAP.GetXML("SetWLanRadioSettings");
+				xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/RadioID", "RADIO_2.4GHz");
+				xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Enabled", "true");
+				xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/SSID", document.getElementById("final_extend_networkName24G").innerHTML);///
+				xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Mode", "802.11bgn");
+				xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Channel", "0");
+				xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/TXPower", "100");
+				xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/ChannelWidth", "0");
+				xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/SSIDBroadcast", "true");
+				var xml_SetWLanRadioSettingsResult = HNAP.SetXMLAsync("SetWLanRadioSettings", xml_SetWLanRadioSettings);
+					
+				//extend password
+				var xml_SetWLanRadioSecurity = HNAP.GetXML("SetWLanRadioSecurity");
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/RadioID", "RADIO_2.4GHz");
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Enabled", "true");
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Type", "WPAORWPA2-PSK");
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Encryption", "TKIPORAES");
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Key", document.getElementById("final_extend_password").innerHTML);
+				xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/KeyRenewal", "3600");
+				var xml_SetWLanRadioSecurityResult = HNAP.SetXMLAsync("SetWLanRadioSecurity", xml_SetWLanRadioSecurity);
+					
+				}
+				else if (document.getElementById("Copy_pwd2").checked == true && document.getElementById("final_ShowAPC24GPW").innerHTML != "") ////copy , and have password 
+				{
+					
+					//SSID same as APC
+					var xml_SetWLanRadioSettings = HNAP.GetXML("SetWLanRadioSettings");
+					xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/RadioID", "RADIO_2.4GHz");
+					xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Enabled", "true");
+					xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/SSID", document.getElementById("final_ShowAPC24GSSID").innerHTML);///
+					xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Mode", "802.11bgn");
+					xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Channel", "0");
+					xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/TXPower", "100");
+					xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/ChannelWidth", "0");
+					xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/SSIDBroadcast", "true");
+					var xml_SetWLanRadioSettingsResult = HNAP.SetXMLAsync("SetWLanRadioSettings", xml_SetWLanRadioSettings);
+					//password			
+					var xml_SetWLanRadioSecurity = HNAP.GetXML("SetWLanRadioSecurity");
+					xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/RadioID", "RADIO_2.4GHz");
+					xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Enabled", "true");
+					xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Type", "WPAORWPA2-PSK");
+					xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Encryption", "TKIPORAES");
+					xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Key", document.getElementById("final_ShowAPC24GPW").innerHTML);
+					xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/KeyRenewal", "3600");
+					var xml_SetWLanRadioSecurityResult = HNAP.SetXMLAsync("SetWLanRadioSecurity", xml_SetWLanRadioSecurity);
+						
+				}
+				else if (document.getElementById("Copy_pwd2").checked == true && document.getElementById("final_ShowAPC24GPW").innerHTML == "") //copy ,but dont have password
+				{
+					//SSID same as APC
+					var xml_SetWLanRadioSettings = HNAP.GetXML("SetWLanRadioSettings");
+					xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/RadioID", "RADIO_2.4GHz");
+					xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Enabled", "true");
+					xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/SSID", document.getElementById("final_ShowAPC24GSSID").innerHTML);///
+					xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Mode", "802.11bgn");
+					xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/Channel", "0");
+					xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/TXPower", "100");
+					xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/ChannelWidth", "0");
+					xml_SetWLanRadioSettings.Set("SetWLanRadioSettings/SSIDBroadcast", "true");
+					var xml_SetWLanRadioSettingsResult = HNAP.SetXMLAsync("SetWLanRadioSettings", xml_SetWLanRadioSettings);
+					//password
+					var xml_SetWLanRadioSecurity = HNAP.GetXML("SetWLanRadioSecurity");
+					xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/RadioID", "RADIO_2.4GHz");
+					xml_SetWLanRadioSecurity.Set("SetWLanRadioSecurity/Enabled", "false");
+					var xml_SetWLanRadioSecurityResult = HNAP.SetXMLAsync("SetWLanRadioSecurity", xml_SetWLanRadioSecurity);
+					
+				}
+
+				/*TODO audio Render*/
+				var xml_GetAudioRenderSettings = HNAP.GetXML("GetAudioRenderSettings");
+				var xml_SetAudioRenderSettings = HNAP.GetXML("SetAudioRenderSettings");
+                if (document.getElementById("audio_name").value != "")
+                {
+                    xml_SetAudioRenderSettings.Set("SetAudioRenderSettings/MediaName", document.getElementById("audio_name").value);
+                    xml_SetAudioRenderSettings.Set("SetAudioRenderSettings/AirPlay", xml_GetAudioRenderSettings.Get("GetAudioRenderSettingsResponse/AirPlay"));
+					xml_SetAudioRenderSettings.Set("SetAudioRenderSettings/DLNA", xml_GetAudioRenderSettings.Get("GetAudioRenderSettingsResponse/DLNA"));
+                   
+                    var xml_SetAudioRenderSettingsResult = HNAP.SetXMLAsync("SetAudioRenderSettings", xml_SetAudioRenderSettings);
+                }
+												
+				document.getElementById("CreatePopAlertMessage").style.display = "inline";
+				document.getElementById("createPop").style.display = "none";
+				Start_reciprocal_Number_Reboot();
+				break;
+		}
+	}
+	
+		function WPS_submit(wps_act)
+		{
+			
+			OBJ("ssid_hotspot_client").value ="";
+			var ACTION = "";
+			var PIN = "";
+				if(wps_act=="PBC")
+				{
+					ACTION = "PBC";
+					PIN = "";
+				}
+				var xml_SetTriggerWPS = HNAP.GetXML("SetTriggerWPS");
+				xml_SetTriggerWPS.Set("SetTriggerWPS/ACTION", ACTION);
+				xml_SetTriggerWPS.Set("SetTriggerWPS/PIN", PIN);
+				var xml_SetTriggerWPSResult = HNAP.SetXML("SetTriggerWPS", xml_SetTriggerWPS);
+
+				if(xml_SetTriggerWPSResult.Get("SetTriggerWPSResponse/SetTriggerWPSResult")=="OK")
+				{
+					wps_timer = setTimeout('WPS_getresult()',5000);
+					cd_timer = setTimeout('WPS_Number_Reboot()',1000);
+				}
+				else
+				{
+					alert("SetTriggerWPS Error!!");
+				}
+
+		}
+		var xml_GetWPSStatus = HNAP.GetXML("GetWPSStatus");
+		function WPS_getresult()
+		{
+			var wps_status = "";
+			var xml_GetWPSStatus = HNAP.GetXML("GetWPSStatus");
+			var wireless_cnt = xml_GetWPSStatus.Get("GetWPSStatusResponse/WPSStatusLists/WPSStatus#");
+				if(wireless_cnt=="") wireless_cnt = 1;
+				for(var i=1; i<=wireless_cnt; i++)
+				{
+					wps_status = xml_GetWPSStatus.Get("GetWPSStatusResponse/WPSStatusLists/WPSStatus:"+i+"/Status");
+					if(wps_status=="WPS_SUCCESS")
+					break;
+				}
+
+			if (wps_status=="WPS_IN_PROGRESS" || wps_status=="")
+				{
+					wps_timer =	setTimeout('WPS_getresult()',5000);
+				}
+				else if(wps_status=="WPS_SUCCESS")
+				{
+					IsWPS = 1;
+					wizard_Step = 6;
+					clearTimeout(cd_timer);
+					WPS_getAPClientSetting();
+					_WPSNumber = 120;
+					setTimeout(wizard_update(),3000); //WPS will get new IP,web pending it .
+				}
+				else
+					alert("Error!!");
+		}
+		
+		function GetAudioMediaName()
+		{
+			if(document.getElementById("audio_name").value=="")
+			{
+			
+			var xml_GetAudioInfo = HNAP.GetXML("GetAudioRenderSettings");
+			var getMediaName = xml_GetAudioInfo.Get("GetAudioRenderSettingsResponse/MediaName");
+			document.getElementById("audio_name").value = getMediaName;
+
+			}
+		}
+	
+	
+		function WPS_Number_Reboot()
+		{
+			if (_WPSNumber > 0)
+			{
+			
+				cd_timer = setTimeout('WPS_Number_Reboot()',1000);
+				_WPSNumber --;
+				document.getElementById("WPS_Number").innerHTML = _WPSNumber + " ";
+			}
+			else
+			{
+				_WPSNumber = 120;
+				wizard_Step = 2;
+				wizard_update();
+				clearTimeout(cd_timer);
+				clearTimeout(wps_timer);
+           
+			}
+		}
+		
+		
+		
+		
+		
+	//---------- start of tools for page
+	//get element by id
+	function OBJ(id)
+	{
+		if		(document.getElementById) return document.getElementById(id);
+		else if	(document.all) return document.all[id].style;
+		else if	(document.layers) return document.layers[id];
+		else return false;
+	}
+	//set select value
+	function set_select_value(obj, value)
+	{
+		for (var i=0; i < obj.length; i+=1)
+			if (obj[i].value == value)
+			{
+				obj.selectedIndex = i;
+				break;
+			}
+		return obj.selectedIndex;
+	}
+	//add select option
+	function add_select_option(obj, value, text)
+	{
+		var Option_Exist = false;
+		for(var i=0; i < obj.length; i++)
+		{ 
+			if(obj.options[i].value == value)
+			{
+				Option_Exist = true;
+				break;
+			}
+		}
+		if(!Option_Exist)
+		{
+			var new_option = new Option(text, value); 
+			obj.options.add(new_option);				
+		}
+	}
+	//remove options
+	function remove_opt(obj)
+	{
+		if (obj == null) return;
+		if (obj.options == null) return;
+		obj.options.length = 0;
+	}
+	
+	var selected_ssid = null;
+	var def_security = null;
+	var selected_entype = null;
+	var selected_authtype = null;
+	 
+	function InjectTable(tblID, uid, data, type)
+	{
+		var rows = OBJ(tblID).getElementsByTagName("tr");
+		var tagTR = null;
+		var tagTD = null;
+		var i;
+		var str;
+		var found = false;
+		selected_ssid = null;
+		def_security = null;
+		
+		/* Search the rule by UID. */
+		for (i=0; !found && i<rows.length; i++) if (rows[i].id == uid) found = true;
+		if (found)
+		{
+			for (i=0; i<data.length; i++)
+			{
+				tagTD = OBJ(uid+"_"+i);
+				
+				switch (type[i])
+				{
+					case "text":
+						str = data[i];
+						if(typeof(tagTD.innerText) !== "undefined")	tagTD.innerText = str;
+						else if(typeof(tagTD.textContent) !== "undefined")	tagTD.textContent = str;
+						else	tagTD.innerHTML = str;
+						break;	
+					default:
+						str = data[i];
+						tagTD.innerHTML = str;
+						break;
+				}
+			}
+			return;
+		}
+	
+		/* Add a new row for this entry */
+		tagTR = OBJ(tblID).insertRow(rows.length);
+		tagTR.id = uid;
+		
+		tagTR.onclick = function (evt)
+		{
+			selected_ssid = data[0]; //ssid
+			if(data[3]=="NONE") def_security = "NONE";
+			 else if(data[3].indexOf("WEP") == 0) 
+			{   
+                selected_authtype=get_wep_auth_type(data[3]);
+                def_security = "WEP";
+			}
+            else 
+            {
+                if(data[3].match("WPA2") == "WPA2")
+                    def_security = "WPA2PSK";
+                else
+                    def_security = "WPAPSK";
+            }
+            selected_entype=data[4];
+            ChangeBgcolor(tblID, uid);
+		};
+		
+		/* save the rule in the table */
+		for (i=0; i<data.length-1; i++)
+		{
+			tagTD = tagTR.insertCell(i);
+			tagTD.id = uid+"_"+i;
+			tagTD.className = "content";
+
+			switch (type[i])
+			{
+				case "text":
+					str = data[i];
+					if(typeof(tagTD.innerText) !== "undefined")	tagTD.innerText = str;
+					else if(typeof(tagTD.textContent) !== "undefined")	tagTD.textContent = str;
+					else	tagTD.innerHTML = str;
+					break;
+				default:
+					str = data[i];
+					tagTD.innerHTML = str; 
+					break;
+			}
+		}
+	}
+	
+	function CleanTable(tblID)
+	{
+		table = OBJ(tblID);
+		var rows = table.getElementsByTagName("tr");
+		while (rows.length > 0) table.deleteRow(rows.length - 1);
+	}
+	//---------- end of tools for page
+	
+	
+		function ChangeBgcolor(tblID, uid)
+	{
+		var elts = OBJ(tblID).getElementsByTagName("tr");
+		for(var i=0;i<elts.length;i++)
+		{
+			var hotspot_id = elts[i].getAttribute("id");
+			if(hotspot_id==uid)
+			  OBJ(uid).style.backgroundColor = "#CCC";
+			else
+				OBJ(hotspot_id).style.backgroundColor = "#FFF";
+	  }
+	}
+	
+	function OnClickSelect_wizard()
+	{
+		OBJ("ssid_hotspot_client").value = selected_ssid;
+		OBJ("security_hotspot_client").value = def_security;
+		OBJ("Site_Survey").style.display = "none";
+		OBJ("scan_waiting_wizard").style.display = "none";
+		OBJ("scan_list").style.display = "none";
+		
+	}
+	
+	function OnClickScan_wizard()
+	{
+		OBJ("Site_Survey").style.display = "block";
+		OBJ("scan_waiting_wizard").style.display = "block";
+		OBJ("buttonTable").style.display = "none";
+	//	OBJ("ssid_hotspot_client").value = null;
+		setTimeout("TriggerSiteSurvey()",6000); // for firefox
+		var wait = TriggerSiteSurvey();
+		setTimeout("ShowSiteSurveyLists_wizard()", wait * 1000);
+	}
+	
+	function OnClickSelect()
+	{
+		OBJ("ssid_hotspot_client").value = selected_ssid;
+		document.getElementById("selectd_ssid").innerHTML = OBJ("ssid_hotspot_client").value;
+		OBJ("security_hotspot_client").value = def_security;
+		//document.getElementById("selectd_security").innerHTML = OBJ("security_hotspot_client").value;
+		OBJ("CreatePopAlertMessage3").style.display = "none";
+		OBJ("scan_waiting").style.display = "none";
+		OBJ("scan_list").style.display = "none";
+		OBJ("selected_ssid_password").style.display = "block";
+		OBJ("selectd_password").style.display = "block";
+		
+		if(OBJ("ssid_hotspot_client").value =="" ||OBJ("ssid_hotspot_client").value =="null")
+		{
+		OBJ("CreatePopAlertMessage3").style.display = "block";
+		OBJ("scan_list").style.display = "block";
+		OBJ("selected_ssid_password").style.display = "none";
+		OBJ("selectd_password").style.display = "none";
+		
+		}
+		if(OBJ("security_hotspot_client").value =="NONE" )
+		{
+		close_hotspot_list();
+		Time_GetXML = window.clearInterval(Time_GetXML);
+		Time_GetStatusXML = window.clearInterval(Time_GetStatusXML);
+		Time_GetConnectionUpTime = window.clearInterval(Time_GetConnectionUpTime);
+		Time_GetConnectionUpTime_IPv6 = window.clearInterval(Time_GetConnectionUpTime_IPv6);
+		GetXML_Load = window.clearInterval(GetXML_Load);
+		Set_APClient();
+		
+		
+		}
+		
+	}
+	
+	function OnClickScan()
+	{
+		Time_GetXML = window.clearInterval(Time_GetXML);
+		Time_GetStatusXML = window.clearInterval(Time_GetStatusXML);
+		Time_GetConnectionUpTime = window.clearInterval(Time_GetConnectionUpTime);
+		Time_GetConnectionUpTime_IPv6 = window.clearInterval(Time_GetConnectionUpTime_IPv6);
+		GetXML_Load = window.clearInterval(GetXML_Load);
+		
+		OBJ("CreatePopAlertMessage3").style.display = "block";
+		OBJ("scan_waiting").style.display = "block";
+		//OBJ("InternetInfo").style.display = "none";
+		showList('noneInfo');
+		OBJ("uplink_warning").style.display = "none";
+		OBJ("scan_warning").style.display = "none";
+	//	OBJ("ssid_hotspot_client").value = null;
+		TriggerSiteSurvey();
+		var wait = TriggerSiteSurvey();
+		setTimeout("ShowSiteSurveyLists()", wait * 1000);
+	}
+	
+	function Uplinkdontlink()
+	{
+		OBJ("uplink_warning").style.display = "block";
+		OBJ("scan_warning").style.display = "block";
+		showList('noneInfo');
+	//	OBJ("InternetInfo").style.display = "none";
+	}
+	
+	function close_hotspot_list()
+	{
+		OBJ("CreatePopAlertMessage3").style.display = "none";
+		OBJ("scan_waiting").style.display = "none";
+		OBJ("scan_list").style.display = "none";
+		OBJ("uplink_warning").style.display = "none";
+		OBJ("scan_warning").style.display = "none";
+		OBJ("selected_ssid_password").style.display = "none";
+		OBJ("selectd_password").style.display = "none";
+	}
+	
+	function reload_hotspot_list()
+	{
+		OBJ("CreatePopAlertMessage3").style.display = "block";
+		OBJ("scan_list").style.display = "none";
+		OBJ("scan_waiting").style.display = "block";
+	//	OBJ("ssid_hotspot_client").value = null;
+		TriggerSiteSurvey();
+		var wait = TriggerSiteSurvey();
+		setTimeout("ShowSiteSurveyLists()", wait * 1000);
+	}
+	
+	var HNAP = new HNAP_XML();
+	
+	function Array2DVar(x, y)
+	{
+		this.length = x;
+		this.x = x;
+		this.y = y;
+		for(var i = 0; i < this.length; i++)
+		{
+			this[i] = new Array(y);
+		}
+	}
+	
+	function EventSiteSurveyList()
+	{
+		var xml_GetSiteSurveyList = HNAP.GetXML("GetSiteSurvey", new Array("RadioID", "RADIO_2.4GHz"));
+		var res = xml_GetSiteSurveyList.Get("GetSiteSurveyResponse/GetSiteSurveyResult");
+		return res;
+	}
+	
+	var total_lists_24g = 0;
+	var total_lists_5g = 0;
+	var total_sslists = 0;
+	var list_arr = new Array();
+	var h=0;
+	
+	function TriggerSiteSurvey(){
+	var xml_SetTrig = HNAP.GetXML("SetTriggerWirelessSiteSurvey");
+		xml_SetTrig.Set("SetTriggerWirelessSiteSurvey/RadioID","RADIO_2.4GHz");	
+	var xml_SetTriggerWirelessSiteSurveyResult = HNAP.SetXML("SetTriggerWirelessSiteSurvey", xml_SetTrig);
+	var wait_time = xml_SetTriggerWirelessSiteSurveyResult.Get("SetTriggerWirelessSiteSurveyResponse/WaitTime");
+	return wait_time;
+	}
+	
+	function ShowSiteSurveyLists()
+	{
+		CleanTable("content_tb");
+		
+		var sitesurvey_result = EventSiteSurveyList();
+		
+		if(sitesurvey_result=="OK")
+		{
+			setTimeout('AddSiteSurveyLists("2.4GHZ")', 2000);
+			setTimeout('DrawSiteSurveyList()', 2000);
+		}
+		else
+			setTimeout("TriggerSiteSurvey()",3000);
+	}
+	
+	function ShowSiteSurveyLists_wizard()
+	{
+		CleanTable("content_tb_w");
+		
+		var sitesurvey_result = EventSiteSurveyList();
+		
+		if(sitesurvey_result=="OK")
+		{
+			setTimeout('AddSiteSurveyLists("2.4GHZ")', 2000);
+			setTimeout('DrawSiteSurveyList_wizard()', 2000);
+		}
+		else
+			setTimeout("TriggerSiteSurvey()",3000);
+	}
+	
+	function AddSiteSurveyLists(radioid)
+	{
+		var xml_GetSiteSurveyList = HNAP.GetXML("GetSiteSurvey", new Array("RadioID", "RADIO_2.4GHz"));
+		var total_lists = xml_GetSiteSurveyList.Get("GetSiteSurveyResponse/APStatInfoLists/APStatInfo#");
+
+		for (var i=1; i<=total_lists; i++)
+		{
+			var hotspot_rssi = xml_GetSiteSurveyList.Get("GetSiteSurveyResponse/APStatInfoLists/APStatInfo:"+i+"/SignalStrength")
+			var hotspot_security = xml_GetSiteSurveyList.Get("GetSiteSurveyResponse/APStatInfoLists/APStatInfo:"+i+"/SupportedSecurity/SecurityInfo/SecurityType");
+			var hotspot_entype = xml_GetSiteSurveyList.Get("GetSiteSurveyResponse/APStatInfoLists/APStatInfo:"+i+"/SupportedSecurity/SecurityInfo/Encryptions/string:1");
+			
+			var security = null;
+			var rssi = null;
+			
+			if(hotspot_security!="NONE")
+				security = '<img src="image/wisp_security.png" width="12" height="21"/>';
+			else
+				security ="";//   security = null; //IE display null, hill.
+				
+			
+			if(parseInt(hotspot_rssi)<=35 || hotspot_rssi =="")
+				rssi = '<img src="image/wisp_strength_low.png" width="25" height="20"/>';
+			else if(parseInt(hotspot_rssi)<=70 && parseInt(hotspot_rssi)>35)
+				rssi = '<img src="image/wisp_strength_medium.png" width="25" height="20"/>';
+			else if(parseInt(hotspot_rssi)<=100 && parseInt(hotspot_rssi)>70)
+				rssi = '<img src="image/wisp_strength_high.png" width="25" height="20"/>';
+			
+			list_arr[h] = {
+					ssid: xml_GetSiteSurveyList.Get("GetSiteSurveyResponse/APStatInfoLists/APStatInfo:"+i+"/SSID"),
+					rssi_img: rssi,
+					sec_img: security,
+					sec_type:	hotspot_security,
+					en_type: hotspot_entype,
+					rssi_value: parseInt(hotspot_rssi)
+			};
+			h++;
+		}
+	}
+	
+	function SortSiteSurveyList()
+	{
+		function compare(a,b)
+		{
+			if (a.rssi_value < b.rssi_value)
+				return 1;
+			if (a.rssi_value > b.rssi_value)
+				return -1;
+			return 0;
+		}
+		list_arr.sort(compare);
+	}
+	
+	function DrawSiteSurveyList()
+	{
+		var random_num = Math.floor((Math.random()*10)+1); 
+		SortSiteSurveyList();
+		for (var i=0; i<list_arr.length; i++)
+		{
+			var ssid = list_arr[i].ssid;
+			var rssi_img = list_arr[i].rssi_img;
+			var sec_img = list_arr[i].sec_img;
+			var security = list_arr[i].sec_type;
+			
+			var data = [ssid, rssi_img, sec_img, security];
+			var type = ["text", "img", "img", "text"];
+			InjectTable("content_tb", "hotspot"+random_num+"-"+i, data, type); 
+		}
+		OBJ("CreatePopAlertMessage3").style.display = "block";
+		OBJ("scan_waiting").style.display = "none";
+		OBJ("scan_list").style.display = "block";
+		h=0;
+	}
+	
+	function DrawSiteSurveyList_wizard()
+	{
+		var random_num = Math.floor((Math.random()*10)+1);
+		SortSiteSurveyList();
+		for (var i=0; i<list_arr.length; i++)
+		{
+			var ssid = list_arr[i].ssid;
+			var rssi_img = list_arr[i].rssi_img;
+			var sec_img = list_arr[i].sec_img;
+			var security = list_arr[i].sec_type;
+			
+			var data = [ssid, rssi_img, sec_img, security];
+			var type = ["text", "img", "img", "text"];
+			InjectTable("content_tb_w", "hotspot"+random_num+"-"+i, data, type);
+		}
+		OBJ("Site_Survey").style.display = "block";
+		OBJ("scan_waiting_wizard").style.display = "none";
+		OBJ("scan_list_wizard").style.display = "block";
+		OBJ("buttonTable").style.display = "inline";
+		h=0;
+		
+	}
+	
+		function CheckConnectionStatus()
+	{
+		$.ajax({
+			cache : false,
+			url : "./js/CheckConnection",
+			timeout : 2000,
+			type : "GET",
+			success : function(data) { SetXML(); }, 
+			error : function() { document.getElementById("DetectRouterConnection").style.display = "inline"; }
+		});
+	}
+	
+
+
+</script>
+
+<style>
+#InternetInfo {
+	display: none;
+}
+#extenderInfo {
+	display: none;
+}
+#AudioInfo {
+	display: none;
+}
+
+.progressBar {
+	background-color: #fff;
+	height: 30px;
+	width: 300px;
+	border: 1px solid #4598aa;
+	color: #222;
+}
+.progressBar .bar {
+	background-color: #4598aa;
+	height: 30px;
+	width: 0px;
+}
+#WPS_detection {
+	display: none;
+}
+#wps_fail {
+	display: none;
+}
+#selectWirelessConnectionType {
+	display: none;
+}
+	#audio_setupTable {
+		display: none;
+	}
+#wifi_setupTable {
+	display: none;
+}
+	#Final_setupTable{
+		display: none;
+	}
+#confirm_setup {
+	display: none;
+}
+#createPop {
+	display: none;
+}
+#congratulationsTable {
+	display: none;
+}
+
+
+.button_radius
+{
+	border-radius: 5px;
+	border: solid 1px #4394A7;
+	COLOR: #FFFFFF;
+	background-color:#4394A7;
+	width:80px;
+	height:30px;
+	text-align:center; 
+}
+.button_radius2
+{
+	border-radius: 5px;
+	background-color:#007086;
+	border: solid 1px #FFF;
+	color: #FFFFFF;
+	width:80px;
+	height:30px;
+	text-align:center; 
+}
+.scanPopBox
+{
+
+	top: 100px;
+	width: 331px;
+	height: auto;
+	margin: 0 auto;
+}
+.wait_scan_box
+{
+	position: relative;
+	text-align: center;
+	top: 100px;
+	left: 80px;
+  width: 222px;
+  height: 206px;
+  background: url("../image/wisp_loading.png") left top repeat-y;
+}
+.scan_lists_box
+{
+	border-radius: 10px;
+
+	top: 100px;
+	background-color:#007086;
+	border: solid 1px #FFF;
+	color: #FFF;
+	padding: 10px;
+	width: 331px;
+	height: auto;
+	text-align: left;
+}
+.content_div
+{
+	color: #333333;
+  background-color: #FFF;
+	width: 100%;
+  height: 250px;
+  overflow: auto;
+}
+div.emptyline
+{
+	height: 12px;
+}
+label.error
+{
+	background: url("./image/disconnected.png") no-repeat 0px 0px;
+	background-size: 16px 16px;
+	padding-left: 20px;
+	color: #FF0000;
+	margin: 0 0 0 5px;
+}
+
+.wait_scan_box_wizard
+{
+	top: 100px;
+	border: solid 1px #FFF;
+	color: #333333;
+	width: 601px;
+	height: auto;
+	text-align: left;
+}
+.scan_lists_box_wizard
+{
+	top: 100px;
+	border: solid 1px #CCC;
+	color: #FFF;
+	width: 601px;
+	height: auto;
+	text-align: left;
+}
+
+
+
+</style>
+</head>
+
+<body>
+
+	<div id="wrapper">
+		<!-------------------- Logo ------------------------->
+		<div id="header"></div>
+		<!-------------------- Menu ------------------------->
+		<div id="menu"></div>
+		<!-------------------- Content ---------------------->
+		<div id="content_Wizard"></div>
+		<div id="content">
+			<div id="map_title"><script>I18N("h", "Current Status");</script></div>
+			<div id="map_info"><script>I18N("h", "Click on any item in the diagram for more information.");</script></div>
+			<div><button type="button" id="Wizard_Btn" class="styled_button_s" onclick="popupWizard()"><script>I18N("h", "Setup Wizard");</script></button></div>
+			<!-------------------- Map ---------------------->
+			<div id="map">
+				<div id="internetIcon" style="display:none" onmousedown="showList('InternetInfo');GetInternetInformation();return false;">
+					<div class="IconName">
+						<img id="internet_warning" class="warning_icon" src="image/warning.png" width="35" height="35" style="display:none" />
+						<script>I18N("h", "Uplink Router");</script>
+					</div>
+					<div id="btn_bg"><img class="image_icon" id="internet_image" src="image/router.gif" width="52" height="52"  /></div>
+				</div>
+				<div id="extenderIcon" style="display:none" onmousedown="showList('extenderInfo');GetextenderInformation();return false;" >
+					<div class="IconName">
+						<img id="extended_warning" class="warning_icon" src="image/warning.png" width="35" height="35" style="display:inline" onmousedown="showWarning();"/>
+						<label id="modelName">&nbsp;</label> 
+					</div>
+					<div id="btn_bg"><img class="image_icon" src="image/DAP-1320b_selected.png" width="54" height="52"  /></div>
+				</div>
+
+				<!--<div id="wirelessIcon" style="display:none">
+					<div class="IconName"><script>I18N("h", "Wi-Fi Clients");</script></div>
+					<a href="Wireless.html"><div id="btn_bg"><img class="image_icon" id="wireless_image" src="image/wifiClient.gif" width="52" height="52" border="0" /></div></a>
+				</div> -->
+				
+				<div id="audioIcon" style="display:none" onmousedown="showList('AudioInfo');GetAudioInformation();return false;">
+					<div class="IconName">
+						<img id="usb_warning" class="warning_icon" src="image/warning.png" width="35" height="35" style="display:none" />
+						<script>I18N("h", "Audio Renderer");</script>
+					</div>
+					<div id="btn_bg"><img class="image_icon" id="Audio_image" src="image/audio_topology.gif" width="52" height="52"  /></div>
+				</div>
+				
+				<div id="wirelessIcon2" style="display:none">
+					<div class="IconName"><script>I18N("h", "Wi-Fi Clients");</script></div>
+					<a href="Wireless.html"><div id="btn_bg"><img class="image_icon" id="wireless_image" src="image/wifiClient.gif" width="52" height="52" border="0" /></div></a>
+				</div>
+				
+				<div id="line_wan" style="display:none">
+					<div class="IconName"></div>
+					<img id="wan_Line" src="image/line2.png" alt="" width="250" height="18" />
+				</div>
+				<div id="wan_light" style="display:none">
+					<div class="IconName"></div>
+					<img id="wan_Light" src="image/disconnected.png" alt="" width="35" height="35" />
+				</div>
+				
+				<!--<div id="line_wifi" style="display:none">
+					<div class="IconName"></div>
+					<img src="image/line2.png" alt="" width="250" height="18" />
+				</div> -->
+				
+				<div id="line_wifi2" style="display:none">
+					<div class="IconName"></div>
+					<img src="image/line3.png" alt="" width="189" height="151" />
+				</div>
+				
+				<div id="line_usb" style="display:none">
+					<div class="IconName"></div>
+					<img src="image/line1.png" alt="" width="189" height="151" />
+				</div>
+				
+				
+				
+			</div>
+			<img id="w_this" src="image/w_this.png" alt="" width="27" height="13" style="display:none"/>
+			<div id="extended_warning_msg" style="display:none">
+				<div id="close_warnning"  onclick="clearCreateWPOP()" style="cursor:pointer"></div>
+				<table id="extended_warning_table" border="0">
+					<tbody>
+						<tr>
+							<td><script>I18N("h", "The Wi-Fi connection is not secure.");</script></td>
+						</tr>
+						<tr>
+							<td class="linkstyle_2"><a href="ExtendedWiFi.html"><script>I18N("h", "Secure your network.");</script></a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-------------------- Information ---------------------->
+			<div id="noneInfo">&nbsp;</div>
+
+			<!-------------------- extenderInfo ----------------------->
+			<div id="extenderInfo">
+				<!--Line & infor title!-->
+				<div id="this_router">
+					<img src="image/this.png" alt="" width="28" height="15" />
+				</div>
+
+				<div class="infor_titleArea_router">
+					<div id="infor_title"><label id="modelName2">&nbsp;</label></div>
+					<table id="infor_subtitle" border="0">
+						<tbody>
+							<tr>
+								<td><script>I18N("h", "Hardware Version");</script>:&nbsp;<label id="HWVersion">--</label></td>
+								<td style="padding: 0 10px 0 0;"><a id="firmwareVersion" class="firmwareVersion_nofw"><script>I18N("h", "Firmware Version");</script>:&nbsp;<label id="FWVersion">--</label></a></td>
+								<td style="text-align=left;"><div id="newFirmwareIcon" style="display:none"><img src="image/Infor2.png" alt="" width="24" height="24" style="cursor:pointer" onclick="javascript:self.location.href='UpdateFirmware.html'" /></div></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div class="infor">
+					<img src="image/footer.png" alt="" width="868" height="2" class="thisline"/>
+					
+					<ul id="v4_v6_btn">
+						<li style="display:block"><div id="v6_btn_LAN" class="v4v6_linkstyle_2" onclick="gotoIPv6Info();"><script>I18N("h", "IPv6");</script></div></li>
+						<li style="display:block"><div  class="v4v6_linkstyle_1">&nbsp; / &nbsp;</div></li>
+						<li style="display:block"><div id="v4_btn_LAN" class="v4v6_linkstyle_1" onclick="gotoIPv4Info();"><script>I18N("h", "IPv4");</script></div></li>
+					</ul>
+					
+				  <div id="infor_LAN">
+						<table class="myTable_index" border="0">
+							<tbody>
+								<tr>
+									<td colspan="2"><div id="bold" class="linkstyle_1"><a href="Network.html"><script>I18N("h", "Network");</script></a></div></td>
+								</tr>
+								<tr>
+									<th><script>I18N("h", "MAC Address");</script>:</th>
+								</tr>
+								<tr>								
+									<td><label id="index_ShowAPC_MacAddress">N/A</td>
+								</tr>
+								<!--Hill Add 2013/08/28-->
+								<tr>
+									<th><script>I18N("h", "Device IP Address");</script>:</th>
+								</tr>
+								<tr>
+									<td><label id="index_ShowIPAddress">N/A</td>
+								</tr>
+								<tr>
+									<th><script>I18N("h", "Subnet Mask");</script>:</th>
+								</tr>
+								<tr>
+									<td><label id="index_ShowSubnetMask">N/A</td>
+								</tr>
+								<tr>
+									<th><script>I18N("h", "Default Gateway");</script>:</th>
+								</tr>
+								<tr>
+									<td><label id="index_ShowDefaultGateway">N/A</td>
+								</tr>
+								<tr>
+									<th><script>I18N("h", "DNS Server");</script>:</th>
+								</tr>
+								<tr>
+									<td><label id="index_ShowPrimaryDNS">Not Available </td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div id="Wi-Fi_24">
+						<table class="myTable_index" border="0">
+							<tbody>
+								<tr>
+									<td colspan="2"><div id="bold" class="linkstyle_1"><a href="WiFi.html"><script>I18N("h", "Extended Wi-Fi");</script></a></div></td>
+								</tr>
+								<tr>
+									<!--<th style = "min-width:150px;"><script>I18N("h", "Status");</script>:</th>
+									<td><label id="index_Show24GStatus"></td> -->
+								</tr>
+								<tr id="ssid_24">
+									<th><script>I18N("h", "Wi-Fi Name (SSID)");</script>:</th>
+								</tr>
+								<tr>
+									<td><label id="index_Show24GSSID">N/A</td>
+								</tr>
+								<tr id="password_24">
+									<th><script>I18N("h", "Password");</script>:</th>
+								</tr>
+								<tr>
+									<td><label id="index_Show24GPassword">N/A</td>
+								</tr>
+							<tr><td>&nbsp;</td></tr>
+							<tr><td>&nbsp;</td></tr>
+							<tr><td>&nbsp;</td></tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div id="infor_LAN_ipv6" style="display:none;">
+						<table class="myTable_index" border="0">
+							<tbody>
+								<tr>
+									<td colspan="2"><div id="bold" class="linkstyle_1"><a href="Network.html"><script>I18N("h", "Network");</script></div></td>
+								</tr>
+								<tr id="lidmi" style="display:table-row;">
+									<th><script>I18N("h", "IPv6 Device Management Interface");</script>:</th>
+								</tr>
+								<tr>
+									<td><label id="lan_IPv6_config">N/A</label></td>
+								</tr>
+								<tr id="lia" style="display:table-row;">
+									<th><script>I18N("h", "LAN IPv6 Address");</script>:</th>
+								</tr>
+								<tr>
+									<td><label id="lan_IPv6_Address">N/A</label></td>
+								</tr>
+								<tr style="display:table-row;">
+									<th><script>I18N("h", "IPv6 Default Gateway");</script>:</th>
+								</tr>
+								<tr>
+									<td><label id="lan_IPv6_default_gateway">N/A</label></td>
+								</tr>
+								<tr id="lilla" style="display:table-row;">
+									<th><script>I18N("h", "LAN IPv6 Link-Local Address");</script>:</th>
+								</tr>
+								<tr>
+									<td><label id="lan_IPv6_Link_Local_Address">N/A</label></td>
+								</tr>
+								<tr style="display:table-row;">
+									<th><script>I18N("h", "DNS Server");</script>:</th>
+								</tr>
+								<tr>	
+									<td><label id="lan_IPv6_DNS">Not Available</label></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<br/>
+				<br/>
+				<br/>
+			</div>
+			<!-------------------- InternetInfo ---------------------->
+			<div id="InternetInfo">
+				<div id="this_internet">
+					<img src="image/this.png" alt="" width="28" height="15" />
+				</div>
+
+				<div class="infor_titleArea">
+					<div id="infor_title"><script>I18N("h", "Wi-Fi");</script></div>
+				</div>
+
+				<div class="infor">
+					<img  src="image/footer.png" alt="" width="868" height="2" class="thisline"/>
+<!--
+					<ul id="v4_v6_btn">
+						<li style="display:block"><div id="v6_btn_WAN" class="v4v6_linkstyle_2" onclick="gotoIPv6Info_WAN();"><script>I18N("h", "IPv6");</script></div></li>
+						<li style="display:block"><div  class="v4v6_linkstyle_1">&nbsp; / &nbsp;</div></li>
+						<li style="display:block"><div id="v4_btn_WAN" class="v4v6_linkstyle_1" onclick="gotoIPv4Info_WAN();"><script>I18N("h", "IPv4");</script></div></li>
+					</ul>
+-->
+					<div id="internet_1">
+										
+						<table class="myTable_index" border="0" style="line-height:25px;">
+							<tbody>
+								<tr>
+									<th><script>I18N("h", "Wireless Mode");</script>:</th>
+								</tr>
+								<tr>
+									<td><label id="index_ShowDeviceType"></td>
+								</tr>
+								<tr>
+									<th><script>I18N("h", "Network Status");</script>:</th>
+								</tr>
+								<tr>
+									<td><label id="index_ShowNetworkStatus">N/A</td>
+								</tr>
+								<tr>
+									<th><script>I18N("h", "Connection Up Time");</script>:</th>
+								</tr>
+								<tr>
+									<td><label id="index_ShowConnectionUpTime">0 <script>I18N("h", "Day");</script> 0 <script>I18N("h", "Hour");</script> 0 <script>I18N("h", "Min");</script> 0 <script>I18N("h", "Sec");</script></td>
+								</tr>
+								<tr><td>&nbsp;</td></tr>
+								<tr>
+									<td colspan=2><center><button type="button" id="Uplink_connect_Btn" class="styled_button_s"  onClick="OnClickScan();"> <script>I18N("h", "Connect to another uplink router");</script></button></center></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+			
+					
+					<div id="internet_2">
+						<table class="myTable_index" border="0" style="line-height:25px;">
+							<tbody>
+								<tr>
+									<th><script>I18N("h", "Network Name(SSID)");</script>:</th>
+								</tr>
+								<tr>
+									<td><label id="index_ShowAPC24GSSID">N/A</td>
+								</tr>
+								<tr>
+									<th ><script>I18N("h", "Password");</script>:</th>
+								</tr>
+								<tr>
+									<td><label id="index_ShowAPC24GPW">None</td>
+								</tr>
+								<tr><td>&nbsp;</td></tr>
+								<tr><td>&nbsp;</td></tr>
+								<tr><td>&nbsp;</td></tr>
+								<tr><td>&nbsp;</td></tr>
+								
+								
+							</tbody>
+						</table>
+					</div>			
+				</div>
+			</div>
+			<!--------------------Site Survey SCAN POP-------------------------------->
+		<div id="CreatePopAlertMessage3" style="display:none">
+			<div id="this_scan">
+					<img src="image/w_this.png" alt="" width="28" height="15" />
+			</div>
+			<div id="scan_waiting" class="scan_lists_box" style="display:none">
+				<div id="scan_list_title">
+					<table width="100%" cellspacing="0" cellpadding="0" border="0">
+						<tbody>
+							<tr>
+								<td><b><script>I18N("h", "Wi-Fi networks");</script></b></td>
+								<td style="text-align: right;">
+									<a href="javascript:reload_hotspot_list()"><img src="image/wisp_reload.gif" border="0"></a>
+									<a href="javascript:close_hotspot_list()"><img src="image/wisp_close.gif" width="24" height="25" border="0"></a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<br/>
+				<br/>
+				<br/>
+				<center><img src="image/loading.gif" border="0"></center>
+				<div><center><span><script>I18N("h", "Scanning");</script>...</span></center></div>
+				<br/>
+			</div>
+			<div id="scan_list" class="scan_lists_box" style="display:none">
+				<div id="scan_list_title">
+					<table width="100%" cellspacing="0" cellpadding="0" border="0">
+						<tbody>
+							<tr>
+								<td><b><script>I18N("h", "Wi-Fi networks");</script></b></td>
+								<td style="text-align: right;">
+									<a href="javascript:reload_hotspot_list()"><img src="image/wisp_reload.gif" border="0"></a>
+									<a href="javascript:close_hotspot_list()"><img src="image/wisp_close.gif" width="24" height="25" border="0"></a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="emptyline"></div>
+				<div id="scan_list_content">
+					<div class="content_div">
+						<table id="content_tb" width="100%" cellspacing="0" cellpadding="5" border="0" rules="rows" frame ="void" style="cursor:pointer">
+						</table>
+					</div>
+				</div>
+				<div class="emptyline"></div>
+				<div id="scan_list_slb">
+					<center><button type="button" class="button_radius2" onClick="OnClickSelect()" style="cursor:pointer"/><script>I18N("h", "Select");</script></button></center>
+				</div>
+				<div class="emptyline"></div>
+			</div>
+		</div>
+				<!-------------------uplink don't link message-------------------------------->
+		<div id="uplink_warning" style="display:none">
+			<div id="this_scan">
+					<img src="image/w_this.png" alt="" width="28" height="15" />
+			</div> 
+			<div id="scan_warning" class="scan_lists_box" style="display:none">
+				<div id="scan_list_title">
+					<table width="100%" cellspacing="0" cellpadding="0" border="0">
+						<tbody>
+							<tr>
+								<td style="text-align: right;">
+									<a href="javascript:close_hotspot_list()"><img src="image/wisp_close.gif" width="24" height="25" border="0"></a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="emptyline"></div>
+				<div id="scan_list_content">
+					
+						<label><script>I18N("h", "The device is not connected to an uplink router, click &quot;Next&quot; to find available Wi-Fi networks.");</script></label>
+						<!--<table id="content_tb" width="100%" cellspacing="0" cellpadding="5" border="0">
+						</table> -->
+
+				</div>
+				<div class="emptyline"></div>
+				<div id="scan_list_slb">
+					<center><button type="button" class="button_radius2" onClick="OnClickScan()" style="cursor:pointer"/><script>I18N("h", "Next");</script></button></center>
+				</div>
+				<div class="emptyline"></div>
+			</div>
+		</div>
+				<!-------------------selected password message-------------------------------->
+		<div id="selected_ssid_password" style="display:none">
+		
+			<div id="selectd_password" class="scan_lists_box" style="display:none">
+				<div id="scan_list_title">
+					<table width="100%" cellspacing="0" cellpadding="0" border="0">
+						<tbody>
+							<tr>
+								<td><script>I18N("h", "A password is required to join");</script> &quot;<label id="selectd_ssid"></label>&quot;:</td>
+								<td style="text-align: right;">
+									<a href="javascript:close_hotspot_list()"><img src="image/wisp_close.gif" width="24" height="25" border="0"></a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="emptyline"></div>
+				<div id="scan_list_content">
+				<form name="APC_Settings" id="APC_Settings" method="POST" action="">
+				<input id="sumbit_CheckData4" class="submit" type="submit" value="Submit" style="display:none" />	
+						
+				<tr><td style="width:250px;"><input class="styled-text" type="text" size="40" id="select_APC_PW" name="select_APC_PW"></input></td></tr>
+											
+										
+						<!--<table id="content_tb" width="100%" cellspacing="0" cellpadding="5" border="0">
+						</table> -->
+				</form>
+				</div>
+				<div class="emptyline"></div>
+				<div id="scan_list_slb">
+					<center><button type="button" class="button_radius2" onClick="document.getElementById('sumbit_CheckData4').click()" style="cursor:pointer"/><script>I18N("h", "Connect");</script></button></center>
+				</div>
+				<div class="emptyline"></div>
+			</div>
+			
+		</div>
+		
+			<!-------------------- audioInfo ---------------------->
+			<div id="AudioInfo">
+				<div id="this_audio">
+					<img src="image/this.png" alt="" width="28" height="15" />
+				</div>
+				<div class="infor_titleArea">
+					<div id="infor_title"><script>I18N("h", "Audio Renderer");</script></div>
+				</div>
+				<div class="infor">
+					<img src="image/footer.png" alt="" width="868" height="2" class="thisline"/>
+					<div id="audio_1">
+						<table class="myTable_index" border="0">
+							<tbody>
+								<tr>
+									<th colspan="2" style="text-align:left"><div id="bold" class="linkstyle_1"><a href="Audio.html"><script>I18N("h", "Device Name");</script>:</div></th>
+									<td><div id="bold"><label id="index_audio_name">N/A</div></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div id="audio_2">
+						<table class="myTable_index2" border="0"  style="line-height:25px;">
+							<tbody>
+								<tr>
+									
+									<th colspan="2" style="text-align:left"><div id="bold" class="linkstyle_1"><a href="Audio.html"><script>I18N("h", "DLNA Renderer");</script></div></th>
+								</tr>
+								<tr>
+									<th style="text-align: right;"><script>I18N("h", "Status");</script>:</th>
+									<td><label id="dlna_Status"></label></td><!--TODO-->
+								</tr>
+								<tr>
+									<th colspan="2" style="text-align:left"><div id="bold" class="linkstyle_1"><a href="Audio.html"><script>I18N("h", "Air Play");</script></div></th>
+									
+								</tr>
+								<tr>
+									<th  style="text-align: right;"><script>I18N("h", "Status");</script>:</th>
+									<td><label id="airplay_Status"></label></td><!--TODO-->
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+					<!------------------------------------wizard----------------->
+		<div id="createPop">
+				<div id="popRect">
+					<div id="dialogBox"  style="width:616px">
+					<div id="wizard_title_bg"><div id="wizard_title"><script>I18N("h", "Welcome");</script></div></div>
+					<div id="closeCreatePopBtn" onclick="closeWizard()" style="cursor:pointer"></div>
+
+						<!--///////////////////////////////Topology//////////////////////////////////-->
+						<div id="wizard_topology">
+							<div id="topology">
+								<div id="wizard_internet"></div>
+								<div id="wizard_wan_line" class="wizard_wan_line_off"></div>
+								<div id="wizard_router" class="wizard_router_off"></div>
+								<div id="wizard_wifi_line" class="wizard_wifi_line_off"></div>
+								<div id="wizard_wifi"></div>
+								<div id="wizard_speaker" style="display:none"></div>
+								<div id="wizard_speaker_line" style="display:none"></div>
+							</div>
+							<table  id="wizard_deviceName"  border="0">
+								<tbody>
+									<tr>
+										<td><script>I18N("h", "Uplink Router");</script></td>
+										<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id="modelName3"></label></td>
+										<td id = "client_name"><script>I18N("h", "Wi-Fi Client");</script></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<!--///////////////////////////////Settings//////////////////////////////////-->
+						<div id="wizard_settings">
+							<!--0.Welcome-->
+							<div id = "wizard_settings_area" class="wizard_area1">
+							<div id= "wizard_wording" class="wizard_wording_r"><script>I18N("h", "This wizard will guide you through a step-by-step process to configure your new D-Link device.");</script></div>
+							
+							<div id= "wizard_settings_body">
+								<table id="wizard_setupTable"  border="0">
+									<tbody>
+									</tbody>
+								</table> 
+								<!--1.WPS_detection -->
+								<div id="WPS_detection">
+								<div id= "wizard_wording" class="wizard_wording_r"><script>I18N("h", "Please press Push Button(Physical or Virtual) on the AP or Router you are connecting to within ");</script><label id="WPS_Number" style="color:#ff0000">120&nbsp;</label><script>I18N("h", "Seconds...");</script></div>
+								<center><div id="Loading_pop_image"></div></center></br>
+								</div>
+								<!--2.WPS fail-->
+								<div id ="wps_fail">
+									<img id="plugImage" src="image/warning.png" style="margin:60px 0px 0px 0px;"/>
+									
+								</div>
+								<!--3.select scan type WPS or site survey-->
+								<div id="selectWirelessConnectionType">
+									<table id="connectionType_Table"  border="0" style="margin:10px 0px 0px 0px;">
+										<tbody>
+											<tr>
+												<td style="width:10px;"><div id="cb_wps" class="clicked" OnClick="selectWirelessConnectionType('WPS');"></div></td>
+												<th style="text-align: left;">--<script>I18N("h", "Select this option if your wireless device supports WPS(Wi-Fi Protected Setup)");</script></th>
+											</tr>
+											
+											<tr>
+												<td style="width:10px;"><div id="cb_survey" class="unclick" OnClick="selectWirelessConnectionType('survey');"></div></td>
+												<th style="text-align: left;">--<script>I18N("h", "Select this option if you want to setup your network manually");</script></th>
+											</tr>		
+										</tbody>
+									</table>
+								</div>
+								<!---4.Site Survey Page--->
+								<div id="Site_Survey" style="display:none">
+									<div id="scan_waiting_wizard" class="wait_scan_box_wizard" style="display:none">
+									<br/>
+									<br/>
+									<br/>
+										<center><img src="image/loading.gif" border="0"></center>
+											<div><center><span><script>I18N("h", "Scanning");</script>...</span></center></div>
+									<br/>
+								</div>
+								<div id="scan_list_wizard" class="scan_lists_box_wizard" style="display:none">
+			
+									<div id="scan_list_content">
+										<div class="content_div">
+											<table id="content_tb_w" width="100%" cellspacing="0" cellpadding="5" border="0" rules="rows" frame ="void" style="cursor:pointer">
+										</table>
+										</div>
+									</div>
+								</div>
+									</div>
+								<!--5.Wi Fi Passowrd-->
+								<div id="wifi_password_setup">
+									<form name="wifi_Settings" id="wifi_Settings" method="POST" action="">
+									<input id="sumbit_CheckData1" class="submit" type="submit" value="Submit" style="display:none" />
+									<table id="wifi_password_setupTable"  border="0">
+										<tbody>
+											<tr><input style="display:none" class="styled-text" type="text" size="30" id="ssid_hotspot_client" name="ssid_hotspot_client"></input></tr>
+											<tr><input style="display:none" class="styled-text" type="text" size="30" id="security_hotspot_client" name="security_hotspot_client"></input></tr>
+											<tr><th style="width:150px;"><script>I18N("h", "Wi-Fi Password");</script>:</th><td><input class="styled-text" type="text" size="30" id="wifi_pw_apc" name="wifi_pw_apc"></input></td></tr>
+											<tr><th></th><td>(<script>I18N("h", "Between 8 and 63 characters");</script>)</td></tr>
+										</tbody>
+									</table>
+									</form>
+								</div>
+								<!--6.Extended Wi-Fi-->
+								<form name="extend_wifi_Settings" id="extend_wifi_Settings" method="POST" action="">
+                                <input id="sumbit_CheckData2" class="submit" type="submit" value="Submit" style="display:none" />
+                                <table id="wifi_setupTable"  border="0">
+                                    <tbody>
+                                        <tr id ="wifi1">
+                                            <th colspan="2"><script>I18N("h", "Give Your Extended Wi-Fi Network(SSID) a Name");</script>:</th>
+                                        </tr>
+                                        <tr id ="wifi2">
+                                            <td colspan ="2"><input class="styled-text" type="text" size="30" id="extend_wifi_networkName24G" name="extend_wifi_networkName24G"></input>(<script>I18N("h", "Using up to 32 characters");</script>)</td>
+                                        </tr>
+                                        <tr id ="wifi3">
+                                            <th colspan="2"><script>I18N("h", "Give Your Extended Wi-Fi Network a Password");</script>:</th>
+                                        </tr>
+                                        <tr id ="wifi4">
+                                            <td><input class="styled-text" type="text" size="30" id="extend_wifi_password" name="extend_wifi_password"></input>(<script>I18N("h", "Between 8 and 63 characters");</script>)</td>
+                                        </tr>
+                                        <tr>
+                                            <th>&nbsp;</th>
+                                            <td>&nbsp;</td>
+                                        </tr>
+										<tr id ="wifi5" style="display:none">
+                                            <th colspan="2"><script>I18N("h", "Extended Wi-Fi Network Name(SSID)");</script>:<label id ="extend_wifi_networkName24G_copy"></label></th>
+                                        </tr>
+                                        
+                                        <tr id="wifi_copy"> <!--TODO-->
+                                            
+                                            <td colspan="2"><input type="checkbox" id="Copy_pwd2" onclick="Copy_ssid_pw()"><script>I18N("h", "Use the same Wi-Fi Network Name for the Extended Network.");</script></input></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                </form>
+								<!--7.Audio Device Name -->
+								<form name="audio_Settings" id="audio_Settings" method="POST" action="">
+								<input id="sumbit_CheckData3" class="submit" type="submit" value="Submit" style="display:none" />
+								<table id="audio_setupTable"  border="0">
+									<tbody>
+										<tr><th style="width:150px;"><script>I18N("h", "Device Name");</script>:</th><td><input class="styled-text" type="text" size="30" id="audio_name" name="audio_name"></input></td></tr>
+									</tbody>
+								</table> 
+								</form>
+								<!--8.final setup information-->
+								<!--<form name="staticIP_Settings" id="staticIP_Settings" method="POST" action="">
+								<!--<input id="sumbit_CheckData1" class="submit" type="submit" value="Submit" style="display:none" />-->
+								<table id="Final_setupTable"  border="0">
+									<tbody>
+										<tr>
+											<th style="text-align: right;"><script>I18N("h", "Wi-Fi Network Name");</script>:</th>
+											<td style="text-align: left;"><label  style="color:rgb(68, 150, 168);" id="final_ShowAPC24GSSID"></td>
+											
+										</tr>
+										<tr>
+											<th style="text-align: right;"><script>I18N("h", "Wi-Fi Password");</script>:</th>
+											<td style="text-align: left;"><label style="color:rgb(68, 150, 168);" id="final_ShowAPC24GPW"></td>
+											
+										</tr>
+										<tr>
+											<th style="text-align: right;"><script>I18N("h", "Extended Wi-Fi Network Name");</script>:</th>
+											<td style="text-align: left;"><label style="color:rgb(68, 150, 168);" id="final_extend_networkName24G"></td>
+										</tr>
+										<tr>
+											<th style="text-align: right;"><script>I18N("h", "Extended Wi-Fi Password");</script>:</th>
+											<td style="text-align: left;"><label style="color:rgb(68, 150, 168);" id="final_extend_password"></td>
+											
+										</tr>
+										<tr>
+											<th style="text-align: right;"><script>I18N("h", "Device Name");</script>:</th>
+											<td style="text-align: left;"><label style="color:rgb(68, 150, 168);" id="final_audioname"></td>
+										</tr>
+									</tbody>
+								</table>
+								</form>
+								
+								
+								</div>
+							</div>
+								<!--Back & Next-->
+								<table id="buttonTable"  border="0">
+									<tbody>
+										<tr>
+											<th></th>
+											<td style="text-align:right;" width="20px"><button type="button" class="styled-button_disable" id="btn_back" onclick="wizard_back(wizard_Step);"><script>I18N("h", "Back");</script></button></td>
+											<td style="text-align:left;" width="20px"><button type="button" class="styled-button_enable" id="btn_next" onclick="wizard_next(wizard_Step);"><script>I18N("h", "Next");</script></button></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+				</div>
+			</div>
+		<div id="CreatePopAlertMessage" style="display:none">
+			<div id="AlertPopRect">
+			<div id="AlertPopBody">
+				<table class="myAlertPop_table_b" id="waitSettingFinish" border="0" cellspacing="0">
+					<tbody>
+						<tr>
+							<td colspan="2">
+								<center><div id="Loading_pop_image"></div></center>
+							</td>
+						</tr>
+						<tr>
+						 	<td><label id="reciprocal_Number">75&nbsp;<script>I18N("h", "Sec");</script></label></td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<div id="dialog_msg_black" style="margin: 20px 0 0 0;"><script>I18N("h", "Your changes are being saved, and the device will need to reboot.");</script></div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			</div>
+		</div>
+
+	<!--- start of scan wait saving block --->
+	<div id="CreatePopAlertMessage4" style="display:none">
+		<div id="AlertPopRect">
+			<div id="AlertPopBody">
+				<table class="myAlertPop_table_b" id="waitSettingFinish" border="0" cellspacing="0">
+					<tbody>
+						<tr>
+							<td><center><div id="Loading_pop_image2"></div></center></td>
+						</tr>
+						<tr>
+							<td><label id="reciprocal_Number">75&nbsp;<script>I18N("h", "Sec");</script></label></td>
+						</tr>
+						<tr>
+							<td id="dialog_msg_black2"><script>I18N("h", "Your changes are being saved.");</script></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	
+		<div id="CreatePopAlertMessage2" style="display:none">
+			<div id="AlertPopRect">
+			<div id="AlertPopBody">
+				<table class="myAlertPop_table_b" id="FirmwareUpgrade" border="0" cellspacing="0">
+					<tbody>
+						<tr>
+							<td colspan="2">
+								<center><div id="Information_pop_image"></div></center>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<div id="dialog_msg_black"><script>I18N("h", "A new firmware is available! Do you want to download and upgrade the firmware?");</script></div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div id="Confirm_btn" onclick="ignore_UpgradeFW()" style="cursor:pointer"><script>I18N("h", "Ignore");</script></div>
+							</td>
+							<td>
+								<div id="Confirm_btn" onclick="goto_UpgradeFW()" style="cursor:pointer"><script>I18N("h", "OK");</script></div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			</div>
+		</div>
+		<!-- Detect Router Connection, Timmy Add 2013/08/15 -->
+		<div id="DetectRouterConnection" style="display:none"></div>
+		<div id="footer">Copyright &copy; 2013 D-Link Corporation/D-Link Systems, Inc.</div>
+	</div>
+<script type="text/javascript" charset="utf-8">
+	$(document).ready( function() {
+
+		// Check WPA Password
+		$.validator.addMethod("checkWPAPassword", function( value, element ) {
+			var returnVal = true;
+			if (value.length > 63 || value.length < 8)
+			{
+				returnVal = false;
+			}
+			return returnVal;
+		}, jQuery.validator.messages.password_WPACheck);
+
+		// Check Device Password
+		$.validator.addMethod("checkDevicePassword", function( value, element ) {
+			var returnVal = true;
+			if (value.length > 15 || value.length < 6)
+			{
+				returnVal = false;
+			}
+			return returnVal;
+		}, jQuery.validator.messages.check_DeviceAdminPassword);
+
+		$("#audio_Settings, #extend_wifi_Settings, #wifi_Settings, #APC_Settings").each(function(index, el)  {
+		    $(el).validate({
+		    	rules: {	
+					extend_wifi_networkName24G: "required",
+					wifi_networkName5G: "required",
+				//	selectd_ssid: "required",
+					extend_wifi_password: {
+						required: true,
+						checkWPAPassword: true
+					},
+					wifi_password24G: {
+						required: true,
+						checkWPAPassword: true
+					},
+					wifi_pw_apc: {
+						required: true,
+						checkWPAPassword: true
+					},
+					device_password: {
+						required: true,
+						checkDevicePassword: true
+					},
+					select_APC_PW:{
+						required: true,
+						checkWPAPassword: true
+					}
+				},
+				messages: {
+					extend_wifi_networkName24G: jQuery.validator.messages.ssid,
+					wifi_networkName5G: jQuery.validator.messages.ssid,
+					//selectd_ssid: jQuery.validator.messages.ssid,
+					extend_wifi_password: {
+						required: jQuery.validator.messages.check_Password
+					},
+					wifi_password24G: {
+						required: jQuery.validator.messages.check_Password
+					},
+					wifi_pw_apc: {
+						required: jQuery.validator.messages.check_Password
+					},
+					device_password: {
+						required: jQuery.validator.messages.check_Password
+					},
+					select_APC_PW: {
+						required: jQuery.validator.messages.check_Password
+					}
+				},
+		        submitHandler: function(form) {
+		        	if (form.id == "audio_Settings")
+		        	{
+						wizard_Step = 8;
+						wizard_update();
+						
+					}
+		            if (form.id == "extend_wifi_Settings")
+		            {
+						wizard_Step = 7;
+						wizard_update();
+						
+		            }
+		            if (form.id == "wifi_Settings")
+		            {      
+						wizard_Step = 6;
+						wizard_update();
+						
+		            }
+		            if (form.id == "APC_Settings")
+		            {
+						close_hotspot_list();
+						Time_GetXML = window.clearInterval(Time_GetXML);
+						Time_GetStatusXML = window.clearInterval(Time_GetStatusXML);
+						Time_GetConnectionUpTime = window.clearInterval(Time_GetConnectionUpTime);
+						Time_GetConnectionUpTime_IPv6 = window.clearInterval(Time_GetConnectionUpTime_IPv6);
+						GetXML_Load = window.clearInterval(GetXML_Load);
+						Set_APClient();
+						
+		            }
+		        }
+		    });
+		});
+	});
+</script>
+</body>
+<script type="text/javascript">
+	Load_HTML();
+	Initial();
+	GetXML_Load();
+	GetStatusXML();
+	GetSecurityXML();
+	GetXML_M();
+	
+
+	var Time_GetXML = self.setInterval("GetXML_Load()",5000);
+	var Time_GetStatusXML = self.setInterval("GetStatusXML()",5000);
+
+	CheckNewFirmware();
+	checkTimeout();
+</script>
+</html>

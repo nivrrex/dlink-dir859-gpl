@@ -1,0 +1,24 @@
+Module name: libuuid
+
+Module version: 1.0.2
+
+Copyright:
+Copyright (C) 1996-1999 Theodore Ts'o.	
+Copyright (C) 1992-2012 Free Software Foundation, Inc.	
+Copyright (C) 2007 Theodore Ts'o.	
+Copyright (C) 2004, 2005, 2007, 2009 Free Software Foundation, Inc. Written by Scott James Remnant, 2004.	
+Copyright (C) 2004, 2005, 2007, 2008, 2009 Free Software Foundation, Inc. Written by Gary V. Vaughan, 2004	
+Copyright (C) 1996-2012 Free Software Foundation, Inc. Originally by Fran,cois Pinard <pinard@iro.umontreal.ca>, 1996.	
+Copyright (C) 1994 X Consortium	
+
+License type: BSD-style, LGPL
+
+Download URL:
+https://sourceforge.net/projects/libuuid/files/libuuid-1.0.2.tar.gz/download
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: @@modday@@
+
+------------------------------------------------------------------------

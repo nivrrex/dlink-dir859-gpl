@@ -1,0 +1,19 @@
+Module name: smtpclient
+
+Module version: 1.00
+
+Copyright:
+2	Copyright (c) 1997 Ralf S. Engelschall, All rights reserved.	
+1	Copyright (C) 1989,90,91,92,93,94,96,97 Free Software Foundation, Inc.
+
+License type: Artistic-1.0, LGPLv2, GPL
+
+Download URL:
+https://github.com/rhuitl/uClinux/tree/master/user/smtpclient
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: @@modday@@
+
+------------------------------------------------------------------------

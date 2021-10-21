@@ -1,0 +1,1212 @@
+Module name: zlib
+
+Module version: 1.2.3
+
+Copyright:
+Copyright (C) 1998-2005 Gilles Vollant	
+Copyright (C) 1995-2005 Jean-loup Gailly.	
+Copyright Henrik Ravn 2004	
+Copyright (C) 1995-2005 Mark Adler	
+Copyright (C) 1995-2003 Jean-loup Gailly.	
+Copyright (C) 2003 by Cosmin Truta.	
+Copyright (C) 2002-2004 Dmitriy Anisimkov
+Copyright (C) 1995-1998 Jean-loup Gailly.	
+Copyright (C) 2003 Chris Anderson <christop@charm.net>	
+Copyright (C) 1998 Brian Raiter <breadbox@muppetlabs.com>	
+Copyright 1998-2004 Gilles Vollant - http://www.winimage.com/zLibDll";	
+Copyright (c) Henrik Ravn 2004
+Copyright (C) 2004 Cosmin Truta.	
+Copyright (C) 2003 Cosmin Truta. Derived from original sources by Bob Dellaca.	
+Copyright (C) 2000 Dan Higdon <hdan@kinesoft.com> and Chuck Walbourn <chuckw@kinesoft.com> Corrections by Cosmin Truta <cosmint@cs.ubbcluj.ro>	
+Copyright (C) 2000-2004 Simon-Pierre Cadieux.	
+Copyright (C) 1998 by Jacques Nomssi Nzali.	
+Copyright (C) 1998 by Bob Dellaca.	
+Copyright (C) 1998 by Andreas R. Kleinert	
+Copyright (C) 1998 Brian Raiter <breadbox@muppetlabs.com> You can look at http://www.muppetlabs.com/~breadbox/software/assembly.html
+Copyright (C) 1998 Brian Raiter <breadbox@muppetlabs.com>	
+Copyright (C) 1998,1999,2000 by Jacques Nomssi Nzali.	
+Copyright (c) 1997 Christian Michelsen Research AS Advanced Computing Fantoftvegen 38, 5036 BERGEN, Norway http://www.cmr.no	
+Copyright (c) 1997,99 Borland Corporation }	
+Copyright (c) 1997,99 Borland Corp.
+Copyright (C) 1995-2005 Jean-loup Gailly, Brian Raiter and Gilles Vollant.	
+Copyright (C) 1995-2005 Jean-loup Gailly and Mark Adler	
+Copyright (C) 1995-2003 by Jean-loup Gailly.	
+Copyright (C) 1995-1996 Jean-loup Gailly and Gilles Vollant. File written by Gilles Vollant, by modifiying the longest_match from Jean-loup Gailly in deflate.c	
+Copyright (c) 1990-2000 Info-ZIP. All rights reserved.	
+(C) 1995-2004 Jean-loup Gailly and Mark Adler
+
+License type: Zlib
+
+
+Download URL:
+http://zlib.net/fossils/zlib-1.2.3.tar.gz
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module name: libiconv
+
+Module version: 1.9.1
+
+Copyright:
+Copyright (C) 1999-2003 Free Software Foundation, Inc. This file is part of the GNU LIBICONV Library.
+Copyright (C) 2003 Free Software Foundation, Inc. Written by Bruno Haible <bruno@clisp.org>, 2003.
+Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003 Free Software Foundation, Inc.
+Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003 Free Software Foundation, Inc. Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
+Copyright 1996-2003 Free Software Foundation, Inc. Taken from GNU libtool, 2003 Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996	
+Copyright 1996, 1997, 1998, 1999, 2000, 2001 Free Software Foundation, Inc. Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
+Copyright 1991 by the Massachusetts Institute of Technology
+Copyright (C) 2003 Free Software Foundation, Inc. Volodymyr M. Lisivka <lvm@mystery.lviv.net>, 2003.	
+Copyright (C) 2003 Free Software Foundation, Inc. This file is distributed under the same license as the libiconv package. Kevin Patrick Scannell <scannell@SLU.EDU>, 2003.
+Copyright (C) 2002 Free Software Foundation, Inc. This file is distributed under the same license as the GNU libiconv package. Bruno Haible <bruno@clisp.org>, 2002.	
+Copyright (C) 2002 Free Software Foundation, Inc. Tedi Heriyanto <tedi_h@gmx.net>, 2002 This file is distributed under the same license as the PACKAGE package. Tedi Heriyanto <tedi_h@gmx.net>, 2002
+Copyright (C) 2002 Free Software Foundation, Inc. Matti Koskimies <matti@apulanta.fi>, 2002.	
+Copyright (C) 2002 Free Software Foundation, Inc. Marco Parrone <marc0@autistici.org>, 2002.	
+Copyright (C) 2002 Free Software Foundation, Inc. Marcel Telka <marcel@telka.sk>, 2002.	
+Copyright (C) 2002 Free Software Foundation, Inc. Keld Simonsen <keld@dkuug.dk>, 2002. Christian Rose <menthos@menthos.com>, 2002. This file is distributed under the same license as the libiconv package.	
+Copyright (C) 2002 Free Software Foundation, Inc. Jacobo Tarrio <jtarrio@trasno.net>, 2002.	
+Copyright (C) 2002 Free Software Foundation, Inc. Ivan Vilata i Balaguer <ivan@selidor.net>, 2002.	
+Copyright (C) 2002 Free Software Foundation, Inc. Emese Kovacs <emese@gnome.hu>, 2002. This file is distributed under the same license as the libiconv package.	
+Copyright (C) 2002 Free Software Foundation, Inc. Dmitry S. Sivachenko <mitya@cavia.pp.ru>, 2002. This file is distributed under the same license as the libiconv package. Dmitry S. Sivachenko <mitya@cavia.pp.ru>, 2002.	
+Copyright (C) 2002 Free Software Foundation, Inc. Deniz Akkus Kanca <deniz@arayan.com>, 2002. This file is distributed under the same license as the libiconv package. Deniz Akkus Kanca <deniz@arayan.com>, 2002.	
+Copyright (C) 2002 Free Software Foundation, Inc. Denis Lackovic <delacko@fly.srk.fer.hr>, 2002. This file is distributed under the same license as the libiconv package. Denis Lackovic <delacko@fly.srk.fer.hr>, 2002.	
+Copyright (C) 2002 Free Software Foundation, Inc. Christian Rose <menthos@menthos.com>, 2002. This file is distributed under the same license as the libiconv package. Christian Rose <menthos@menthos.com>, 2002.	
+Copyright (C) 2002 Free Software Foundation, Inc. Alexandre Folle de Menezes <afmenez@terra.com.br>, 2002. based on the translation to Galician (gl) by Jacobo Tarrio Barreiro <jtarrio@trasno.net>, 2002.
+Copyright 1996-2003 Free Software Foundation, Inc. Taken from GNU libtool, 2001 Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996	
+Copyright 1996, 1997, 2000, 2001 Free Software Foundation, Inc.	
+Copyright 1996, 1997, 1999, 2000 Free Software Foundation, Inc. Originally by Fran,cois Pinard <pinard@iro.umontreal.ca>, 1996.
+
+License type: LGPLv2
+
+Download URL:
+ftp://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.9.1.tar.gz
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module name: openssl
+
+Module version: 0.9.8zc
+
+Copyright:	
+Copyright (C) 1995-1998 Eric Young (eay@cryptsoft.com) All rights reserved.	
+Copyright 2002 Sun Microsystems, Inc. ALL RIGHTS RESERVED.	
+Copyright (c) 2004, Richard Levitte <richard@levitte.org> All rights reserved.	
+Copyright (c) 2007 KISA(Korea Information Security Agency). All rights reserved.	
+Copyright (c) 2004 Kungliga Tekniska Hogskolan Royal Institute of Technology, Stockholm, Sweden). All rights reserved.	
+(c) Copyright 1999 Bodo Moeller. All rights reserved.
+Copyright (c) 2002 Theo de Raadt	
+Copyright (c) 2002 Markus Friedl All rights reserved.	
+Copyright (c) 2002 Bob Beck <beck@openbsd.org>	
+Copyright (c) 1999 Andy Polyakov <appro@fy.chalmers.se>.	
+Copyright (c) 1998-2012 The OpenSSL Project	
+Copyright (c) 1995-1998 Eric A. Young, Tim J. Hudson All rights reserved.	
+Copyright (c) 1986 by Sun Microsystems, Inc.
+Copyright 2000 Broadcom Corporation 16215 Alton Parkway PO Box 57013 Irvine CA 92619-7013	
+Copyright 1998-2000 nCipher Corporation Limited.
+(C) Copyright Microsoft Corp. 1993. All rights reserved.	
+(C) COPYRIGHT International Business Machines Corp. 2001
+
+License type: OpenSSL, BSD, BSDv2, Public-domain
+
+Download URL:
+https://www.openssl.org/source/old/0.9.x/openssl-0.9.8zc.tar.gz
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2016/06/16
+
+------------------------------------------------------------------------
+Module name: libgsasl
+
+Module version: 0.2.6
+
+Copyright:
+Copyright (C) 2002, 2003, 2004, 2005 Simon Josefsson	
+Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005 Free Software Foundation, Inc. This Makefile.in is free software; the Free Software Foundation gives unlimited permission to copy and/or distribute it, with or without modifications, as long as this notice is preserved.	
+Copyright (C) 2001 Niels Moller	
+Copyright (C) 2002 Niels Moller	
+Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005 Free Software Foundation, Inc.
+Copyright (C) 2004 Free Software Foundation, Inc.
+Copyright (C) 2001, 2003, 2005 Free Software Foundation, Inc.	
+Copyright (C) 1999, 2002 Free Software Foundation, Inc.	
+Copyright (C) 1999, 2002-2003 Free Software Foundation, Inc.
+Copyright (C) 2001, 2002, 2003, 2005 Free Software Foundation, Inc.	
+Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005 Free Software Foundation, Inc.	
+Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
+Copyright (C) 2005 Free Software Foundation, Inc. Clytie Siddall <clytie@riverland.net.au>, 2005.
+Copyright (C) 2004 Free Software Foundation, Inc. This file is distributed under the same license as the libgsasl package. Jakub Bogusz <qboosh@pld-linux.org>, 2004.
+Copyright (C) 2004 Free Software Foundation, Inc. Acest fioier este distribuit sub aceeaoi licenta ca oi pachetul libgsasl. Laurentiu Buzdugan <lbuz@rolix.org>, 2004.	
+Copyright (C) 2001, 2002 Niels Moller
+Copyright (C) 2001, 2002, 2003 Free Software Foundation, Inc. Written by Bruno Haible <haible@clisp.cons.org>, 2001.
+Copyright (C) 1999, 2002-2005 Free Software Foundation, Inc.	
+Copyright (C) 1999, 2000, 2003, 2004, 2005 Free Software Foundation, Inc.	
+Copyright (C) 1999-2000, 2002-2003 Free Software Foundation, Inc.	
+Copyright (C) 1999, 2000, 2001, 2004, 2005 Free Software Foundation, Inc.
+Copyright (C) 1997, 2003 Free Software Foundation, Inc.	
+Copyright (C) 1997, 2000, 2002, 2004 Free Software Foundation, Inc. This file is part of the GNU C Library. Contributed by Jean-Francois Bignolles <bignolle@ecoledoc.ibp.fr>, 1997.	
+Copyright (C) 1997, 2000, 2001, 2003, 2004, 2005 Free Software Foundation, Inc.	
+Copyright (C) 1997, 1999, 2000, 2001, 2003, 2005 Free Software Foundation, Inc.
+Copyright (c) 1996-1999 by Internet Software Consortium.	
+Copyright (C) 1996, 1997, 2000, 2001, 2003, 2005 Free Software Foundation, Inc.
+Copyright (C) 1996, 1997, 1999 Free Software Foundation, Inc. From the GNU C Library, under GNU LGPL version 2.1. Contributed by Ulrich Drepper <drepper@cygnus.com>, 1996. Modified for Libgsasl by Simon Josefsson <simon@josefsson.org>	
+Copyright (C) 1996, 1997, 1999, 2000, 2002, 2003, 2004, 2005 Free Software Foundation, Inc. Originally by Fran,cois Pinard <pinard@iro.umontreal.ca>, 1996.	
+Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004 Free Software Foundation, Inc. Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996	
+Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005 Free Software Foundation, Inc.	
+Copyright (c) 1995 by International Business Machines, Inc.	
+Copyright (C) 1995, 1999, 2001, 2002, 2003, 2004 Free Software Foundation, Inc.	
+Copyright (C) 1995-1998, 2000-2002, 2004 Free Software Foundation, Inc.	
+Copyright (C) 1995-1997, 2000-2004 by Ulrich Drepper <drepper@gnu.ai.mit.edu>	
+Copyright (C) 1994 X Consortium	
+Copyright (C) 1994, 1996, 1997, 1998, 2001, 2003, 2005 Free Software Foundation, Inc.	
+Copyright (C) 1994, 1995, 1996, 1999, 2000, 2001, 2002, 2004, 2005 Free Software Foundation, Inc.	
+Copyright (C) 1992-1996, 1998-2012 Free Software Foundation, Inc.	
+Copyright (C) 1991, 1999 Free Software Foundation, Inc. 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.	
+Copyright (C) 1991, 1996, 1997, 1998, 2002, 2003, 2004 Free Software Foundation, Inc.	
+Copyright c 2003 Free Software Foundation, Inc. This file is distributed under the same license as the PACKAGE package. Michel Robitaille <robitail@IRO.UMontreal.CA>, traducteur depuis/since 1996.	
+Copyright 1996-2003 Free Software Foundation, Inc. Taken from GNU libtool, 2001 Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
+
+License type: LGPLv2.1, IBM, ISC
+
+Download URL:
+https://lists.gnu.org/archive/html/info-gnu/2005-08/msg00003.html
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module name: libnl-tiny
+
+Module version: 0.1
+
+Copyright:
+Copyright (c) 2003-2008 Thomas Graf <tgraf@suug.ch>	
+(c) UCB 1982-1988 Ross Biro Fred N. van Kempen, <waltje@uWalt.NL.Mugnet.ORG>	
+
+License type: LGPL-2.1
+
+Download URL:
+https://gitlab.labs.nic.cz/turris/openwrt/tree/228d1c4df21088ffb0f2e087eae8c4323ad05760/package/libs/libnl-tiny
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module name: busybox
+
+Module version: 1.14.1
+
+Copyright:
+Copyright (C) 1999-2004 by Erik Andersen <andersen@codepoet.org>	
+Copyright (C) 1999-2005 by Erik Andersen <andersen@codepoet.org>	
+Copyright (C) 2003 Manuel Novoa III <mjn3@codepoet.org>	
+Copyright (C) 2004 Kay Sievers <kay.sievers@vrfy.org>
+Copyright (C) 2008 by Vladimir Dronnikov <dronnikov@gmail.com>	
+Copyright (C) 2005 Kay Sievers <kay.sievers@vrfy.org>	
+Copyright (C) 2001 Andreas Dilger	
+Copyright (C) 1993, 1994 Remy Card <card@masi.ibp.fr> Laboratoire MASI, Institut Blaise Pascal Universite Pierre et Marie Curie (Paris VI)	
+Copyright (c) 2001-2006, Gerrit Pape All rights reserved.	
+Copyright (C) 1996-2006 Julian Seward <jseward@bzip.org>	
+Copyright 2006 Rob Landley <rob@landley.net>
+Copyright (C) 1995, 1996 by Bruce Perens <bruce@pixar.com>.	
+Copyright 2005 by Rob Landley <rob@landley.net>
+Copyright (C) 2008 by Denys Vlasenko <vda.linux@googlemail.com>	
+Copyright (C) 2002 by Glenn McGrath	
+Copyright (C) 1999,2000,2001 by John Beppu <beppu@codepoet.org>	
+Copyright (c) 1991, 1993 The Regents of the University of California. All rights reserved.	
+Copyright (c) 1989 The Regents of the University of California. All rights reserved.	
+Copyright (c) 1989, 1991, 1993, 1994 The Regents of the University of California. All rights reserved.	
+Copyright 1989 - 1991, Julianne Frances Haugh <jockgrrl@austin.rr.com> All rights reserved.	
+Copyright (C) 2006 Denys Vlasenko	
+Copyright (C) 1999 by Randolph Chung <tausq@debian.org>	
+Copyright (c) 1999 by David I. Bell Permission has been granted to redistribute this code under the GPL.	
+Copyright (C) 2008 Bernhard Reutner-Fischer	
+Copyright (C) 2006 Rob Landley	
+Copyright (C) 2006 Aurelien Jacobs <aurel@gnuage.org>	
+Copyright (C) 2005 Manuel Novoa III <mjn3@codepoet.org>	
+Copyright (C) 2005 by Mike Frysinger <vapier@gentoo.org>	
+Copyright (C) 2005 by Erik Andersen <andersen@codepoet.org>
+Copyright (C) 2003 Glenn McGrath	
+Copyright (C) 2003 Glenn L. McGrath	
+Copyright (C) 2001 Matt Kraai <kraai@alumni.carnegiemellon.edu>	
+Copyright (C) 2001 Manuel Novoa III <mjn3@codepoet.org>	
+Copyright (C) 2001 by Andreas Dilger	
+Copyright (C) 2000 Edward Betts <edward@debian.org>.	
+Copyright (C) 1999 by Lineo, inc. and John Beppu	
+Copyright (c) 1997-2005 Herbert Xu <herbert@gondor.apana.org.au> was re-ported from NetBSD and debianized.	
+Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005 by Theodore Ts'o.	
+Copyright (C) 1992-1993 Jean-loup Gailly.	
+Copyright (C) 1992, 1993, 1994 Remy Card <card@masi.ibp.fr> Laboratoire MASI, Institut Blaise Pascal Universite Pierre et Marie Curie (Paris VI)	
+Copyright (c) 1983, 1993 The Regents of the University of California. All rights reserved.	
+Copyright (C) Andreas Neuper, Sep 1998.	
+Copyright (C) 2008 Tito Ragusa <farmatito@tiscali.it>	
+Copyright (C) 2008 Timo Teras <timo.teras@iki.fi>	
+Copyright (C) 2008 by Tito Ragusa <farmatito@tiscali.it>	
+Copyright (C) 2008 by Timo Teras <timo.teras@iki.fi>	
+Copyright (C) 2007 by Tito Ragusa <farmatito@tiscali.it>	
+Copyright (C) 2007 by Denys Vlasenko <vda.linux@googlemail.com>	
+Copyright (C) 2006 Rob Landley <rob@landley.net>	
+Copyright (C) 2006 Gabriel Somlo <somlo at cmu.edu>	
+Copyright (c) 2006 Freescale Semiconductor, Inc <stuarth@freescale.com>	
+Copyright (C) 2006 by Jason Schoon <floydpink@gmail.com> Some portions cribbed from e2fsprogs, util-linux, dosfstools	
+Copyright (C) 2006 Bernhard Reutner-Fischer	
+Copyright (C) 2005 by Rob Landley <rob@landley.net>	
+Copyright (C) 2005 Bernhard Reutner-Fischer	
+Copyright (C) 2003 VMware, Inc.	
+Copyright (C) 2003 Manuel Novoa III	
+Copyright (C) 2003 Erik Andersen	
+Copyright (C) 2003 by Tito Ragusa <farmatito@tiscali.it>	
+Copyright (C) 2003,2004 Free Software Foundation, Inc. Contributed by Kelley Cook, June 2004. Original code from Neil Booth, May 2003.	
+Copyright (c) 2002 Steven J. Hill <shill@broadcom.com>	
+Copyright (c) 2001 Stuart Hughes <seh@zee2.com>	
+Copyright (c) 2001 Erik Andersen <andersen@codepoet.org>	
+Copyright (c) 2001 David Schleef <ds@schleef.org>	
+Copyright (c) 2001 Aaron Lehmann <aaronl@vitelus.com>	
+Copyright (C) 2000 by Matt Kraai <kraai@alumni.carnegiemellon.edu> SELinux support by Yuichi Nakamura <ynakam@hitachisoft.jp>	
+Copyright (C) 2000 by Karl M. Hegbloom <karlheg@debian.org>	
+Copyright (C) 2000 by Glenn McGrath	
+Copyright (C) 2000 by Gennady Feldman <gfeldman@gena01.com>	
+Copyright (C) 1999 Matthew Ramsay <matthewr@moreton.com.au> Chris Trew <ctrew@moreton.com.au>	
+Copyright (C) 1999 by Andries Brouwer
+Copyright (C) 1999,2000,2001 by Mark Whitley <markw@codepoet.org>	
+Copyright (C) 1999,2000,2001 by Lineo, inc. and Mark Whitley	
+Copyright (C) 1998-2002 Richard Gooch	
+Copyright (C) 1992-1993 Jean-loup Gailly The unzip code was written and put in the public domain by Mark Adler. Portions of the lzw code are derived from the public domain 'compress' written by Spencer Thomas, Joe Orost, James Woods, Jim McKie, Steve Davies, Ken Turkowski, Dave Mack and Peter Jannesen.	
+Copyright (C) 1992, 1993, 1994, 1995 Remy Card (card@masi.ibp.fr) Laboratoire MASI - Institut Blaise Pascal Universite Pierre et Marie Curie (Paris VI)	
+Copyright (C) 1991-2, RSA Data Security, Inc. Created 1991. All rights reserved.	
+Copyright (C) 1991, 1992 Linus Torvalds	
+Copyright (c) 1990 The Regents of the University of California. All rights reserved.	
+Copyright (c) 1988, 1993, 1994 The Regents of the University of California. All rights reserved.	
+Copyright (c) 1987,1997, Prentice Hall All rights reserved.	
+Copyright 2006 Bernhard Reutner-Fischer	
+Copyright 2005 Rob Landley <rob@landley.net>	
+Copyright 1996, 1997 Linux International.	
+Copyright (c) Michiel Huisjes	
+Copyright (C) Manuel Novoa III <mjn3@codepoet.org> and Vladimir Oleynik <dzo@simtreas.ru>	
+Copyright (C) KaiGai Kohei <kaigai@ak.jp.nec.com>	
+Copyright (c) by a whole pile of folks:	
+Copyright (C) Arne Bernin <arne@matrix.loopback.org>	
+Copyright (C) Andries Brouwer	
+Copyright (C) Andre Masella <andre@masella.no-ip.org>	
+Copyright (C) Andreas Neuper, Sep 1998. This file may be modified and redistributed under the terms of the GNU Public License.	
+Copyright (C) 92, 1995-2004 Free Software Foundation, Inc.	
+Copyright (C) 89, 91, 1995-2006 Free Software Foundation, Inc.	
+Copyright (C) 86, 1991-1997, 1999 Free Software Foundation, Inc.	
+Copyright (c) 2008 Timo Teras <timo.teras@iki.fi>	
+Copyright (C) 2008 Rob Landley <rob@landley.net>	
+Copyright (c) 2008 Nuovation System Designs, LLC Grant Erickson <gerickson@nuovations.com>	
+Copyright (C) 2008 Natanael Copa <natanael.copa@gmail.com>	
+Copyright (C) 2008 Michele Sanges <michele.sanges@gmail.com>	
+Copyright (C) 2008 Darius Augulis <augulis.darius@gmail.com>	
+Copyright (C) 2008 by <u173034@informatik.uni-oldenburg.de>	
+Copyright (C) 2008 by Patricia Muscalu <patricia.muscalu@axis.com>	
+Copyright (C) 2008 by Denys Vlasenko <vda.linux@gmail.com>	
+Copyright (C) 2008 by Bernhard Reutner-Fischer	
+Copyright (C) 2008, BusyBox Team. -solar 4/26/08	
+Copyright (c) 2008 Bernhard Reutner-Fischer (initial depmod code)	
+Copyright (c) 2008 Bernhard Reutner-Fischer	
+Copyright (C) 2008,2009 Denys Vlasenko <vda.linux@googlemail.com>	
+Copyright (C) 2007 Tito Ragusa <farmatito@tiscali.it>	
+Copyright (C) 2007 Natanael Copa <natanael.copa@gmail.com>	
+Copyright (C) 2007 Loic Grenie <loic.grenie@gmail.com> written using Andries Brouwer <aeb@cwi.nl>'s kbd_mode from console-utils v0.2.3, licensed under GNU GPLv2	
+Copyright (C) 2007 Loic Grenie <loic.grenie@gmail.com>	
+Copyright (C) 2007 by Stephane Billiart <stephane.billiart@gmail.com>	
+Copyright (C) 2007 by KaiGai Kohei <kaigai@kaigai.gr.jp>	
+Copyright (C) 2007 Bernhard Reutner-Fischer	
+Copyright (c) 2007 Bernhard Reutner-Fischer	
+Copyright (C) 2006 Tito Ragusa <farmatito@tiscali.it>	
+Copyright (C) 2006 Michael Opdenacker <michael@free-electrons.com>	
+Copyright (C) 2006 Jesse Dutton <jessedutton@gmail.com>	
+Copyright (C) 2006 Garrett Kajmowicz	
+Copyright (C) 2006 by Yoshinori Sato <ysato@users.sourceforge.jp>	
+Copyright (C) 2006 by Rob Sullivan, with ideas from code by Walter Harms	
+Copyright (C) 2006 by Rob Sullivan <cogito.ergo.cogito@gmail.com> I can't really claim much credit however, as the algorithm is very well-known)	
+Copyright (C) 2006 by Robert Sullivan <cogito.ergo.cogito@hotmail.com>	
+Copyright (C) 2006 by Jan Kiszka <jan.kiszka@web.de>	
+Copyright (C) 2006 Bernhard Reutner-Fischer <busybox@busybox.net>	
+Copyright (c) 2006 Bernhard Reutner-Fischer	
+Copyright (C) 2006 - 2007 KaiGai Kohei <kaigai@kaigai.gr.jp>	
+Copyright (c) 2006-2007 Bernhard Reutner-Fischer	
+Copyright (C) 2005 W. Michael Petullo <mike@flyn.org>	
+Copyright (C) 2005 Tobias Klauser <tklauser@access.unizh.ch>	
+Copyright (C) 2005 Tito Ragusa <farmatito@tiscali.it>	
+Copyright (C) 2005 Roberto A. Foglietta (me@roberto.foglietta.name)	
+Copyright (C) 2005 Odd Arild Olsen (oao at fibula dot no)	
+Copyright (C) 2005 by Tito Ragusa <tito-wolit@tiscali.it>	
+Copyright (C) 2005 by Rob Sullivan <cogito.ergo.cogito@gmail.com>	
+Copyright (C) 2005 by Robert Sullivan <cogito.ergo.cogito@gmail.com>	
+Copyright (C) 2005 by Marc Leeman <marc.leeman@barco.com>	
+Copyright (C) 2005-6, Roberto A. Foglietta <me@roberto.foglietta.name>	
+Copyright (C) 2005, 2006 Rob Landley <rob@landley.net>	
+Copyright (c) 2005-2006 Rob Landley.	
+Copyright (C) 2005-2006 by Rob Landley <rob@landley.net>	
+Copyright (C) 2004 Peter Willis <psyphreak@phreaker.net>	
+Copyright (C) 2004, Glenn McGrath	
+Copyright (C) 2004 Erik Andersen <andersen@codepoet.org>	
+Copyright (C) 2004 by Rob Landley <rob@landley.net>	
+Copyright (C) 2004 by Ed Clark	
+Copyright (C) 2004 by David Brownell	
+Copyright (C) 2004,2005 Enrik Berkhan <Enrik.Berkhan@inka.de>	
+Copyright (C) 2003 Yang Xiaopeng <yxp at hanwang.com.cn>	
+Copyright (c) 2003 Todd C. Miller <Todd.Miller@courtesan.com>	
+Copyright (C) 2003 Russ Dill <Russ.Dill@asu.edu>	
+Copyright (C) 2003 Paul Sheer	
+Copyright (C) 2003 Paul Mundt <lethal@linux-sh.org>	
+Copyright (C) 2003 by Rob Landley <rob@landley.net>, Joey Hess	
+Copyright (C) [2003] by [Matteo Croce] <3297627799@wind.it>	
+Copyright (C) 2003 by Glenn McGrath SELinux support: by Yuichi Nakamura <ynakam@hitachisoft.jp>	
+Copyright (C) 2003 by Glenn McGrath	
+Copyright (C) 2003 by Arthur van Hoff (avh@strangeberry.com)	
+Copyright (C) 2003 Bastian Blank <waldi@tuxbox.org>	
+Copyright (C) 2003-2006 Vladimir Oleynik <dzo@simtreas.ru>	
+Copyright (c) 2003-2004 Erik Andersen <andersen@codepoet.org>	
+Copyright (C) 2003-2004 Erik Andersen	
+Copyright (C) 2003,2004 by Rob Landley <rob@landley.net>	
+Copyright (C) 2003-2004 by Erik Andersen <andersen@codepoet.org>	
+Copyright (C) 2003-2004, Alpha Networks, Inc.	
+copyright (c) 2002 Romain Lievin <roms@lpg.ticalc.org>
+Copyright (C) 2002 Robert Griebl <griebl@gmx.de>	
+Copyright (C) 2002 Randy Dunlap <rddunlap at osdl.org>	
+Copyright (C) 2002 Matt Kraai.	
+Copyright (C) 2002 Matt Kraai	
+Copyright (C) 2002 Mario Strasser <mast@gmx.net>, Zuercher Hochschule Winterthur, Netbeat AG Upstream has GPL v2 or later	
+Copyright (c) 2002 Manuel Novoa III <mjn3@codepoet.org>	
+Copyright (C) 2002 Khalid Aziz <khalid_aziz at hp.com>	
+Copyright (C) 2002 Jeff Angielski, The PTR Group <jeff@theptrgroup.com>	
+Copyright (C) 2002 Hewlett-Packard Company	
+Copyright (C) 2002 Glenn McGrath	
+Copyright (c) 2002 Glenn McGrath	
+Copyright (C) 2002 Edward Betts <edward@debian.org>	
+Copyright (C) 2002 Dr Brian Gladman <brg@gladman.me.uk>, Worcester, UK.	
+Copyright (C) 2002 by Dmitry Zakharov <dmit@crp.bank.gov.ua>	
+Copyright (c) 2002 by David I. Bell Permission is granted to use, distribute, or modify this source,	
+Copyright (C) 2002 by Bart Visscher <magick@linux-fan.com>	
+Copyright (c) 2002 AYR Networks, Inc.	
+Copyright (C) 2002 Andreas Dilger.	
+Copyright (C) 2002 Andreas Dilger	
+Copyright (C) 2002 Al Stone <ahs3 at fc.hp.com>	
+Copyright (C) 2002-2005 Sam Ravnborg <sam@ravnborg.org>	
+Copyright (C) 2002-2005 Roman Zippel <zippel@linux-m68k.org>	
+Copyright (C) 2002-2005 Free Software Foundation, Inc.	
+Copyright (c) 2002, 2003 Sam Leffler, Errno Consulting All rights reserved.	
+Copyright (C) 2002-2003 Romain Lievin <roms@tilp.info> Released under the terms of the GNU GPL v2.0.	
+Copyright (C) 2002,2003 Glenn Engel <glenne@engel.org>	
+Copyright (C) 2001 Matt Krai	
+Copyright (C) 2001 Matt Kraai <kraai@alumni.carnegiemellon.edu>.	
+Copyright (C) 2001 Manuel Novoa III	
+Copyright (C) 2001 Magnus Damm <damm@opensource.se>	
+Copyright (C) 2001 Larry Doolittle, <ldoolitt@recycle.lbl.gov>	
+Copyright (c) 2001 John BEPPU. All rights reserved. This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.	
+Copyright (C) 2001 Hewlett-Packard Laboratories	
+Copyright (c) 2001 Daniel Phillips	
+Copyright (C) 2001 by Michael Habermann <mhabermann@gmx.de>	
+Copyright (C) 2001 by Matt Kraai <kraai@alumni.carnegiemellon.edu> SELinux support by Yuichi Nakamura <ynakam@hitachisoft.jp>	
+Copyright (C) 2001 by Matt Kraai <kraai@alumni.carnegiemellon.edu>	
+Copyright (C) 2001 by Laurence Anderson	
+Copyright (C) 2001 by Glenn McGrath	
+copyright (c) 2001 by glenn mcgrath
+Copyright (C) 2001 by Gennady Feldman <gfeldman@gena01.com>	
+Copyright (C) 2001 by Emanuele Aina <emanuele.aina@tiscali.it>	
+Copyright (C) 2001 Andreas Gruenbacher, <a.gruenbacher@computer.org>
+Copyright (C) 2001, 2003 Theodore Y. Ts'o	
+Copyright (C) 2001, 2002 Matt Kraai	
+Copyright (C) 2001,2002 by Laurence Anderson	
+Copyright (C) 2001, 2002, 2003, 2004, 2005 Free Software Foundation.	
+Copyright (C) 2000 Stephen C. Tweedie
+Copyright (C) 2000 Lennert Buytenhek	
+Copyright (C) 2000 Jean-Pierre Lefebvre <helix@step.polymtl.ca> and Remi Lefebvre <remi@debian.org>	
+Copyright (C) 2000, Jan-Derk Bakker (J.D.Bakker@its.tudelft.nl)	
+Copyright (c) 2000 Edward Betts <edward@debian.org>.	
+Copyright (C) 2000 by spoon <spoon@ix.netcom.com> Written by spoon <spon@ix.netcom.com>	
+Copyright (C) 2000 by Randolph Chung <tausq@debian.org>	
+Copyright (C) 2000 by Daniel Jacobowitz Written by Daniel Jacobowitz <dan@debian.org>	
+Copyright (C) 2000 Arcom Control System Ltd	
+Copyright (C) 2000 and written by Emanuele Caratti <wiz@iol.it> Adjusted a bit by Erik Andersen <andersen@codepoet.org> Unified with fdflush by Tito Ragusa <farmatito@tiscali.it>	
+Copyright (C) 2000 Andreas Dilger	
+Copyright (C) 2000, 2001 Sterling Huxley <sterling@europa.com>	
+Copyright (C) 2000,2001 Matt Kraai <kraai@alumni.carnegiemellon.edu>	
+Copyright (C) 2000,2001 Matt Kraai	
+Copyright (C) 2000,2001 Larry Doolittle <larry@doolittle.boa.org>	
+Copyright (C) 2000,2001 by Matt Kraai <kraai@alumni.carnegiemellon.edu>	
+Copyright (C) 1999 Uwe Ohse <uwe@ohse.de>	
+Copyright (C) 1999 Red Hat Software	
+Copyright (c) 1999 Herbert Xu <herbert@debian.org> This file contains code for the times builtin.	
+Copyright (c) 1999 by David I. Bell Permission is granted to use, distribute, or modify this source,	
+Copyright (c) 1999 Anthony Towns <aj@azure.humbug.org.au>	
+Copyright (C) 1999-2005 Igor Pavlov	
+Copyright (C) 1999-2004 by Erik Andersen <andersen@codepoet.org> Written by Erik Andersen and Kent Robotti <robotti@metconnect.com>	
+Copyright (C) 1999-2004 by Erik Andersen <andersen@codepoet.org> written by Erik Andersen <andersen@codepoet.org>. That, in turn, is based in part on ladsh.c, by Michael K. Johnson and Erik W. Troan, which they placed in the public domain. I don't know how much of the Johnson/Troan code has survived the repeated rewrites.	
+Copyright (C) 1999-2004 by Erik Andersen <andersen@codepoet.org> based on original code by (I think) Bruce Perens <bruce@pixar.com>.	
+Copyright (C) 1999-2004 by Erik Andersen <andersen@codepoet.org> and Ron Alder <alder@lineo.com>	
+Copyright (C) 1999-2004 by Erik Andersen <andersen@codepoet.org> Adjusted by so many folks, it's impossible to keep track.	
+Copyright (c) 1999-2004 by Erik Andersen. All rights reserved.	
+Copyright (C) 1999,2000 by Lineo, inc. and John Beppu	
+Copyright (C) 1999,2000,2001 by Lineo, inc. Written by Mark Whitley <markw@codepoet.org> debloated by Bernhard Reutner-Fischer	
+Copyright (C) 1999,2000,2001 by Lineo, inc. and John Beppu	
+Copyright (C) 1998 Enrique Zanardi <ezanardi@ull.es>	
+Copyright (C) 1998 Dave Cinege	
+Copyright (C) 1998-2008 Erik Andersen, Rob Landley, Denys Vlasenko
+Copyright (C) 1998-2000 Richard Gooch	
+Copyright (C) 1998, 1999 Charles P. Wright	
+Copyright (C) 1997 Kaz Kylheku <kaz@ashi.footprints.net> Free Software License: All rights are reserved by the author, with the following exceptions: Permission is granted to freely reproduce and distribute this software,	
+Copyright (C) 1997 Kaz Kylheku <kaz@ashi.footprints.net>	
+copyright (C) 1997 by Vernon Hoxie. Linux HOWTO documents may be reproduced and distributed in whole or in part, in any medium physical or electronic, as long as	
+Copyright (C) 1997-1999 Richard Gooch	
+Copyright (c) 1997, 1998, 1999, 2000 Frodo Looijaard <frodol@dds.nl>	
+Copyright (C) 1996 Jeff Noxon <jeff@router.patch.net>,	
+Copyright (C) 1996 Brian Candler <B.Candler@pobox.com>	
+copyright (C) 1996-2006 Julian R Seward. All rights reserved.	
+Copyright (C) 1996-2002 Free Software Foundation, Inc.	
+Copyright (C) 1996-1999 Guy Maor <maor@debian.org>	
+Copyright (C) 1996, 1997, 1998, 1999 Free Software Foundation, Inc. This file is part of the GNU C Library.	
+copyright (c) 1995 Ian Jackson <ian@chiark.greenend.org.uk>	
+Copyright (C) 1995 Bruce Perens	
+Copyright (C) 1995, 1996, 1997, 1998, 2000 Free Software Foundation, Inc.	
+Copyright (c) 1994 David Burren All rights reserved.	
+Copyright (C) 1994-2000 by Tomi Ollila	
+Copyright (C) 1994-1998 Andries E. Brouwer <aeb@cwi.nl>	
+Copyright (C) 1994-1996 Charles L. Blake.	
+Copyright (C) 1994,1996 Alessandro Rubini (rubini@ipvvis.unipv.it)	
+Copyright (C) 1993 Rick Sladkey <jrs@world.std.com>	
+Copyright (c) 1992 Roger Binns	
+Copyright (c) 1992 Branko Lankester	
+Copyright (C) 1992 A. V. Le Blanc (LeBlanc@mcc.ac.uk)	
+Copyright (C) 1992-1998 Michael K. Johnson	
+Copyright (C) 1992, 1996 Free Software Foundation, Inc. Written by David MacKenzie <djm@gnu.ai.mit.edu>.	
+Copyright (c) 1992, 1993 The Regents of the University of California. All rights reserved.	
+Copyright (C) 1992-1993 Jean-loup Gailly This is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License, see the file COPYING.	
+Copyright (C) 1991,92,95,96,97,98,99,2000,01 Free Software Foundation, Inc. This file is part of the GNU C Library.	
+Copyright (C) 1990, 91, 92, 93, 96 Free Software Foundation, Inc.	
+Copyright (c) 1989 - 2004 PKWARE Inc., All Rights Reserved.	
+Copyright (C) 1989-1999 Free Software Foundation, Inc.	
+Copyright (c) 1989, 1993, 1994 The Regents of the University of California. All rights reserved.	
+Copyright (c) 1988, 1989, 1991, 1994, 1995, 1996, 1997, 1998, 1999, 2000 The Regents of the University of California. All rights reserved.	
+Copyright (C) 1987, 1989, 1991 Free Software Foundation, Inc.	
+Copyright (c) 1987, 1988 Regents of the University of California. All rights reserved.
+Copyright (c) 1986-2003 may safely be consumed by a BSD or GPL license. Written by: Vladimir Oleynik <dzo@simtreas.ru>	
+Copyright (C) 1984, 1989, 1990, 2000, 2001, 2002, 2003, 2004 Free Software Foundation, Inc.	
+Copyright (c) 1983,1991 The Regents of the University of California. All rights reserved.	
+Copyright (c) 1980 The Regents of the University of California. All rights reserved.	
+Copyright 2009 by Denys Vlasenko <vda.linux@googlemail.com> Licensed under GPL v2, see file LICENSE for details.	
+Copyright 2007 Tito Ragusa <farmatito@tiscali.it>	
+Copyright 2007 KaiGai Kohei <kaigai@kaigai.gr.jp>	
+Copyright 2007 by Bernhard Reutner-Fischer Licensed under GPL v2 or later, see file LICENSE for details.	
+Copyright 2006 Rob Landley <rob@landley.net> Licensed under GPLv2 or later, see file LICENSE in this tarball for details.	
+Copyright 2006 Glenn McGrath Licensed under GPL v2, see file LICENSE for details.	
+Copyright 2006 by Rob Landley <rob@landley.net> Licensed under GPL v2, see file LICENSE for details.	
+Copyright 2006 by Rob Landley <rob@landley.net>	
+Copyright 2006 by Natanael Copa <n@tanael.org> Licensed under GPL v2, see file LICENSE for details.	
+Copyright 2006 by Mike Frysinger <vapier@gentoo.org> Licensed under GPL v2, see file LICENSE for details.	
+Copyright 2006 by Erik Hovland <erik@hovland.org> Licensed under GPL v2, see file LICENSE for details.	
+Copyright 2006 Bernhard Reutner-Fischer <rep.nop@aon.at>	
+Copyright 2006 Bernhard Reutner-Fischer Licensed under GPL v2 or later, see file LICENSE for details.	
+Copyright 2006, Bernhard Reutner-Fischer	
+Copyright: 2006, 2007 Stefan Rompf <sux@loplof.de>. License: GPL v2.	
+Copyright 2005 Rob Landley <rob@landley.net	
+Copyright 2005 Frank Sorenson <frank@tuxrocks.com>	
+Copyright 2005 by Rob Landley	
+Copyright 2005 by Bernhard Reutner-Fischer Licensed under GPL v2, see file LICENSE for details.	
+Copyright 2004 Tony J. White	
+Copyright 2004 Matt Mackall <mpm@selenic.com>	
+Copyright 2003 Tito Ragusa <farmatito@tiscali.it>	
+Copyright 2003, Glenn McGrath	
+Copyright 2002 Laurence Anderson	
+Copyright 2002 Glenn McGrath	
+Copyright 2002 by Kai Germaschewski <kai.germaschewski@gmx.de>	
+Copyright 2002 Andi Kleen, SuSE Labs.	
+Copyright 2001 Glenn McGrath.	
+Copyright ? 2001-2004 The IEEE and The Open Group	
+Copyright 1999 George Staikos	
+Copyright 1999 Dave Cinege	
+Copyright 1999-2003 Donald Becker and Scyld Computing Corporation.	
+Copyright 1999-2000 Red Hat Software --- All Rights Reserved	
+Copyright 1998 by Albert Cahalan; all rights reserved.	
+Copyright 1998-2000 Red Hat, Inc --- All Rights Reserved	
+Copyright 1997,.. by Peter Hanecak <hanecak@megaloman.sk>. All rights reserved.	
+Copyright 1997, 2000, 2001 Larry Doolittle <LRDoolittle@lbl.gov>	
+Copyright 1996, 1997 Linux International. New implementation contributed by Richard Henderson <rth@tamu.edu> Based on original work by Bjorn Ekwall <bj0rn@blox.se> Restructured (and partly rewritten) by: Bjorn Ekwall <bj0rn@blox.se> February 1999	
+Copyright 1996, 1997 Linux International. I've only tested the code on mpc8xx platforms in big-endian mode. Did some cleanup and added USE_xxx_ENTRIES...	
+Copyright 1996, 1997 Linux International. Contributed by Ralf Baechle <ralf@gnu.ai.mit.edu>	
+Copyright 1994 Matthew Dillon (dillon@apollo.west.oic.com) version 2.3.2)	
+Copyright 1994 Matthew Dillon (dillon@apollo.west.oic.com)	
+Copyright 1994-1996 Donald Becker	
+Copyright 1993 MicroWalt Corporation	
+Copyright 1992, Linus Torvalds.	
+Copyright 1991-1997 Miquel van Smoorenburg.
+(C) 2007 Gabriel Somlo <somlo at cmu.edu>	
+(C) 2007 by Tito Ragusa <farmatito@tiscali.it>	
+(C) 2006 Jac Goudsmit added -o option	
+(C) 2005 <dzo@simtreas.ru>	
+(c) 2002 Robert Griebl	
+(c) 2002 Glenn McGrath	
+(c) 2001-2005 to be used in busybox and size optimizations, rewrote arith (see notes to this), added locale support, rewrote dynamic variables.	
+(C) 2000 Andreas Gruenbacher, <a.gruenbacher@computer.org>	
+(c) 1997 by Andi Kleen	
+(c) 1995 Erik Andersen <andersen@codepoet.org> (Majorly adjusted for busybox)	
+(c) 1995-1999 by: Geert Uytterhoeven (Geert.Uytterhoeven@cs.kuleuven.ac.be)	
+(C) 1991 Linus Torvalds.	
+(C) 1991, 1992 Linus Torvalds.
+Authors:
+Alexey Kuznetsov, <kuznet@ms2.inr.ac.ru>
+Remy Card <card@masi.ibp.fr>
+Theodore Ts'o <tytso@mit.edu>
+Stephen C. Tweedie <sct@redhat.com>
+Andreas Gruenbacher, <a.gruenbacher@computer.org>
+Kaz Kylheku <kaz@ashi.footprints.net>
+F.W. ten Wolde <franky@duteca.et.tudelft.nl>
+Jeremy Fitzhardinge <jeremy@zip.com.au>
+M.J.E. Mol <marcel@duteca.et.tudelft.nl>
+Miquel van Smoorenburg <miquels@drinkel.ow.org>
+Uwe Ohse <uwe@tirka.gun.de>
+Fred N. van Kempen, <waltje@uwalt.nl.mugnet.org>
+License type: GPLv2, BSD, BSDv3, BSDv4, GPL, LGPL
+
+Download URL:
+http://www.busybox.net/downloads/
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module name: vconfig
+
+Module version: 1.00
+
+Copyright:
+(C) Copyright 2001-2003 Alex Zeffertt, Cambridge Broadband Ltd, ajz@cambridgebroadband.com Re-worked by Ben Greear <greearb@candelatech.com>	
+Copyright	(c) 1998-2001 Ben Greear	
+Copyright 2001, 2002 by Robert Olsson <robert.olsson@its.uu.se> Uppsala University, Sweden 2002 Ben Greear <greearb@candelatech.com>	
+Copyright 1994, University of Cambridge Computer Laboratory All Rights Reserved.
+
+License type: LGPLv2, GPL, GPLv2
+
+Download URL:
+https://www.candelatech.com/~greear/vlan.html
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module name: smtpclient
+
+Module version: 1.00
+
+Copyright:
+2	Copyright (c) 1997 Ralf S. Engelschall, All rights reserved.	
+1	Copyright (C) 1989,90,91,92,93,94,96,97 Free Software Foundation, Inc.
+
+License type: Artistic-1.0, LGPLv2, GPL
+
+Download URL:
+https://github.com/rhuitl/uClinux/tree/master/user/smtpclient
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module name: base64
+
+Module version: 1.00
+
+Copyright:
+Copyright (c) GoAhead Software Inc., 1995-2000. All Rights Reserved.
+
+License type: GoAhead
+
+Download URL:
+http://smileos.googlecode.com/svn/trunk/GoAhead/src/goahead
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module name: brctl
+
+Module version: 1.00
+
+Copyright:
+Copyright (C) 2000 Lennert Buytenhek	
+Copyright (C) 1997, 1998, 1999 Free Software Foundation, Inc.
+
+License type: GPLv2, LGPLv2
+
+Download URL:
+http://www.linuxfromscratch.org/blfs/view/svn/basicnet/bridge-utils.html
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module name: ntpclient
+
+Module version: 2000.345
+
+Copyright:
+Copyright 2000 Larry Doolittle <LRDoolittle@lbl.gov> Last hack: 28 November, 2000	
+Copyright 1997, 1999, 2000 Larry Doolittle <larry@doolittle.boa.org> Last hack: 2 December, 2000
+
+License type: GPLv2
+
+Download URL:
+http://doolittle.icarus.com/ntpclient/
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module name: iptables
+
+Module version: 1.4.7
+
+Copyright:
+Copyright (c) 1986 by University of Toronto. Written by Henry Spencer. Not derived from licensed software.	
+(C) 2000 Emmanuel Roger <winfield@freegates.be>	
+(C) 2003 Matthew Strait, Ethan Sommer, Justin Levandoski	
+Copyright (C) 2003-2004 Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>	
+Copyright (C) 2000-2002 Joakim Axelsson <gozem@linux.nu> Patrick Schaaf <bof@bof.de> Martin Josefsson <gandalf@wlug.westbo.se>	
+Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 Free Software Foundation, Inc. This Makefile.in is free software; the Free Software Foundation gives unlimited permission to copy and/or distribute it, with or without modifications, as long as this notice is preserved.	
+(C) 2002 Harald Welte and cls_layer7.c (C) 2003 Matthew Strait, Ethan Sommer, Justin Levandoski.	
+(C) 2000 Emmanuel Roger <winfield@freegates.be>,	
+c Eychenne <rv@wallfire.org>	
+Copyright c CC Computer Consultants GmbH, 2007 Contact: <jengelh@computergmbh.de>	
+Copyright c CC Computer Consultants GmbH, 2007 Contact: Jan Engelhardt <jengelh@computergmbh.de>	
+Copyright c CC Computer Consultants GmbH, 2007 - 2008 Jan Engelhardt <jengelh@computergmbh.de>	
+Copyright (C) 2006 Red Hat, Inc., James Morris <jmorris@redhat.com>	
+Copyright (C) 2004, 2005, 2007, 2008 Free Software Foundation, Inc. Written by Gary V. Vaughan, 2004	
+Copyright (C) 2002,2004 MARA Systems AB <http://www.marasystems.com> by Henrik Nordstrom <hno@marasystems.com>	
+Copyright (C) 2000, Jean-Marc Saffroy <saffroy@mail.com>	
+Copyright (C) 2000, Ga?l Roualland <gael.roualland@iname.com>	
+Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 Free Software Foundation, Inc.	
+(C) 2005 by Harald Welte <laforge@netfilter.org>	
+(C) 2003 by Harald Welte <laforge@gnumonks.org>	
+(C) 2003, 2004, 2005, 2006, 2007 Matthew Strait and Ethan Sommer.	
+(C) 2002,2004 MARA Systems AB <http://www.marasystems.com> by Henrik Nordstrom <hno@marasystems.com>	
+(C) 2001 Marc Boucher (marc@mbsi.ca).	
+(C) 2000 Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>	
+(C) 2000-2002 by Harald Welte <laforge@gnumonks.org> based on previous code from Rusty Russell <rusty@linuxcare.com.au>	
+Copyright c Martin F. Krafft <madduck@madduck.net> Released under the terms of the Artistic Licence 2.0	
+Copyright c CC Computer Consultants GmbH, 2007 Jan Engelhardt <jengelh@computergmbh.de>
+Copyright (C) 2008 Matthew Strait, Ethan Sommer
+Copyright (c) 2007 Sven Schnelle <svens@bitebene.org>	
+Copyright (C) 2007 BalaBit IT Ltd.	
+Copyright (C) 2006 USAGI/WIDE Project	
+Copyright (c) 2003+ Evgeniy Polyakov <zbr@ioremap.net>	
+Copyright (c) 2003+ Evgeniy Polyakov <johnpol@2ka.mxt.ru>	
+Copyright (C) 2002-2008 BalaBit IT Ltd.	
+Copyright (c) 2000 Marc Boucher	
+Copyright (C) 2000 Emmanuel Roger <winfield@freegates.be>	
+Copyright (C) 1996, 1997, 1999, 2000, 2002, 2003, 2004, 2005, 2006, 2008, 2009 Free Software Foundation, Inc. Originally by Fran,cois Pinard <pinard@iro.umontreal.ca>, 1996.	
+Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009 Free Software Foundation, Inc. This file is Copyright (C) 1994 X Consortium	
+Copyright (C) 1989, 1991 Free Software Foundation, Inc. 675 Mass Ave, Cambridge, MA 02139, USA Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.	
+copyright by Martin F. Krafft. PP This manual page was written by Martin F. Krafft <madduck@madduck.net> PP Permission is granted to copy, distribute and/or modify this document under the terms of the Artistic License 2.0.	
+Copyright 2006 UfoMechanic Author: azez@ufomechanic.net This code is distributed and licensed under the terms of GNU GPL v2	
+(C) 2009 Kwest Wan <kwest_wan@cn.alphanetworks.com>	
+(C) 2009 by Pablo Neira Ayuso <pablo@netfilter.org>	
+(C) 2006 Ufo Mechanic <azez@ufomechanic.net>	
+(C) 2005 Harald Welte <laforge@netfilter.org>	
+(C) 2003-2009 Matthew Strait and Ethan Sommer.	
+(C) 2003-2004 by Harald Welte <laforge@netfilter.org>	
+(C) 2002 by Don Cohen <don-netf@isis.cs3-inc.com> Released under the terms of GNU GPL v2	
+(C) 2000 by Matthew G. Marsh <mgm@paktronix.com> This software is distributed under GNU GPL v2, 1991	
+(C) 2000 by Harald Welte <laforge@netfilter.org> */	
+(C) 2000-2006 by the netfilter coreteam <coreteam@netfilter.org>:	
+(C) 2000- 2002 by Matthew G. Marsh <mgm@paktronix.com>, Harald Welte <laforge@gnumonks.org>	
+(C) 1999 Paul ``Rusty'' Russell - Placed under the GNU GPL (See COPYING for details).	
+(C) 1999 by Paul 'Rusty' Russell <rusty@rustcorp.com.au>
+
+License type: GPLv2
+
+Download URL:
+http://www.netfilter.org/downloads.html
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/08/18
+
+------------------------------------------------------------------------
+Module name: mathopd
+
+Module version: 1.6b9
+
+Copyright:
+Copyright 1996, Michiel Boland. All rights reserved.	
+Copyright 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003 Michiel Boland. All rights reserved.	
+Copyright 2003, Michiel Boland. All rights reserved.	
+Copyright 2001, 2003 Michiel Boland. All rights reserved.	
+Copyright 2001, 2002 Michiel Boland. All rights reserved.	
+Copyright 1999, Michiel Boland. All rights reserved.	
+Copyright 1996 - 2004 Michiel Boland. All rights reserved.	
+Copyright 1996, 1997, 1998, 1999, 2000, 2001, 2002 Michiel Boland. All rights reserved.
+
+License type: BSDv3
+
+Download URL:
+http://www.mathopd.org/download.html
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module nameo: udhcpcd
+
+Module version: 0.9.8
+
+Copyright:
+Copyright (C) 1999 Matthew Ramsay <matthewr@moreton.com.au> Chris Trew <ctrew@moreton.com.au>	
+Copyright (c) 1997-2006 Jean Tourrilhes, All Rights Reserved.
+
+License type: GPLv2
+
+Download URL:
+https://launchpad.net/ubuntu/+archive/primary/+files/udhcp_0.9.8.orig.tar.gz
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2017/02/20
+
+------------------------------------------------------------------------
+Module name: pppd
+
+Module version: 1.00
+
+Copyright:
+Copyright (C) 1990, RSA Data Security, Inc. All rights reserved. **	
+Copyright (C) 1991-2, RSA Data Security, Inc. Created 1991. All rights reserved.	
+Copyright (C) 1992, 93, 94, 95, 1996 Free Software Foundation, Inc.	
+Copyright (C) 1995,1996,1997,1998 Lars Fenneberg <lf@elemental.net>	
+Copyright (C) 1996, Lars Fenneberg <in5y050@public.uni-hamburg.de>	
+Copyright (C) 1996, Matjaz Godec <gody@elgo.si>	
+Copyright (C) 1996,1997 Lars Fenneberg	
+Copyright (C) 1997 Lars Fenneberg	
+Copyright (C) 1997, Miguel A.L. Paraz <map@iphil.net>	
+Copyright (C) 1999 by Roaring Penguin Software Inc.	
+Copyright (C) 2000 Roaring Penguin Software Inc.	
+Copyright (C) 2000 by Roaring Penguin Software Inc.	
+Copyright (C) 2000-2001 by Roaring Penguin Software Inc.	
+Copyright (C) 2000-2002 Paul Mackerras. All rights reserved.	
+Copyright (C) 2001 Roaring Penguin Software Inc.	
+Copyright (C) 2001 by Roaring Penguin Software Inc., Michal Ostrowski and Jamal Hadi Salim.	
+Copyright (C) 2002 Netservers	
+Copyright (C) 2002 Roaring Penguin Software Inc.	
+Copyright (C) 2002 by Roaring Penguin Software Inc.	
+Copyright (C) 2006 by Kozlov D. * xeb@mail.ru *	
+Copyright (C) Andrew Tridgell 1999	
+Copyright (c) 1984 Paul Mackerras. All rights reserved.	
+Copyright (c) 1984-2000 Carnegie Mellon University. All rights reserved.	
+Copyright (c) 1989 Regents of the University of California. All rights reserved.	
+Copyright (c) 1989-2002 Paul Mackerras. All rights reserved.	
+Copyright (c) 1991 Gregory M. Christy. All rights reserved.	
+Copyright (c) 1993-2002 Paul Mackerras. All rights reserved.	
+Copyright (c) 1994 Paul Mackerras. All rights reserved.	
+Copyright (c) 1994, 1995, 1996 The Regents of the University of California. All rights reserved.	
+Copyright (c) 1994-2002 Paul Mackerras. All rights reserved.	
+Copyright (c) 1995 Eric Rosenquist. All rights reserved.	
+Copyright (c) 1995 Pedro Roque Marques. All rights reserved.	
+Copyright (c) 1995, 1996, 1997 Francis.Dupont@inria.fr, INRIA Rocquencourt, Alain.Durand@imag.fr, IMAG, Jean-Luc.Richier@imag.fr, IMAG-LSR.	
+Copyright (c) 1996-2002 Paul Mackerras. All rights reserved.	
+Copyright (c) 1998, 1999 Francis.Dupont@inria.fr, GIE DYADE, Alain.Durand@imag.fr, IMAG, Jean-Luc.Richier@imag.fr, IMAG-LSR.	
+Copyright (c) 1999 Paul Mackerras. All rights reserved.	
+Copyright (c) 1999 Tommi Komulainen. All rights reserved.	
+Copyright (c) 1999-2002 Paul Mackerras. All rights reserved.	
+Copyright (c) 2001 by Sun Microsystems, Inc. All rights reserved.	
+Copyright (c) 2002 Google, Inc. All rights reserved.	
+Copyright (c) 2002-2003, Jouni Malinen <jkmaline@cc.hut.fi>	
+Copyright 1992 Livingston Enterprises, Inc. Livingston Enterprises, Inc. 6920 Koll Center Parkway Pleasanton, CA 94566
+Copyright 1999 Paul Mackerras, Alan Curry.	
+Copyright 2000 Michal Ostrowski <mostrows@styx.uwaterloo.ca>, Jamal Hadi Salim <hadi@cyberus.ca> Borrows heavily from the PPPoATM plugin by Mitchell Blank Jr., which is based in part on work from Jens Axboe and Paul Mackerras.	
+Copyright 2002 Roaring Penguin Software Inc.	
+
+License type: BSDv2, GPLv2, GPL
+
+Download URL:
+https://ppp.samba.org/download.html
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module name: telnetd
+
+Module version: 1.1.1.1
+
+Copyright:
+(C) Copyright 2000, Axis Communications AB, LUND, SWEDEN
+
+License type: GPL
+
+Download URL:
+https://github.com/mozilla-b2g/busybox/blob/master/networking/telnetd.c
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module name: wireless_tools
+
+Module version: v29
+
+Copyright:
+Copyright (c) 1997-2007 Jean Tourrilhes <jt@hpl.hp.com>	
+Copyright (C) 1989, 1991 Free Software Foundation, Inc.
+
+License type: BSD, LGPL, GPL
+
+Download URL:
+http://www.labs.hpe.com/personal/Jean_Tourrilhes/Linux/wireless_tools.29.tar.gz
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module name: iproute2-2.6.33
+
+Module version: 100224
+
+Copyright:
+Copyright (C)Patrick McHardy
+Copyright (C)2006 USAGI/WIDE Project	
+Copyright (C)2004 USAGI/WIDE Project	
+Copyright (c) 2008, Intel Corporation.	
+Copyright (C)2005 USAGI/WIDE Project	
+Copyright (C) 2004 by Harald Welte <laforge@gnumonks.org>	
+Copyright 2001 by Robert Olsson <robert.olsson@its.uu.se> Uppsala University, Sweden	
+(c) UCB 1986-1988 Portions taken from the KA9Q/NOS (v2.00m PA0GRI) source. Ross Biro Fred N. van Kempen, <waltje@uWalt.NL.Mugnet.ORG> Florian La Roche, Jonathan Layes <layes@loran.com> Arnaldo Carvalho de Melo <acme@conectiva.com.br> ARPHRD_HWX25	
+(c) UCB 1982-1988 Ross Biro Fred N. van Kempen, <waltje@uWalt.NL.Mugnet.ORG>	
+Copyright copyright~1999 A.N.Kuznetsov	
+Copyright (c) 2009 Wolfgang Grandegger <wg@grandegger.com>	
+Copyright (C)2007 USAGI/WIDE Project, All Rights Reserved.	
+Copyright (C)2007 USAGI/WIDE Project	
+Copyright (C) 2004 by Harald Welte
+Copyright (C) 2001-2004 Lubomir Bulej <pallas@kadan.cz>	
+Copyright (C) 1999 Pavel Golubev <pg@ksi-linux.com>	
+Copyright (C) 1999-2000 Maxim Krasnyansky <max_mk@yahoo.com>	
+Copyright (C) 1989, 1991 Free Software Foundation, Inc. 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.	
+Copyright (c) 1982, 1986, 1993 The Regents of the University of California. All rights reserved.	
+(C) 2004 Harald Welte <laforge@gnumonks.org
+
+License type: GPLv2, BSDv3
+
+Download URL:
+https://www.kernel.org/pub/linux/utils/net/iproute2/
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module name: mDNSResponder
+
+Module version: 544
+
+Copyright:
+Copyright (c) 1997-2013 Apple Computer, Inc. All rights reserved.
+Copyright (C) 1995-1999 WIDE Project. All rights reserved.	
+Copyright (C) 2004 National ICT Australia Ltd	
+Copyright (c) 1999-2002 The OpenSSL Project. All rights reserved.	
+Copyright (c) 1997 - 1999 Microsoft Corporation All rights reserved	
+Copyright (c) 1997 - 1999 Hewlett-Packard Company.	
+Copyright (C) 1995-1998 Eric Young (eay@cryptsoft.com) All rights reserved.
+
+License type: Apachev2, BSD-3-Clause, APSL, OpenSSL
+
+Download URL:
+https://opensource.apple.com/tarballs/mDNSResponder/mDNSResponder-544.tar.gz
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module name: dnsmasq
+
+Module version: 2.45
+
+Copyright:
+Copyright (C) 1999-2005 by Erik Andersen <andersen@codepoet.org>	
+Copyright (C) 2003 Manuel Novoa III <mjn3@codepoet.org>	
+Copyright (C) 2004 Kay Sievers <kay.sievers@vrfy.org>	
+Copyright (C) 2008 by Vladimir Dronnikov <dronnikov@gmail.com>	
+Copyright (C) 2002 Roman Zippel <zippel@linux-m68k.org> Released under the terms of the GNU GPL v2.0.	
+Copyright (C) 2005 Kay Sievers <kay.sievers@vrfy.org>	
+Copyright (C) 1993, 1994, 1995, 1996 Theodore Ts'o.	
+Copyright (C) 1996, 1997 Theodore Ts'o.	
+Copyright (C) 2001 Andreas Dilger	
+Copyright (C) 1993, 1994 Remy Card <card@masi.ibp.fr> Laboratoire MASI, Institut Blaise Pascal Universite Pierre et Marie Curie (Paris VI)	
+Copyright (c) 2001-2006, Gerrit Pape All rights reserved.	
+Copyright (C) 2007 Denys Vlasenko	
+Copyright (C) 1996-2006 Julian Seward <jseward@bzip.org>	
+Copyright (C) 2003 Theodore Ts'o	
+Copyright (C) 1997 Theodore Ts'o.	
+Copyright (C) 1995, 1996 by Bruce Perens <bruce@pixar.com>.	
+Copyright (C) 2008 by Denys Vlasenko <vda.linux@googlemail.com>	
+Copyright (C) 2002 by Glenn McGrath	
+Copyright (C) 2000 Theodore Ts'o.	
+Copyright (C) 1999,2000,2001 by John Beppu <beppu@codepoet.org>	
+Copyright (c) 1991, 1993 The Regents of the University of California. All rights reserved.	
+Copyright (c) 1989 The Regents of the University of California. All rights reserved.	
+Copyright (c) 1989, 1991, 1993, 1994 The Regents of the University of California. All rights reserved.	
+Copyright 1989 - 1991, Julianne Frances Haugh <jockgrrl@austin.rr.com> All rights reserved.	
+Copyright (C) 2007 Denys Vlasenko.	
+Copyright (C) 2006 Denys Vlasenko	
+Copyright (C) 1999 by Randolph Chung <tausq@debian.org>	
+Copyright (c) 1999 by David I. Bell Permission has been granted to redistribute this code under the GPL.	
+Copyright (C) 1994, 1995 Theodore Ts'o.	
+Copyright 2007 by Denys Vlasenko <vda.linux@googlemail.com> Licensed under GPL v2, see file LICENSE for details.	
+Copyright (c) 2008 Vladimir Dronnikov	
+Copyright (C) 2008 Bernhard Reutner-Fischer	
+Copyright (C) 2007 Denys Vlasenko <vda.linux@googlemail.com>	
+Copyright (C) 2006 Rob Landley	
+Copyright (C) 2006 Aurelien Jacobs <aurel@gnuage.org>	
+Copyright (C) 2005 Manuel Novoa III <mjn3@codepoet.org>	
+Copyright (C) 2005 by Mike Frysinger <vapier@gentoo.org>	
+Copyright (C) 2005 by Erik Andersen <andersen@codepoet.org>
+COPYRIGHT "Copyright (C) 2000-2008 Simon Kelley"	
+Copyright (c) 2007 Simon Kelley	
+Copyright (C) 2007 Free Software Foundation, Inc.
+Copyright (C) 2004 Thomas Tuttle	
+Copyright (C) 2004 Peter Willis	
+Copyright (c) 2000-2008 Simon Kelley	
+(C) 2006 by Neil Fisher <neil@magnecor.com.au> license=GPL	
+
+License type: GPLv2, GPLv3, LGPLv2, BSDv3
+
+Download URL:
+http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.45.tar.gz
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module name: radvd
+
+Module version: 1.8
+
+Copyright:
+Lars Fenneberg	<lf@elemental.net>
+Craig Metz	<cmetz@inner.net>
+Reuben Hawkins	<reubenhwk@gmail.com>
+Pedro Roque	<roque@di.fc.ul.pt>
+Marko Myllynen	<myllynen@lut.fi>
+Copyright 1996-2000 by the above mentioned author(s), All Rights Reserved.	
+
+License type: BSD
+
+Download URL:
+http://pkgs.fedoraproject.org/repo/pkgs/radvd/radvd-1.8.tar.gz/50b4cfbdfa04d629d80437fd1d9e2aef/radvd-1.8.tar.gz
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module name: wide-dhcpv6
+
+Module version: 13.1
+
+Copyright:
+Copyright (c) 2006 WIDE Project. All rights reserved.	
+Copyright (C) 2004 Internet Systems Consortium, Inc. ("ISC")	
+Copyright (c) 1998 Todd C. Miller <Todd.Miller@courtesan.com> All rights reserved.
+Copyright (C) 1998-2004 WIDE Project. All rights reserved.	
+Copyright (C) 1998-2001, 2003 Internet Software Consortium.	
+Copyright (c) 1991, 1993 The Regents of the University of California. All rights reserved.	
+Copyright 1991 by the Massachusetts Institute of Technology
+
+License type: BSDv3, GPLv2
+
+Download URL:
+http://download.fedoraproject.org/pub/epel/6/SRPMS/wide-dhcpv6-20080615-13.1.el6.src.rpm
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module name: email
+
+Module version: 3.1.2
+
+Copyright:
+Copyright (C) 2001 - 2008 email by Dean Jones Software supplied and written by http://www.cleancode.org	
+Copyright (C) 2006 Free Software Foundation, Inc. This config.status script is free software; the Free Software Foundation gives unlimited permission to copy, distribute and modify it."	
+Copyright (C) 1992, 1993, 1994, 1995, 1996, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006 Free Software Foundation, Inc. This configure script is free software; the Free Software Foundation gives unlimited permission to copy, distribute and modify it. ACEOF exit fi cat >config.log <<_ACEOF This file contains any messages produced by compilers while running configure, to aid debugging if configure makes a mistake.	
+Copyright (C) 1992, 1993, 1994, 1995, 1996, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006 Free Software Foundation, Inc. This configure script is free software; the Free Software Foundation gives unlimited permission to copy, distribute and modify it.	
+Copyright (C) The Internet Society (2001). All Rights Reserved.	
+Copyright (C) 2008 Free Software Foundation, Inc. This is free software; see the source for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	
+Copyright (C) 2001 - 2004 email by Dean Jones Software supplied and written by http://www.cleancode.org	
+Copyright (C) 1989, 1991 Free Software Foundation, Inc. 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+
+License type: GPLv2
+
+Download URL:
+http://deanproxy.com/media/download/email/obsolete/email-3.1.2.tar.gz
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module name: ndisc6
+
+Module version: 0.9.9
+
+Copyright:
+Copyright c 2007 Pierre Ynard, Remi Denis-Courmont. * This program is free software: you can redistribute and/or modify * it under the terms of the GNU General Public License as published by * the Free Software Foundation, versions 2 or 3 of the license. *	
+Copyright c 2004-2006 Remi Denis-Courmont. * This program is free software: you can redistribute and/or modify * it under the terms of the GNU General Public License as published by * the Free Software Foundation, versions 2 or 3 of the license. *
+Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008 Free Software Foundation, Inc.	
+Copyright (C) 1995-1997, 2000-2007 by Ulrich Drepper <drepper@gnu.ai.mit.edu>
+Copyright (C) 2003-2004, 2007-2008 Remi Denis-Courmont dnl From Remi Denis-Courmont
+Copyright (C) 1996, 1997, 1999, 2000, 2002, 2003, 2004, 2005, 2006 Free Software Foundation, Inc. Originally by Fran,cois Pinard <pinard@iro.umontreal.ca>, 1996.
+Copyright 1996-2007 Free Software Foundation, Inc. Taken from GNU libtool, 2001 Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
+
+License type: GPL, GPLv2
+
+Download URL:
+http://pkgs.fedoraproject.org/repo/pkgs/ndisc6/ndisc6-0.9.9.tar.bz2/aab2209fa7bf6b02ed2f49e7b8e9fa18/ndisc6-0.9.9.tar.bz2
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module name: lzo
+
+Module version: 2.06
+
+Copyright:
+Copyright (C) 1996-2011 Markus Franz Xaver Johannes Oberhumer All Rights Reserved.	
+Copyright (C) 1989, 1991-2011 Free Software Foundation, Inc.	
+Copyright (c) 1994-2008 Ralf S. Engelschall <rse@engelschall.com>
+Copyright 1996-2011 Free Software Foundation, Inc. Taken from GNU libtool, 2001 Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
+Copyright (C) 2004, 2005, 2007, 2009 Free Software Foundation, Inc. Written by Scott James Remnant, 2004.	
+Copyright (C) 2004, 2005, 2007, 2008, 2009 Free Software Foundation, Inc. Written by Gary V. Vaughan, 2004	
+Copyright (C) 1999, 2000, 2003, 2004, 2005, 2009, 2010 Free Software Foundation, Inc. Written by Tom Tromey <tromey@cygnus.com>.	
+Copyright (C) 1996, 1997, 1999, 2000, 2002-2006, 2008, 2009 Free Software Foundation, Inc. Originally by Fran,cois Pinard <pinard@iro.umontreal.ca>, 1996.	
+Copyright (C) 1995-1997, 2003-2005, 2007, 2009, 2010 Free Software Foundation, Inc. written by Ulrich Drepper <drepper@gnu.ai.mit.edu>, June 1995	
+Copyright (C) 1994 X Consortium
+
+
+License type: GPL-2.0+
+
+Download URL:
+http://www.oberhumer.com/opensource/lzo/download/lzo-2.06.tar.gz
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module name: libuuid
+
+Module version: 1.0.2
+
+Copyright:
+Copyright (C) 1996-1999 Theodore Ts'o.	
+Copyright (C) 1992-2012 Free Software Foundation, Inc.	
+Copyright (C) 2007 Theodore Ts'o.	
+Copyright (C) 2004, 2005, 2007, 2009 Free Software Foundation, Inc. Written by Scott James Remnant, 2004.	
+Copyright (C) 2004, 2005, 2007, 2008, 2009 Free Software Foundation, Inc. Written by Gary V. Vaughan, 2004	
+Copyright (C) 1996-2012 Free Software Foundation, Inc. Originally by Fran,cois Pinard <pinard@iro.umontreal.ca>, 1996.	
+Copyright (C) 1994 X Consortium	
+
+License type: BSD-style, LGPL
+
+Download URL:
+https://sourceforge.net/projects/libuuid/files/libuuid-1.0.2.tar.gz/download
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
+Module name: mtd-utils
+
+Module version: 1.4.5
+
+Copyright:
+Copyright (c) International Business Machines Corp., 2006	
+Copyright (C) 2006-2009 Nokia Corporation.	
+Copyright (C) 2008 University of Szeged, Hungary	
+Copyright (c) Artem Bityutskiy, 2007, 2008	
+Copyright (C) 2002, 2004 Christopher Clark <firstname.lastname@cl.cam.ac.uk> 
+Copyright (C) 1999 David A. Hinds. All Rights Reserved.	
+Copyright (C) 1989, 1991 Free Software Foundation, Inc. 
+Copyright (c) 2d3D, Inc. Written by Abraham vd Merwe <abraham@2d3d.co.za> All rights reserved.	
+Copyright (C) 2005 Sean Young <sean@mess.org>	
+Copyright (C) 2004 Ferenc Havasi <havasi@inf.u-szeged.hu>, University of Szeged, Hungary	
+Copyright (C) 2001-2003 Red Hat, Inc.	
+Copyright (c) 1999-2008 Igor Pavlov 
+Copyright 2001, 2002 Red Hat, Inc. 2001 David A. Schleef <ds@lineo.com> 2002 Axis Communications AB 2001, 2002 Erik Andersen <andersen@codepoet.org> 2004 University of Szeged, Hungary 2006 KaiGai Kohei <kaigai@ak.jp.nec.com>	
+(C) 1999 Andrea Arcangeli <andrea@suse.de>	
+Copyright (c) Erik Andersen <andersen@codepoet.org>	
+Copyright (C) 2010 Mike Frysinger <vapier@gentoo.org>	
+Copyright (C) 2008 Logitech.	
+Copyright (c) 2005 Ben Gardner <bgardner@wabtec.com>	
+Copyright (C) 2004 Zoltan Sogor <weth@inf.u-szeged.hu>, Ferenc Havasi <havasi@inf.u-szeged.hu> University of Szeged, Hungary 2006 KaiGai Kohei <kaigai@ak.jp.nec.com>	
+Copyright (C) 2004 Ferenc Havasi <havasi@inf.u-szeged.hu>, Zoltan Sogor <weth@inf.u-szeged.hu>, Patrik Kluba <pajko@halom.u-szeged.hu>, University of Szeged, Hungary	
+Copyright (C) 2003 Thomas Gleixner (tglx@linutronix.de)
+Copyright (c) 2001 Jari Kirma <Jari.Kirma@hut.fi>	
+Copyright (c) 2001, Daniel Industries, Inc.
+Copyright (C) 2001, 2002 Erik Andersen <andersen@codepoet.org>	
+Copyright (C) 2000 Steven J. Hill (sjhill@realitydiluted.com) 2003 Thomas Gleixner (tglx@linutronix.de)	
+Copyright (C) 2000 David Woodhouse (dwmw2@infradead.org) Steven J. Hill (sjhill@realitydiluted.com)	
+Copyright (C) 2000 Arcom Control System Ltd	
+Copyright (c) 2000-2007 by Nicolas Devillard. MIT License	
+COPYRIGHT (C) 1986 Gary S. Brown. 
+Copyright c 1999-2010 David Woodhouse <dwmw2@infradead.org>	
+(C) 1997-98 Luigi Rizzo (luigi@iet.unipi.it)
+
+License type: GPL-2.0+, BSD-3-Clause, Zlib, Dual-license, GPL-2.0, MPL-1.1
+
+Download URL:
+http://repository.timesys.com/buildsources/m/mtd-utils/mtd-utils-1.4.5/
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: 2015/01/19
+
+------------------------------------------------------------------------
