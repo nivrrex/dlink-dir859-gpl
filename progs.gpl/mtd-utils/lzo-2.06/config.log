@@ -31,6 +31,7 @@ PATH: /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/bin
 PATH: /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/bin
 PATH: /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/bin
 PATH: /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/bin
+PATH: /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/bin
 PATH: /root/.local/bin
 PATH: /usr/local/sbin
 PATH: /usr/local/bin
@@ -9671,7 +9672,7 @@ configure:12931: result: yes
 configure:12931: checking for alloca
 configure:12931: mips-linux-gcc -o conftest   -L/home/xiang/dlink-dir859-gpl/progs.gpl/mtd-utils/libuuid-1.0.2/.libs conftest.c  >&5
 conftest.c:102: warning: conflicting types for built-in function 'alloca'
-/tmp/ccJmcfdc.o: In function `main':
+/tmp/cclnmU4K.o: In function `main':
 conftest.c:(.text+0x1c): undefined reference to `alloca'
 collect2: ld returned 1 exit status
 configure:12931: $? = 1
@@ -9815,7 +9816,7 @@ configure:12931: $? = 0
 configure:12931: result: yes
 configure:12931: checking for clock_getcpuclockid
 configure:12931: mips-linux-gcc -o conftest   -L/home/xiang/dlink-dir859-gpl/progs.gpl/mtd-utils/libuuid-1.0.2/.libs conftest.c  >&5
-/tmp/ccoMGMUG.o: In function `main':
+/tmp/ccr1yhui.o: In function `main':
 conftest.c:(.text+0x1c): undefined reference to `clock_getcpuclockid'
 collect2: ld returned 1 exit status
 configure:12931: $? = 1
@@ -10089,7 +10090,7 @@ configure:12931: $? = 0
 configure:12931: result: yes
 configure:12931: checking for stricmp
 configure:12931: mips-linux-gcc -o conftest   -L/home/xiang/dlink-dir859-gpl/progs.gpl/mtd-utils/libuuid-1.0.2/.libs conftest.c  >&5
-/tmp/ccETvG3W.o: In function `main':
+/tmp/ccjTNb7x.o: In function `main':
 conftest.c:(.text+0x1c): undefined reference to `stricmp'
 collect2: ld returned 1 exit status
 configure:12931: $? = 1
@@ -10257,7 +10258,7 @@ configure:12931: $? = 0
 configure:12931: result: yes
 configure:12931: checking for strnicmp
 configure:12931: mips-linux-gcc -o conftest   -L/home/xiang/dlink-dir859-gpl/progs.gpl/mtd-utils/libuuid-1.0.2/.libs conftest.c  >&5
-/tmp/ccb5Mgc0.o: In function `main':
+/tmp/ccvU5yfA.o: In function `main':
 conftest.c:(.text+0x1c): undefined reference to `strnicmp'
 collect2: ld returned 1 exit status
 configure:12931: $? = 1
