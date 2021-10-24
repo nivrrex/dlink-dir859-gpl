@@ -1,0 +1,1567 @@
+diff -Nru ori/iptables-1.4.21/configure iptables-1.4.21/configure
+--- ori/iptables-1.4.21/configure	2013-11-22 19:26:11.000000000 +0800
++++ iptables-1.4.21/configure	2014-07-18 17:41:34.087929899 +0800
+@@ -12450,7 +12450,7 @@
+ 	-Wmissing-prototypes -Wredundant-decls -Wshadow -Wstrict-prototypes \
+ 	-Winline -pipe";
+ regular_CPPFLAGS="${largefile_cppflags} -D_REENTRANT \
+-	-DXTABLES_LIBDIR=\\\"\${xtlibdir}\\\" -DXTABLES_INTERNAL";
++	-DXTABLES_LIBDIR=\\\"/lib/xtables\\\" -DXTABLES_INTERNAL";
+ kinclude_CPPFLAGS="";
+ if [ -n "$kbuilddir" ]; then
+ 	kinclude_CPPFLAGS="$kinclude_CPPFLAGS -I$kbuilddir/include/uapi -I$kbuilddir/include";
+diff -Nru ori/iptables-1.4.21/configure.ac iptables-1.4.21/configure.ac
+--- ori/iptables-1.4.21/configure.ac	2013-11-22 19:18:13.000000000 +0800
++++ iptables-1.4.21/configure.ac	2014-07-18 17:41:34.087929899 +0800
+@@ -119,7 +119,7 @@
+ 	-Wmissing-prototypes -Wredundant-decls -Wshadow -Wstrict-prototypes \
+ 	-Winline -pipe";
+ regular_CPPFLAGS="${largefile_cppflags} -D_REENTRANT \
+-	-DXTABLES_LIBDIR=\\\"\${xtlibdir}\\\" -DXTABLES_INTERNAL";
++	-DXTABLES_LIBDIR=\\\"/lib/xtables\\\" -DXTABLES_INTERNAL";
+ kinclude_CPPFLAGS="";
+ if [[ -n "$kbuilddir" ]]; then
+ 	kinclude_CPPFLAGS="$kinclude_CPPFLAGS -I$kbuilddir/include/uapi -I$kbuilddir/include";
+diff -Nru ori/iptables-1.4.21/extensions/GNUmakefile.in iptables-1.4.21/extensions/GNUmakefile.in
+--- ori/iptables-1.4.21/extensions/GNUmakefile.in	2013-11-22 19:18:13.000000000 +0800
++++ iptables-1.4.21/extensions/GNUmakefile.in	2014-07-18 17:41:34.087929899 +0800
+@@ -11,6 +11,8 @@
+ libexecdir   = @libexecdir@
+ xtlibdir     = @xtlibdir@
+ 
++include $(ksourcedir)/.config
++
+ CC                 = @CC@
+ CCLD               = ${CC}
+ CFLAGS             = @CFLAGS@
+@@ -38,10 +40,60 @@
+ #
+ #	Wildcard module list
+ #
+-pfx_build_mod := $(patsubst ${srcdir}/libxt_%.c,%,$(sort $(wildcard ${srcdir}/libxt_*.c)))
+-pfx_symlinks  := NOTRACK state
+-@ENABLE_IPV4_TRUE@ pf4_build_mod := $(patsubst ${srcdir}/libipt_%.c,%,$(sort $(wildcard ${srcdir}/libipt_*.c)))
+-@ENABLE_IPV6_TRUE@ pf6_build_mod := $(patsubst ${srcdir}/libip6t_%.c,%,$(sort $(wildcard ${srcdir}/libip6t_*.c)))
++#pfx_build_mod := $(patsubst ${srcdir}/libxt_%.c,%,$(sort $(wildcard ${srcdir}/libxt_*.c)))
++#pfx_symlinks  := NOTRACK state
++#@ENABLE_IPV4_TRUE@ pf4_build_mod := $(patsubst ${srcdir}/libipt_%.c,%,$(sort $(wildcard ${srcdir}/libipt_*.c)))
++#@ENABLE_IPV6_TRUE@ pf6_build_mod := $(patsubst ${srcdir}/libip6t_%.c,%,$(sort $(wildcard ${srcdir}/libip6t_*.c)))
++pfx_build_mod := helper iprange limit mac mark MARK mport multiport physdev standard state string tcp tcpmss TCPMSS time udp
++@ENABLE_IPV4_TRUE@ pf4_build_mod := DNAT icmp LOG MASQUERADE REDIRECT REJECT SNAT TTL
++@ENABLE_IPV6_TRUE@ pf6_build_mod := icmp6 LOG REJECT
++
++ifeq ($(CONFIG_IP6_NF_MATCH_AH), y)
++	pf6_build_mod += ah
++endif
++ifeq ($(CONFIG_IP6_NF_MATCH_IPV6HEADER), y)
++	pf6_build_mod += ipv6header
++endif
++ifeq ($(CONFIG_IP6_NF_MATCH_RT), y)
++	pf6_build_mod += rt
++endif
++ifeq ($(CONFIG_IP_NF_TARGET_HIJACK), y)
++	pf4_build_mod += HIJACK
++endif
++ifeq ($(CONFIG_NETFILTER_XT_TARGET_CONNMARK), y)
++	pfx_build_mod += CONNMARK
++endif
++ifeq ($(CONFIG_NETFILTER_XT_TARGET_CLASSIFY), y)
++	pfx_build_mod += CLASSIFY
++endif
++ifeq ($(CONFIG_NETFILTER_XT_MATCH_CONNMARK), y)
++	pfx_build_mod += connmark
++endif
++ifeq ($(CONFIG_NETFILTER_XT_MATCH_CONNBYTES), y)
++	pfx_build_mod += connbytes
++endif
++ifeq ($(CONFIG_NETFILTER_XT_MATCH_LAYER7), y)
++	pfx_build_mod += layer7
++endif
++ifeq ($(CONFIG_NETFILTER_XT_MATCH_PKTTYPE), y)
++	pfx_build_mod += pkttype
++endif
++ifeq ($(CONFIG_NETFILTER_XT_MATCH_LENGTH), y)
++	pfx_build_mod += length
++endif
++ifeq ($(CONFIG_NETFILTER_XT_MATCH_CONNTRACK), y)
++	pfx_build_mod += conntrack
++endif
++ifeq ($(CONFIG_IP_NF_TARGET_IP_PERSONALITY), y)
++	pf4_build_mod += PERS
++endif
++ifeq ($(CONFIG_NETFILTER_XT_MATCH_DSCP), y)
++	pfx_build_mod += dscp
++endif
++
++PF_EXT_SLIB_OPTS = $(foreach T,$(wildcard .*-test),$(shell KERNEL_DIR=$(ksourcedir) ./$(T)))
++pf4_build_mod += $(PF_EXT_SLIB_OPTS)
++
+ pfx_build_mod := $(filter-out @blacklist_modules@,${pfx_build_mod})
+ pf4_build_mod := $(filter-out @blacklist_modules@,${pf4_build_mod})
+ pf6_build_mod := $(filter-out @blacklist_modules@,${pf6_build_mod})
+diff -Nru ori/iptables-1.4.21/extensions/libip6t_ipv6header.c iptables-1.4.21/extensions/libip6t_ipv6header.c
+--- ori/iptables-1.4.21/extensions/libip6t_ipv6header.c	2013-11-22 19:18:13.000000000 +0800
++++ iptables-1.4.21/extensions/libip6t_ipv6header.c	2014-07-18 17:41:34.087929899 +0800
+@@ -14,6 +14,7 @@
+ enum {
+ 	O_HEADER = 0,
+ 	O_SOFT,
++	O_SHORT,
+ };
+ 
+ /* A few hardcoded protocols for 'all' and in case the user has no
+@@ -131,13 +132,15 @@
+ "                    long names: hop-by-hop,ipv6-opts,ipv6-route,\n"
+ "                                ipv6-frag,ah,esp,ipv6-nonxt,protocol\n"
+ "                       numbers: 0,60,43,44,51,50,59\n"
+-"--soft                    The header CONTAINS the specified extensions\n");
++"--soft                    The header CONTAINS the specified extensions\n"
++"--shortheader                    The header is short by fragment\n");  //rbj
+ }
+ 
+ static const struct xt_option_entry ipv6header_opts[] = {
+ 	{.name = "header", .id = O_HEADER, .type = XTTYPE_STRING,
+-	 .flags = XTOPT_MAND | XTOPT_INVERT},
++	 .flags = XTOPT_INVERT},
+ 	{.name = "soft", .id = O_SOFT, .type = XTTYPE_NONE},
++	{.name = "shortheader", .id = O_SHORT, .type = XTTYPE_NONE},
+ 	XTOPT_TABLEEND,
+ };
+ 
+@@ -156,6 +159,8 @@
+         return ret;
+ }
+ 
++#define IPV6_HDR_SHORTHDR      0x04  //rbj
++
+ static void ipv6header_parse(struct xt_option_call *cb)
+ {
+ 	struct ip6t_ipv6header_info *info = cb->data;
+@@ -171,6 +176,10 @@
+ 	case O_SOFT:
+ 		info->modeflag |= 0xFF;
+ 		break;
++	case O_SHORT:
++		/* Shortheader-mode requested? */
++		info->shflag |= 0xFF;
++		break;
+ 	}
+ }
+ 
+diff -Nru ori/iptables-1.4.21/extensions/libip6t_REJECT.c iptables-1.4.21/extensions/libip6t_REJECT.c
+--- ori/iptables-1.4.21/extensions/libip6t_REJECT.c	2013-11-22 19:18:13.000000000 +0800
++++ iptables-1.4.21/extensions/libip6t_REJECT.c	2014-07-18 17:41:34.097930295 +0800
+@@ -34,6 +34,8 @@
+ 		IP6T_ICMP6_ADDR_UNREACH, "ICMPv6 address unreachable"},
+ 	{"icmp6-port-unreachable", "port-unreach",
+ 		IP6T_ICMP6_PORT_UNREACH, "ICMPv6 port unreachable"},
++	{"icmp6-srcaddr-fail", "srcaddr-fail",
++		IP6T_ICMP6_SRCADDR_FAIL, "ICMPv6 source address failed ingress/egress policy"},/* UNH-IOL */
+ 	{"tcp-reset", "tcp-reset",
+ 		IP6T_TCP_RESET, "TCP RST packet"}
+ };
+diff -Nru ori/iptables-1.4.21/extensions/libipt_DNAT.c iptables-1.4.21/extensions/libipt_DNAT.c
+--- ori/iptables-1.4.21/extensions/libipt_DNAT.c	2013-11-22 19:18:13.000000000 +0800
++++ iptables-1.4.21/extensions/libipt_DNAT.c	2014-07-18 17:41:34.097930295 +0800
+@@ -13,9 +13,13 @@
+ 	O_RANDOM,
+ 	O_PERSISTENT,
+ 	O_X_TO_DEST, /* hidden flag */
++	O_TO_SHIFT,
++	O_X_TO_SHIFT,
+ 	F_TO_DEST   = 1 << O_TO_DEST,
++	F_TO_SHIFT  = 1 << O_TO_SHIFT,
+ 	F_RANDOM    = 1 << O_RANDOM,
+ 	F_X_TO_DEST = 1 << O_X_TO_DEST,
++	F_X_TO_SHIFT= 1 << O_X_TO_SHIFT,
+ };
+ 
+ /* Dest NAT data consists of a multi-range, indicating where to map
+@@ -32,14 +36,18 @@
+ "DNAT target options:\n"
+ " --to-destination [<ipaddr>[-<ipaddr>]][:port[-port]]\n"
+ "				Address to map destination to.\n"
+-"[--random] [--persistent]\n");
++"[--random] [--persistent]\n"
++" --to-shift <ipaddr>[:offset]\n"
++"               Address to map destination and shift the port range to.\n");
+ }
+ 
+ static const struct xt_option_entry DNAT_opts[] = {
+ 	{.name = "to-destination", .id = O_TO_DEST, .type = XTTYPE_STRING,
+-	 .flags = XTOPT_MAND | XTOPT_MULTI},
++	 .flags = XTOPT_MULTI},
+ 	{.name = "random", .id = O_RANDOM, .type = XTTYPE_NONE},
+ 	{.name = "persistent", .id = O_PERSISTENT, .type = XTTYPE_NONE},
++	{.name = "to-shift", .id=O_TO_SHIFT, .type = XTTYPE_STRING,
++	 .flags = XTOPT_MULTI},
+ 	XTOPT_TABLEEND,
+ };
+ 
+@@ -64,7 +72,7 @@
+ 
+ /* Ranges expected in network order. */
+ static struct xt_entry_target *
+-parse_to(const char *orig_arg, int portok, struct ipt_natinfo *info)
++parse_to(const char *orig_arg, int portok, struct ipt_natinfo *info, int type)
+ {
+ 	struct nf_nat_ipv4_range range;
+ 	char *arg, *colon, *dash, *error;
+@@ -75,6 +83,8 @@
+ 		xtables_error(RESOURCE_PROBLEM, "strdup");
+ 	memset(&range, 0, sizeof(range));
+ 	colon = strchr(arg, ':');
++	/* Set dnat-type into flags */
++	range.flags|=type;
+ 
+ 	if (colon) {
+ 		int port;
+@@ -97,22 +107,41 @@
+ 
+ 		dash = strchr(colon, '-');
+ 		if (!dash) {
+-			range.min.tcp.port
+-				= range.max.tcp.port
+-				= htons(port);
++			if(type==F_X_TO_DEST) {
++				range.min.tcp.port
++					= range.max.tcp.port
++					= htons(port);
++			} else if(type==F_X_TO_SHIFT) {
++				int             shift=htons(port);
++				
++				/* Shift is from 0-65535
++				 * ex. 11024-55536, and the transition port will be 1024 */
++				if(shift<=0 || shift>65535)
++					xtables_error(PARAMETER_PROBLEM, "Shift `%s' not valid\n", dash+1);
++				range.max.tcp.port=range.min.tcp.port=shift;
++			}
+ 		} else {
+-			int maxport;
+-
+-			maxport = atoi(dash + 1);
+-			if (maxport <= 0 || maxport > 65535)
+-				xtables_error(PARAMETER_PROBLEM,
+-					   "Port `%s' not valid\n", dash+1);
+-			if (maxport < port)
+-				/* People are stupid. */
+-				xtables_error(PARAMETER_PROBLEM,
+-					   "Port range `%s' funky\n", colon+1);
+-			range.min.tcp.port = htons(port);
+-			range.max.tcp.port = htons(maxport);
++			if(type==F_X_TO_DEST || type==F_X_TO_SHIFT) {
++				if(type==F_X_TO_DEST) {
++					int maxport;
++					
++					maxport = atoi(dash + 1);
++					if (maxport <= 0 || maxport > 65535)
++						xtables_error(PARAMETER_PROBLEM,
++								"Port `%s' not valid\n", dash+1);
++					if (maxport < port)
++						/* People are stupid. */
++						xtables_error(PARAMETER_PROBLEM,
++								"Port range `%s' funky\n", colon+1);
++					range.min.tcp.port = htons(port);
++					range.max.tcp.port = htons(maxport);
++				} else if (type==F_X_TO_SHIFT) {
++					goto    SHIFT_ERR;
++				}
++			} else {
++				/* Unvalidable */
++				goto    SHIFT_ERR;
++			}
+ 		}
+ 		/* Starts with a colon? No IP info...*/
+ 		if (colon == arg) {
+@@ -127,8 +156,11 @@
+ 	if (colon && dash && dash > colon)
+ 		dash = NULL;
+ 
+-	if (dash)
++	if (dash){
+ 		*dash = '\0';
++		if(type==F_X_TO_SHIFT)
++			goto    SHIFT_ERR;
++	}
+ 
+ 	ip = xtables_numeric_to_ipaddr(arg);
+ 	if (!ip)
+@@ -146,6 +178,8 @@
+ 
+ 	free(arg);
+ 	return &(append_range(info, &range)->t);
++SHIFT_ERR:
++	xtables_error(PARAMETER_PROBLEM, "Must specify '--to-shift ip:offset'\n");
+ }
+ 
+ static void DNAT_parse(struct xt_option_call *cb)
+@@ -173,18 +207,29 @@
+ 				xtables_error(PARAMETER_PROBLEM,
+ 					   "DNAT: Multiple --to-destination not supported");
+ 		}
+-		*cb->target = parse_to(cb->arg, portok, info);
++		*cb->target = parse_to(cb->arg, portok, info, F_X_TO_DEST);
+ 		cb->xflags |= F_X_TO_DEST;
+ 		break;
+ 	case O_PERSISTENT:
+ 		info->mr.range[0].flags |= NF_NAT_RANGE_PERSISTENT;
+ 		break;
++	case O_TO_SHIFT:
++		if (cb->xflags & F_X_TO_SHIFT) {
++			if (!kernel_version)
++				get_kernel_version();
++			if (kernel_version > LINUX_VERSION(2, 6, 10))
++				xtables_error(PARAMETER_PROBLEM,
++						"DNAT: Multiple --to-shift not supported");
++		}
++		*cb->target = parse_to(cb->arg, portok, info, F_X_TO_SHIFT);
++		cb->xflags |= F_X_TO_SHIFT;
++		break;
+ 	}
+ }
+ 
+ static void DNAT_fcheck(struct xt_fcheck_call *cb)
+ {
+-	static const unsigned int f = F_TO_DEST | F_RANDOM;
++	static const unsigned int f = F_TO_DEST | F_RANDOM | F_TO_SHIFT;
+ 	struct nf_nat_ipv4_multi_range_compat *mr = cb->data;
+ 
+ 	if ((cb->xflags & f) == f)
+@@ -216,8 +261,14 @@
+ {
+ 	const struct ipt_natinfo *info = (const void *)target;
+ 	unsigned int i = 0;
++	
++	if(info->mr.range[0].flags&F_X_TO_DEST)
++		printf(" to:");
++	else if(info->mr.range[0].flags&F_X_TO_SHIFT)
++		printf("shift:");
++	else    /* Unvalidable */
++		;;
+ 
+-	printf(" to:");
+ 	for (i = 0; i < info->mr.rangesize; i++) {
+ 		print_range(&info->mr.range[i]);
+ 		if (info->mr.range[i].flags & NF_NAT_RANGE_PROTO_RANDOM)
+diff -Nru ori/iptables-1.4.21/extensions/libipt_HIJACK.c iptables-1.4.21/extensions/libipt_HIJACK.c
+--- ori/iptables-1.4.21/extensions/libipt_HIJACK.c	1970-01-01 08:00:00.000000000 +0800
++++ iptables-1.4.21/extensions/libipt_HIJACK.c	2014-07-18 17:41:34.097930295 +0800
+@@ -0,0 +1,142 @@
++/* Shared library add-on to iptables to add HTTP hijack support.
++ *
++ * (C) 2009 Kwest Wan <kwest_wan@cn.alphanetworks.com>
++ */
++#include <stdio.h>
++#include <netdb.h>
++#include <string.h>
++#include <stdlib.h>
++#include <getopt.h>
++//#include <iptables.h>
++#include <xtables.h>
++#include <linux/netfilter_ipv4/ip_tables.h>
++#include <linux/netfilter_ipv4/ipt_HIJACK.h>
++
++#define DEFAULT_URL		"192.168.0.1/forbidden.php"
++
++#define IPT_URL_USED	0x01
++
++enum{
++	O_TO_URL =0,
++	o_X_TO_URL,
++	F_TO_URL   = 1 << O_TO_URL,
++	F_X_TO_URL = 1 << F_TO_URL,
++};
++
++/* Function which prints out usage message. */
++static void HIJACK_help(void)
++{
++	printf(
++			"HIJACK v%s options:\n"
++			" --to-url <a URL without 'http://' prefix>\n"
++			"				hijack and redirect to URL.\n\n", "1.4");
++}
++
++static struct xt_option_entry opts[] = {
++	{ .name = "to-url", .id = O_TO_URL, .type = XTTYPE_STRING},
++	XTOPT_TABLEEND,
++};
++
++/* Initialize the target. */
++static void
++init(struct xt_entry_target *t)
++{
++	struct ipt_hijack_info *hijack = (struct ipt_hijack_info *)t->data;
++	/* default */
++	strncpy(hijack->url, DEFAULT_URL, MAX_URL_LEN);
++}
++	
++/* Function which parses command options; returns true if it
++   ate an option */
++static void
++parse(struct xt_option_call *cb)
++{
++	const struct ipt_entry *entry = cb->xt_entry;
++	struct ipt_hijack_info *hijack = (void *)(*cb->target)->data;
++	int tcpok;
++
++	if (cb->xflags & IPT_URL_USED)
++		xtables_error(PARAMETER_PROBLEM,
++				"Can't specify multiple --to-url");
++
++	if (entry->ip.proto == IPPROTO_TCP)
++		tcpok = 1;
++	else
++		tcpok = 0;
++
++	xtables_option_parse(cb);
++	switch (cb->entry->id) {
++	case O_TO_URL:
++		if (!tcpok)
++			xtables_error(PARAMETER_PROBLEM,
++				   "Need TCP with HTTP URL specification");
++
++		if (cb->invert)
++			xtables_error(PARAMETER_PROBLEM,
++				   "Unexpected `!' after --to-url");
++
++		if (strncmp(cb->arg, "https:", 6) == 0)
++			xtables_error(PARAMETER_PROBLEM,
++				  "HIJACK target can't support HTTPS");
++		
++		if (strncmp(cb->arg, "http:", 5) == 0)
++			xtables_error(PARAMETER_PROBLEM,
++				  "Don't put 'http://' as prefix, just specific a valid URL");
++
++		if (strlen(cb->arg)+1 > MAX_URL_LEN)
++			xtables_error(PARAMETER_PROBLEM,
++				   "URL length is too long, it only allow %d max", MAX_URL_LEN);
++		
++		strncpy(hijack->url, cb->arg, MAX_URL_LEN);
++		cb->xflags |= IPT_URL_USED;
++		
++		return 1;
++
++	default:
++		return 0;
++	}
++}
++
++/* Final check; don't care. */
++static void final_check(struct xt_fcheck_call *cb)
++{
++}
++
++/* Prints out the targinfo. */
++static void
++print(const void *ip, const struct xt_entry_target *target,
++      int numeric)
++{
++	struct ipt_hijack_info *hijack = (struct ipt_hijack_info *)target->data;
++	printf(" hijack to http://%s", hijack->url);
++}
++
++/* Saves the union ipt_targinfo in parsable form to stdout. */
++static void
++save(const void *ip, const struct xt_entry_target *target)
++{
++	struct ipt_hijack_info *hijack = (struct ipt_hijack_info *)target->data;
++
++	printf("--to-url %s", hijack->url);
++}
++
++//static struct iptables_target hijack = { 
++static struct xtables_target hijack = { 
++	.name		= "HIJACK",
++	.version	= XTABLES_VERSION,
++	.family         = NFPROTO_IPV4,
++	.size		= XT_ALIGN(sizeof(struct ipt_hijack_info)),
++	.userspacesize	= XT_ALIGN(sizeof(struct ipt_hijack_info)),
++	.help		= HIJACK_help,
++ 	.init		= init,
++ 	.x6_parse	= parse,
++	.x6_fcheck	= final_check,
++	.print		= print,
++	.save		= save,
++	.x6_options	= opts,
++};
++
++void _init(void)
++{
++	xtables_register_target(&hijack);
++}
+diff -Nru ori/iptables-1.4.21/extensions/libxt_iprange.c iptables-1.4.21/extensions/libxt_iprange.c
+--- ori/iptables-1.4.21/extensions/libxt_iprange.c	2013-11-22 19:18:13.000000000 +0800
++++ iptables-1.4.21/extensions/libxt_iprange.c	2014-07-18 17:41:34.097930295 +0800
+@@ -105,16 +105,26 @@
+ 		if (cb->invert)
+ 			info->flags |= IPRANGE_SRC_INV;
+ 		iprange_parse_range(cb->arg, range, NFPROTO_IPV4, "--src-range");
++#if 0
+ 		info->src.min_ip = range[0].ip;
+ 		info->src.max_ip = range[1].ip;
++#else
++		info->src.min_ip = range[0].in.s_addr;
++		info->src.max_ip = range[1].in.s_addr;
++#endif
+ 		break;
+ 	case O_DST_RANGE:
+ 		info->flags |= IPRANGE_DST;
+ 		if (cb->invert)
+ 			info->flags |= IPRANGE_DST_INV;
+ 		iprange_parse_range(cb->arg, range, NFPROTO_IPV4, "--dst-range");
++#if 0
+ 		info->dst.min_ip = range[0].ip;
+ 		info->dst.max_ip = range[1].ip;
++#else
++		info->dst.min_ip = range[0].in.s_addr;
++		info->dst.max_ip = range[1].in.s_addr;
++#endif
+ 		break;
+ 	}
+ }
+diff -Nru ori/iptables-1.4.21/extensions/libxt_mac.c iptables-1.4.21/extensions/libxt_mac.c
+--- ori/iptables-1.4.21/extensions/libxt_mac.c	2013-11-22 19:18:13.000000000 +0800
++++ iptables-1.4.21/extensions/libxt_mac.c	2014-07-18 17:41:34.097930295 +0800
+@@ -7,6 +7,177 @@
+ #include <xtables.h>
+ #include <linux/netfilter/xt_mac.h>
+ 
++#ifdef ELBOX_IPTABLES_RTL_DST_MAC_SUPPORT
++enum {
++	O_S_MAC = 0,
++	O_D_MAC,
++};
++
++static void mac_help(void)
++{
++	printf(
++			"mac match options:\n"
++			"[!] --mac-source XX:XX:XX:XX:XX:XX\n"
++			"                               Match source MAC address\n"
++			" --mac-destination [!] XX:XX:XX:XX:XX:XX\n"
++			"                               Match destination MAC address\n");
++}
++
++#define s struct xt_mac_info
++static const struct xt_option_entry mac_opts[] = {
++	{.name = "mac-source", .id = O_S_MAC, .type = XTTYPE_ETHERMAC,
++		.flags = XTOPT_INVERT | XTOPT_PUT, XTOPT_POINTER(s, srcaddr)},
++	{.name = "mac-destination", .id = O_D_MAC, .type = XTTYPE_ETHERMAC,
++		.flags = XTOPT_INVERT | XTOPT_PUT, XTOPT_POINTER(s, dstaddr)},
++	XTOPT_TABLEEND,
++};
++#undef s
++
++static void
++parse_mac(const char *mac, struct xt_mac *info)
++{
++	unsigned int i = 0;
++	
++	if (strlen(mac) != ETH_ALEN*3-1)
++		xtables_error(PARAMETER_PROBLEM, "Bad mac address \"%s\"", mac);
++	
++	for (i = 0; i < ETH_ALEN; i++) {
++		long number;
++		char *end;
++		
++		number = strtol(mac + i*3, &end, 16);
++		
++		if (end == mac + i*3 + 2
++				&& number >= 0
++				&& number <= 255)
++		{
++			info->macaddr[i] = number;
++		}
++		else
++			xtables_error(PARAMETER_PROBLEM,
++					"Bad mac address `%s'", mac);
++	}
++}
++
++static void mac_parse(struct xt_option_call *cb)
++{
++	struct xt_mac_info *macinfo = cb->data;
++	xtables_option_parse(cb);
++	switch(cb->entry->id){
++		case O_S_MAC:
++			cb->xflags |= MAC_SRC;
++			macinfo->flags |= MAC_SRC;
++			if (cb->invert) {
++				macinfo->flags |= MAC_SRC_INV;
++			}
++			parse_mac(cb->arg, &macinfo->srcaddr);
++			break;
++		case O_D_MAC:
++			cb->xflags |= MAC_DST;
++			macinfo->flags |= MAC_DST;
++			if (cb->invert) {
++				macinfo->flags |= MAC_DST_INV;
++			}
++			parse_mac(cb->arg, &macinfo->dstaddr);
++			break;
++		default:
++			return 0;
++	}
++	return 1;
++}
++
++static void print_mac(struct xt_mac *info)
++{
++	unsigned int i;
++	
++	printf("%02X", info->macaddr[0]);
++	for (i = 1; i < ETH_ALEN; i++)
++		printf(":%02X", info->macaddr[i]);
++	printf(" ");
++}
++
++static void mac_check(struct xt_fcheck_call *cb)
++{
++	if (!(cb->xflags))
++		xtables_error(PARAMETER_PROBLEM,
++				"You must specify `--mac-source' or `--mac-destination'");
++}
++
++static void
++mac_print(const void *ip, const struct xt_entry_match *match, int numeric)
++{
++	struct xt_mac_info *macinfo = (struct xt_mac_info *)(match->data);
++	
++	if (macinfo->flags & MAC_SRC) {
++		printf("source MAC  ");
++		if (macinfo->flags & MAC_SRC_INV)
++			printf("! ");
++		print_mac(&macinfo->srcaddr);
++	}
++	if (macinfo->flags & MAC_DST) {
++		printf("destination MAC ");
++		if (macinfo->flags & MAC_DST_INV)
++			printf("! ");
++		print_mac(&macinfo->dstaddr);
++	}
++}
++
++static void mac_save(const void *ip, const struct xt_entry_match *match)
++{
++	
++	struct xt_mac_info *macinfo = (struct xt_mac_info *)(match->data);
++	
++	if (macinfo->flags & MAC_SRC) {
++		if (macinfo->flags & MAC_SRC_INV)
++			printf("! ");
++		printf("--mac-source ");
++		print_mac(&macinfo->srcaddr);
++		if (macinfo->flags & MAC_DST)
++			fputc(' ', stdout);
++	}
++	if (macinfo->flags & MAC_DST) {
++		if (macinfo->flags & MAC_DST_INV)
++			printf("! ");
++		printf("--mac-destination ");
++		print_mac(&macinfo->dstaddr);
++	}
++}
++
++static struct xtables_match mac_match = {
++	.family         = NFPROTO_IPV4,
++	.name           = "mac",
++	.version        = XTABLES_VERSION,
++	.size           = XT_ALIGN(sizeof(struct xt_mac_info)),
++	.userspacesize  = XT_ALIGN(sizeof(struct xt_mac_info)),
++	.help           = mac_help,
++	.x6_parse       = mac_parse,
++	.x6_fcheck      = mac_check,
++	.print          = mac_print,
++	.save           = mac_save,
++	.x6_options  = mac_opts,
++};
++
++static struct xtables_match mac_match6 = {
++	.family         = NFPROTO_IPV6,
++	.name           = "mac",
++	.version        = XTABLES_VERSION,
++	.size           = XT_ALIGN(sizeof(struct xt_mac_info)),
++	.userspacesize  = XT_ALIGN(sizeof(struct xt_mac_info)),
++	.help           = mac_help,
++	.x6_parse       = mac_parse,
++	.x6_fcheck      = mac_check,
++	.print          = mac_print,
++	.save           = mac_save,
++	.x6_options     = mac_opts,
++};
++
++void _init(void)
++{
++	xtables_register_match(&mac_match);
++	xtables_register_match(&mac_match6);
++}
++
++#else
+ enum {
+ 	O_MAC = 0,
+ };
+@@ -86,3 +257,4 @@
+ {
+ 	xtables_register_match(&mac_match);
+ }
++#endif
+diff -Nru ori/iptables-1.4.21/extensions/libxt_mport.c iptables-1.4.21/extensions/libxt_mport.c
+--- ori/iptables-1.4.21/extensions/libxt_mport.c	1970-01-01 08:00:00.000000000 +0800
++++ iptables-1.4.21/extensions/libxt_mport.c	2014-07-18 17:41:34.097930295 +0800
+@@ -0,0 +1,534 @@
++#include <stdio.h>
++#include <netdb.h>
++#include <string.h>
++#include <stdlib.h>
++#include <xtables.h>
++#include <limits.h> /* INT_MAX in ip_tables.h/ip6_tables.h */
++#include <linux/netfilter_ipv4/ip_tables.h>
++#include <linux/netfilter_ipv6/ip6_tables.h>
++#include <linux/netfilter/xt_multiport.h>
++
++enum {
++	O_SOURCE_PORTS = 0,
++	O_DEST_PORTS,
++	O_SD_PORTS,
++	F_SOURCE_PORTS = 1 << O_SOURCE_PORTS,
++	F_DEST_PORTS   = 1 << O_DEST_PORTS,
++	F_SD_PORTS     = 1 << O_SD_PORTS,
++	F_ANY          = F_SOURCE_PORTS | F_DEST_PORTS | F_SD_PORTS,
++};
++
++/* Function which prints out usage message. */
++static void multiport_help(void)
++{
++	printf(
++"mport match options:\n"
++" --source-ports port[,port,port...]\n"
++" --sports ...\n"
++"				match source port(s)\n"
++" --destination-ports port[,port,port...]\n"
++" --dports ...\n"
++"				match destination port(s)\n"
++" --ports port[,port,port]\n"
++"				match both source and destination port(s)\n"
++" NOTE: this kernel does not support port ranges in multiport.\n");
++}
++
++static void multiport_help_v1(void)
++{
++	printf(
++"mport match options:\n"
++"[!] --source-ports port[,port:port,port...]\n"
++" --sports ...\n"
++"				match source port(s)\n"
++"[!] --destination-ports port[,port:port,port...]\n"
++" --dports ...\n"
++"				match destination port(s)\n"
++"[!] --ports port[,port:port,port]\n"
++"				match both source and destination port(s)\n");
++}
++
++static const struct xt_option_entry multiport_opts[] = {
++	{.name = "source-ports", .id = O_SOURCE_PORTS, .type = XTTYPE_STRING,
++	 .excl = F_ANY, .flags = XTOPT_INVERT},
++	{.name = "sports", .id = O_SOURCE_PORTS, .type = XTTYPE_STRING,
++	 .excl = F_ANY, .flags = XTOPT_INVERT},
++	{.name = "destination-ports", .id = O_DEST_PORTS,
++	 .type = XTTYPE_STRING, .excl = F_ANY, .flags = XTOPT_INVERT},
++	{.name = "dports", .id = O_DEST_PORTS, .type = XTTYPE_STRING,
++	 .excl = F_ANY, .flags = XTOPT_INVERT},
++	{.name = "ports", .id = O_SD_PORTS, .type = XTTYPE_STRING,
++	 .excl = F_ANY, .flags = XTOPT_INVERT},
++	XTOPT_TABLEEND,
++};
++
++static const char *
++proto_to_name(uint8_t proto)
++{
++	switch (proto) {
++	case IPPROTO_TCP:
++		return "tcp";
++	case IPPROTO_UDP:
++		return "udp";
++	case IPPROTO_UDPLITE:
++		return "udplite";
++	case IPPROTO_SCTP:
++		return "sctp";
++	case IPPROTO_DCCP:
++		return "dccp";
++	default:
++		return NULL;
++	}
++}
++
++static unsigned int
++parse_multi_ports(const char *portstring, uint16_t *ports, const char *proto)
++{
++	char *buffer, *cp, *next;
++	unsigned int i;
++
++	buffer = strdup(portstring);
++	if (!buffer) xtables_error(OTHER_PROBLEM, "strdup failed");
++
++	for (cp=buffer, i=0; cp && i<XT_MULTI_PORTS; cp=next,i++)
++	{
++		next=strchr(cp, ',');
++		if (next) *next++='\0';
++		ports[i] = xtables_parse_port(cp, proto);
++	}
++	if (cp) xtables_error(PARAMETER_PROBLEM, "too many ports specified");
++	free(buffer);
++	return i;
++}
++
++static void
++parse_multi_ports_v1(const char *portstring, 
++		     struct xt_multiport_v1 *multiinfo,
++		     const char *proto)
++{
++	char *buffer, *cp, *next, *range;
++	unsigned int i;
++	uint16_t m;
++
++	buffer = strdup(portstring);
++	if (!buffer) xtables_error(OTHER_PROBLEM, "strdup failed");
++
++	for (i=0; i<XT_MULTI_PORTS; i++)
++		multiinfo->pflags[i] = 0;
++ 
++	for (cp=buffer, i=0; cp && i<XT_MULTI_PORTS; cp=next, i++) {
++		next=strchr(cp, ',');
++ 		if (next) *next++='\0';
++		range = strchr(cp, ':');
++		if (range) {
++			if (i == XT_MULTI_PORTS-1)
++				xtables_error(PARAMETER_PROBLEM,
++					   "too many ports specified");
++			*range++ = '\0';
++		}
++		multiinfo->ports[i] = xtables_parse_port(cp, proto);
++		if (range) {
++			multiinfo->pflags[i] = 1;
++			multiinfo->ports[++i] = xtables_parse_port(range, proto);
++			if (multiinfo->ports[i-1] >= multiinfo->ports[i])
++				xtables_error(PARAMETER_PROBLEM,
++					   "invalid portrange specified");
++			m <<= 1;
++		}
++ 	}
++	multiinfo->count = i;
++	if (cp) xtables_error(PARAMETER_PROBLEM, "too many ports specified");
++ 	free(buffer);
++}
++
++static const char *
++check_proto(uint16_t pnum, uint8_t invflags)
++{
++	const char *proto;
++
++	if (invflags & XT_INV_PROTO)
++		xtables_error(PARAMETER_PROBLEM,
++			   "mport only works with TCP, UDP, UDPLITE, SCTP and DCCP");
++
++	if ((proto = proto_to_name(pnum)) != NULL)
++		return proto;
++	else if (!pnum)
++		xtables_error(PARAMETER_PROBLEM,
++			   "mport needs `-p tcp', `-p udp', `-p udplite', "
++			   "`-p sctp' or `-p dccp'");
++	else
++		xtables_error(PARAMETER_PROBLEM,
++			   "mport only works with TCP, UDP, UDPLITE, SCTP and DCCP");
++}
++
++static void __multiport_parse(struct xt_option_call *cb, uint16_t pnum,
++			      uint8_t invflags)
++{
++	const char *proto;
++	struct xt_multiport *multiinfo = cb->data;
++
++	xtables_option_parse(cb);
++	switch (cb->entry->id) {
++	case O_SOURCE_PORTS:
++		proto = check_proto(pnum, invflags);
++		multiinfo->count = parse_multi_ports(cb->arg,
++						     multiinfo->ports, proto);
++		multiinfo->flags = XT_MULTIPORT_SOURCE;
++		break;
++	case O_DEST_PORTS:
++		proto = check_proto(pnum, invflags);
++		multiinfo->count = parse_multi_ports(cb->arg,
++						     multiinfo->ports, proto);
++		multiinfo->flags = XT_MULTIPORT_DESTINATION;
++		break;
++	case O_SD_PORTS:
++		proto = check_proto(pnum, invflags);
++		multiinfo->count = parse_multi_ports(cb->arg,
++						     multiinfo->ports, proto);
++		multiinfo->flags = XT_MULTIPORT_EITHER;
++		break;
++	}
++	if (cb->invert)
++		xtables_error(PARAMETER_PROBLEM,
++			   "mport.0 does not support invert");
++}
++
++static void multiport_parse(struct xt_option_call *cb)
++{
++	const struct ipt_entry *entry = cb->xt_entry;
++	return __multiport_parse(cb,
++	       entry->ip.proto, entry->ip.invflags);
++}
++
++static void multiport_parse6(struct xt_option_call *cb)
++{
++	const struct ip6t_entry *entry = cb->xt_entry;
++	return __multiport_parse(cb,
++	       entry->ipv6.proto, entry->ipv6.invflags);
++}
++
++static void __multiport_parse_v1(struct xt_option_call *cb, uint16_t pnum,
++				 uint8_t invflags)
++{
++	const char *proto;
++	struct xt_multiport_v1 *multiinfo = cb->data;
++
++	xtables_option_parse(cb);
++	switch (cb->entry->id) {
++	case O_SOURCE_PORTS:
++		proto = check_proto(pnum, invflags);
++		parse_multi_ports_v1(cb->arg, multiinfo, proto);
++		multiinfo->flags = XT_MULTIPORT_SOURCE;
++		break;
++	case O_DEST_PORTS:
++		proto = check_proto(pnum, invflags);
++		parse_multi_ports_v1(cb->arg, multiinfo, proto);
++		multiinfo->flags = XT_MULTIPORT_DESTINATION;
++		break;
++	case O_SD_PORTS:
++		proto = check_proto(pnum, invflags);
++		parse_multi_ports_v1(cb->arg, multiinfo, proto);
++		multiinfo->flags = XT_MULTIPORT_EITHER;
++		break;
++	}
++	if (cb->invert)
++		multiinfo->invert = 1;
++}
++
++static void multiport_parse_v1(struct xt_option_call *cb)
++{
++	const struct ipt_entry *entry = cb->xt_entry;
++	return __multiport_parse_v1(cb,
++	       entry->ip.proto, entry->ip.invflags);
++}
++
++static void multiport_parse6_v1(struct xt_option_call *cb)
++{
++	const struct ip6t_entry *entry = cb->xt_entry;
++	return __multiport_parse_v1(cb,
++	       entry->ipv6.proto, entry->ipv6.invflags);
++}
++
++static void multiport_check(struct xt_fcheck_call *cb)
++{
++	if (cb->xflags == 0)
++		xtables_error(PARAMETER_PROBLEM, "mport expection an option");
++}
++
++static const char *
++port_to_service(int port, uint8_t proto)
++{
++	const struct servent *service;
++
++	if ((service = getservbyport(htons(port), proto_to_name(proto))))
++		return service->s_name;
++
++	return NULL;
++}
++
++static void
++print_port(uint16_t port, uint8_t protocol, int numeric)
++{
++	const char *service;
++
++	if (numeric || (service = port_to_service(port, protocol)) == NULL)
++		printf("%u", port);
++	else
++		printf("%s", service);
++}
++
++static void
++__multiport_print(const struct xt_entry_match *match, int numeric,
++                  uint16_t proto)
++{
++	const struct xt_multiport *multiinfo
++		= (const struct xt_multiport *)match->data;
++	unsigned int i;
++
++	printf(" mport ");
++
++	switch (multiinfo->flags) {
++	case XT_MULTIPORT_SOURCE:
++		printf("sports ");
++		break;
++
++	case XT_MULTIPORT_DESTINATION:
++		printf("dports ");
++		break;
++
++	case XT_MULTIPORT_EITHER:
++		printf("ports ");
++		break;
++
++	default:
++		printf("ERROR ");
++		break;
++	}
++
++	for (i=0; i < multiinfo->count; i++) {
++		printf("%s", i ? "," : "");
++		print_port(multiinfo->ports[i], proto, numeric);
++	}
++}
++
++static void multiport_print(const void *ip_void,
++                            const struct xt_entry_match *match, int numeric)
++{
++	const struct ipt_ip *ip = ip_void;
++	__multiport_print(match, numeric, ip->proto);
++}
++
++static void multiport_print6(const void *ip_void,
++                             const struct xt_entry_match *match, int numeric)
++{
++	const struct ip6t_ip6 *ip = ip_void;
++	__multiport_print(match, numeric, ip->proto);
++}
++
++static void __multiport_print_v1(const struct xt_entry_match *match,
++                                 int numeric, uint16_t proto)
++{
++	const struct xt_multiport_v1 *multiinfo
++		= (const struct xt_multiport_v1 *)match->data;
++	unsigned int i;
++
++	printf(" mport ");
++
++	switch (multiinfo->flags) {
++	case XT_MULTIPORT_SOURCE:
++		printf("sports ");
++		break;
++
++	case XT_MULTIPORT_DESTINATION:
++		printf("dports ");
++		break;
++
++	case XT_MULTIPORT_EITHER:
++		printf("ports ");
++		break;
++
++	default:
++		printf("ERROR ");
++		break;
++	}
++
++	if (multiinfo->invert)
++		printf(" !");
++
++	for (i=0; i < multiinfo->count; i++) {
++		printf("%s", i ? "," : "");
++		print_port(multiinfo->ports[i], proto, numeric);
++		if (multiinfo->pflags[i]) {
++			printf(":");
++			print_port(multiinfo->ports[++i], proto, numeric);
++		}
++	}
++}
++
++static void multiport_print_v1(const void *ip_void,
++                               const struct xt_entry_match *match, int numeric)
++{
++	const struct ipt_ip *ip = ip_void;
++	__multiport_print_v1(match, numeric, ip->proto);
++}
++
++static void multiport_print6_v1(const void *ip_void,
++                                const struct xt_entry_match *match, int numeric)
++{
++	const struct ip6t_ip6 *ip = ip_void;
++	__multiport_print_v1(match, numeric, ip->proto);
++}
++
++static void __multiport_save(const struct xt_entry_match *match,
++                             uint16_t proto)
++{
++	const struct xt_multiport *multiinfo
++		= (const struct xt_multiport *)match->data;
++	unsigned int i;
++
++	switch (multiinfo->flags) {
++	case XT_MULTIPORT_SOURCE:
++		printf(" --sports ");
++		break;
++
++	case XT_MULTIPORT_DESTINATION:
++		printf(" --dports ");
++		break;
++
++	case XT_MULTIPORT_EITHER:
++		printf(" --ports ");
++		break;
++	}
++
++	for (i=0; i < multiinfo->count; i++) {
++		printf("%s", i ? "," : "");
++		print_port(multiinfo->ports[i], proto, 1);
++	}
++}
++
++static void multiport_save(const void *ip_void,
++                           const struct xt_entry_match *match)
++{
++	const struct ipt_ip *ip = ip_void;
++	__multiport_save(match, ip->proto);
++}
++
++static void multiport_save6(const void *ip_void,
++                            const struct xt_entry_match *match)
++{
++	const struct ip6t_ip6 *ip = ip_void;
++	__multiport_save(match, ip->proto);
++}
++
++static void __multiport_save_v1(const struct xt_entry_match *match,
++                                uint16_t proto)
++{
++	const struct xt_multiport_v1 *multiinfo
++		= (const struct xt_multiport_v1 *)match->data;
++	unsigned int i;
++
++	if (multiinfo->invert)
++		printf(" !");
++
++	switch (multiinfo->flags) {
++	case XT_MULTIPORT_SOURCE:
++		printf(" --sports ");
++		break;
++
++	case XT_MULTIPORT_DESTINATION:
++		printf(" --dports ");
++		break;
++
++	case XT_MULTIPORT_EITHER:
++		printf(" --ports ");
++		break;
++	}
++
++	for (i=0; i < multiinfo->count; i++) {
++		printf("%s", i ? "," : "");
++		print_port(multiinfo->ports[i], proto, 1);
++		if (multiinfo->pflags[i]) {
++			printf(":");
++			print_port(multiinfo->ports[++i], proto, 1);
++		}
++	}
++}
++
++static void multiport_save_v1(const void *ip_void,
++                              const struct xt_entry_match *match)
++{
++	const struct ipt_ip *ip = ip_void;
++	__multiport_save_v1(match, ip->proto);
++}
++
++static void multiport_save6_v1(const void *ip_void,
++                               const struct xt_entry_match *match)
++{
++	const struct ip6t_ip6 *ip = ip_void;
++	__multiport_save_v1(match, ip->proto);
++}
++
++static struct xtables_match multiport_mt_reg[] = {
++	{
++		.family        = NFPROTO_IPV4,
++		.name          = "mport",
++		.revision      = 0,
++		.version       = XTABLES_VERSION,
++		.size          = XT_ALIGN(sizeof(struct xt_multiport)),
++		.userspacesize = XT_ALIGN(sizeof(struct xt_multiport)),
++		.help          = multiport_help,
++		.x6_parse      = multiport_parse,
++		.x6_fcheck     = multiport_check,
++		.print         = multiport_print,
++		.save          = multiport_save,
++		.x6_options    = multiport_opts,
++	},
++	{
++		.family        = NFPROTO_IPV6,
++		.name          = "mport",
++		.revision      = 0,
++		.version       = XTABLES_VERSION,
++		.size          = XT_ALIGN(sizeof(struct xt_multiport)),
++		.userspacesize = XT_ALIGN(sizeof(struct xt_multiport)),
++		.help          = multiport_help,
++		.x6_parse      = multiport_parse6,
++		.x6_fcheck     = multiport_check,
++		.print         = multiport_print6,
++		.save          = multiport_save6,
++		.x6_options    = multiport_opts,
++	},
++	{
++		.family        = NFPROTO_IPV4,
++		.name          = "mport",
++		.version       = XTABLES_VERSION,
++		.revision      = 1,
++		.size          = XT_ALIGN(sizeof(struct xt_multiport_v1)),
++		.userspacesize = XT_ALIGN(sizeof(struct xt_multiport_v1)),
++		.help          = multiport_help_v1,
++		.x6_parse      = multiport_parse_v1,
++		.x6_fcheck     = multiport_check,
++		.print         = multiport_print_v1,
++		.save          = multiport_save_v1,
++		.x6_options    = multiport_opts,
++	},
++	{
++		.family        = NFPROTO_IPV6,
++		.name          = "mport",
++		.version       = XTABLES_VERSION,
++		.revision      = 1,
++		.size          = XT_ALIGN(sizeof(struct xt_multiport_v1)),
++		.userspacesize = XT_ALIGN(sizeof(struct xt_multiport_v1)),
++		.help          = multiport_help_v1,
++		.x6_parse      = multiport_parse6_v1,
++		.x6_fcheck     = multiport_check,
++		.print         = multiport_print6_v1,
++		.save          = multiport_save6_v1,
++		.x6_options    = multiport_opts,
++	},
++};
++
++void
++_init(void)
++{
++	xtables_register_matches(multiport_mt_reg, ARRAY_SIZE(multiport_mt_reg));
++}
+diff -Nru ori/iptables-1.4.21/extensions/libxt_string.c iptables-1.4.21/extensions/libxt_string.c
+--- ori/iptables-1.4.21/extensions/libxt_string.c	2013-11-22 19:18:13.000000000 +0800
++++ iptables-1.4.21/extensions/libxt_string.c	2014-07-18 17:41:34.097930295 +0800
+@@ -35,9 +35,16 @@
+ 	O_ICASE,
+ 	O_STRING,
+ 	O_HEX_STRING,
++	O_URL,
++	O_DNS,
++	O_HTTP,
+ 	F_STRING     = 1 << O_STRING,
+ 	F_HEX_STRING = 1 << O_HEX_STRING,
+-	F_OP_ANY     = F_STRING | F_HEX_STRING,
++	F_URL        = 1 << O_URL,
++	F_DNS        = 1 << O_DNS,
++	F_HTTP       = 1 << O_HTTP,
++	F_ALGO       = 1 << O_ALGO,
++	F_OP_ANY     = F_STRING | F_HEX_STRING | F_URL | F_DNS | F_HTTP,
+ };
+ 
+ static void string_help(void)
+@@ -49,7 +56,10 @@
+ "--algo                       Algorithm\n"
+ "--icase                      Ignore case (default: 0)\n"
+ "[!] --string string          Match a string in a packet\n"
+-"[!] --hex-string string      Match a hex string in a packet\n");
++"[!] --hex-string string      Match a hex string in a packet\n"
++"--url string          Match a http url string in a packet\n"
++"--dns string          Match a dns string in a packet\n"
++"--http_req string          Match http request in a packet\n");
+ }
+ 
+ #define s struct xt_string_info
+@@ -65,6 +75,12 @@
+ 	{.name = "hex-string", .id = O_HEX_STRING, .type = XTTYPE_STRING,
+ 	 .flags = XTOPT_INVERT, .excl = F_STRING},
+ 	{.name = "icase", .id = O_ICASE, .type = XTTYPE_NONE},
++	{.name = "url", .id = O_URL, .type = XTTYPE_STRING,
++	 .flags = XTOPT_INVERT},
++	{.name = "dns", .id = O_DNS, .type = XTTYPE_STRING,
++	 .flags = XTOPT_INVERT},
++	{.name = "http_req", .id = O_HTTP, .type = XTTYPE_NONE,
++	 .flags = XTOPT_INVERT},
+ 	XTOPT_TABLEEND,
+ };
+ #undef s
+@@ -166,10 +182,48 @@
+ 	info->patlen = sindex;
+ }
+ 
++//+++joel
++//for dns query ! www.kimo.com.tw==>3www4kimo3com2tw(3=>www,4=>kimo,3=>com,2=>tw)
++static void
++parse_dns_string(const char *in, struct xt_string_info *info)
++{
++	if (strlen(in) >= XT_STRING_MAX_PATTERN_SIZE)
++	{
++		xtables_error(PARAMETER_PROBLEM, "STRING too long `%s'", in);
++		return ;
++	}
++	else
++	{
++		char *pdot=NULL;
++		char *pout=info->pattern;
++#if     0
++		strcat(pout, in);
++		info->patlen=strlen(info->pattern);
++#else
++		while(*in==' ') in++;//skip space
++		pdot=pout++;
++		while(*in!='\0')
++		{
++			if(*in=='.')
++			{
++				*pdot=pout-pdot-1;
++				pdot=pout;
++			}
++			*pout++=*in++;
++		}
++		*pdot=pout-pdot-1;
++		*pout='\0';
++#endif
++	}
++}
++//---joel
++//
++
+ static void string_parse(struct xt_option_call *cb)
+ {
+ 	struct xt_string_info *stringinfo = cb->data;
+ 	const unsigned int revision = (*cb->match)->u.user.revision;
++	stringinfo->u.v1.flags =IPT_GEN_STRING; // joanw add
+ 
+ 	xtables_option_parse(cb);
+ 	switch (cb->entry->id) {
+@@ -181,6 +235,8 @@
+ 			else
+ 				stringinfo->u.v1.flags |= XT_STRING_FLAG_INVERT;
+ 		}
++		cb->xflags |= F_ALGO;
++		strncpy(stringinfo->algo, "kmp", XT_STRING_MAX_ALGO_NAME_SIZE);
+ 		break;
+ 	case O_HEX_STRING:
+ 		parse_hex_string(cb->arg, stringinfo);  /* sets length */
+@@ -190,14 +246,48 @@
+ 			else
+ 				stringinfo->u.v1.flags |= XT_STRING_FLAG_INVERT;
+ 		}
++		cb->xflags |= F_ALGO;
++		strncpy(stringinfo->algo, "kmp", XT_STRING_MAX_ALGO_NAME_SIZE);
+ 		break;
+ 	case O_ICASE:
+ 		if (revision == 0)
+ 			xtables_error(VERSION_PROBLEM,
+ 				   "Kernel doesn't support --icase");
+ 
++		cb->xflags |= F_ALGO;
++		strncpy(stringinfo->algo, "kmp", XT_STRING_MAX_ALGO_NAME_SIZE);
+ 		stringinfo->u.v1.flags |= XT_STRING_FLAG_IGNORECASE;
+ 		break;
++	case O_URL:
++		parse_string(cb->arg, stringinfo);
++		if (cb->invert) {
++			if (revision == 0)
++				stringinfo->u.v0.invert = 1;
++		}
++		cb->xflags |= F_ALGO;
++		strncpy(stringinfo->algo, "kmp", XT_STRING_MAX_ALGO_NAME_SIZE);
++		stringinfo->u.v1.flags |= IPT_URL_STRING;
++		break;	
++	case O_DNS:
++		parse_dns_string(cb->arg, stringinfo);
++		if (cb->invert) {
++			if (revision == 0)
++				stringinfo->u.v0.invert = 1;
++		}
++		cb->xflags |= F_ALGO;
++		strncpy(stringinfo->algo, "kmp", XT_STRING_MAX_ALGO_NAME_SIZE);
++		stringinfo->patlen = strlen((char *)&stringinfo->pattern);
++		stringinfo->u.v1.flags |= IPT_DNS_STRING;
++		break;
++	case O_HTTP:
++		if (cb->invert) {
++			if (revision == 0)
++				stringinfo->u.v0.invert = 1;
++		}
++		cb->xflags |= F_ALGO;
++		strncpy(stringinfo->algo, "kmp", XT_STRING_MAX_ALGO_NAME_SIZE);
++		stringinfo->u.v1.flags |= IPT_HTTP_REQ;
++		break;
+ 	}
+ }
+ 
+@@ -206,7 +296,7 @@
+ 	if (!(cb->xflags & F_OP_ANY))
+ 		xtables_error(PARAMETER_PROBLEM,
+ 			   "STRING match: You must specify `--string' or "
+-			   "`--hex-string'");
++			   "`--hex-string' or '--url' or '--dns' or '--http_req'");
+ }
+ 
+ /* Test to see if the string contains non-printable chars or quotes */
+diff -Nru ori/iptables-1.4.21/extensions/libxt_time.c iptables-1.4.21/extensions/libxt_time.c
+--- ori/iptables-1.4.21/extensions/libxt_time.c	2013-11-22 19:18:13.000000000 +0800
++++ iptables-1.4.21/extensions/libxt_time.c	2014-07-18 17:41:47.709750000 +0800
+@@ -46,6 +46,8 @@
+ 	{.name = "contiguous", .id = O_TIME_CONTIGUOUS, .type = XTTYPE_NONE},
+ 	{.name = "weekdays", .id = O_WEEKDAYS, .type = XTTYPE_STRING,
+ 	 .flags = XTOPT_INVERT},
++	{.name = "days", .id = O_WEEKDAYS, .type = XTTYPE_STRING,
++	 .flags = XTOPT_INVERT},
+ 	{.name = "monthdays", .id = O_MONTHDAYS, .type = XTTYPE_STRING,
+ 	 .flags = XTOPT_INVERT},
+ 	{.name = "localtz", .id = O_LOCAL_TZ, .type = XTTYPE_NONE,
+@@ -67,7 +69,7 @@
+ "    --timestop time      (between 00:00:00 and 23:59:59)\n"
+ "[!] --monthdays value    List of days on which to match, separated by comma\n"
+ "                         (Possible days: 1 to 31; defaults to all)\n"
+-"[!] --weekdays value     List of weekdays on which to match, sep. by comma\n"
++"[!] --[weekdays | days] value     List of weekdays on which to match, sep. by comma\n"
+ "                         (Possible days: Mon,Tue,Wed,Thu,Fri,Sat,Sun or 1 to 7\n"
+ "                         Defaults to all weekdays.)\n"
+ "    --kerneltz           Work with the kernel timezone instead of UTC\n");
+@@ -86,6 +88,9 @@
+ 	/* ...and have no date-begin or date-end boundary */
+ 	info->date_start = 0;
+ 	info->date_stop  = INT_MAX;
++
++	/* local time is default */
++	info->flags |= XT_TIME_LOCAL_TZ;
+ }
+ 
+ static time_t time_parse_date(const char *s, bool end)
+@@ -430,7 +435,7 @@
+ 		time_print_monthdays(info->monthdays_match, false);
+ 	}
+ 	if (info->weekdays_match != XT_TIME_ALL_WEEKDAYS) {
+-		printf(" --weekdays");
++		printf(" --[weekdays | days] ");
+ 		time_print_weekdays(info->weekdays_match);
+ 	}
+ 	time_print_date(info->date_start, "--datestart");
+diff -Nru ori/iptables-1.4.21/include/linux/netfilter/xt_mac.h iptables-1.4.21/include/linux/netfilter/xt_mac.h
+--- ori/iptables-1.4.21/include/linux/netfilter/xt_mac.h	2013-11-22 19:18:13.000000000 +0800
++++ iptables-1.4.21/include/linux/netfilter/xt_mac.h	2014-07-18 17:41:34.097930295 +0800
+@@ -1,8 +1,28 @@
+ #ifndef _XT_MAC_H
+ #define _XT_MAC_H
++#include <elbox_config.h>
+ 
++#ifdef ELBOX_IPTABLES_RTL_DST_MAC_SUPPORT
++#define MAC_SRC                0x01    /* Match source MAC address */
++#define MAC_DST                0x02    /* Match destination MAC address */
++#define MAC_SRC_INV            0x10    /* Negate the condition */
++#define MAC_DST_INV            0x20    /* Negate the condition */
++
++struct xt_mac {
++	unsigned char macaddr[ETH_ALEN];
++};
++
++struct xt_mac_info {
++	struct xt_mac srcaddr;
++	struct xt_mac dstaddr;
++	//    int invert;
++	u_int8_t flags;
++};
++
++#else
+ struct xt_mac_info {
+     unsigned char srcaddr[ETH_ALEN];
+     int invert;
+ };
++#endif
+ #endif /*_XT_MAC_H*/
+diff -Nru ori/iptables-1.4.21/include/linux/netfilter/xt_string.h iptables-1.4.21/include/linux/netfilter/xt_string.h
+--- ori/iptables-1.4.21/include/linux/netfilter/xt_string.h	2013-11-22 19:18:13.000000000 +0800
++++ iptables-1.4.21/include/linux/netfilter/xt_string.h	2014-07-18 17:41:34.097930295 +0800
+@@ -31,4 +31,11 @@
+ 	struct ts_config __attribute__((aligned(8))) *config;
+ };
+ 
++enum ipt_string_flags
++{
++	IPT_GEN_STRING,
++	IPT_URL_STRING,
++	IPT_DNS_STRING,
++	IPT_HTTP_REQ
++};
+ #endif /*_XT_STRING_H*/
+diff -Nru ori/iptables-1.4.21/include/linux/netfilter_ipv6/ip6t_ipv6header.h iptables-1.4.21/include/linux/netfilter_ipv6/ip6t_ipv6header.h
+--- ori/iptables-1.4.21/include/linux/netfilter_ipv6/ip6t_ipv6header.h	2013-11-22 19:18:13.000000000 +0800
++++ iptables-1.4.21/include/linux/netfilter_ipv6/ip6t_ipv6header.h	2014-07-18 17:41:34.097930295 +0800
+@@ -14,6 +14,7 @@
+ 	__u8 matchflags;
+ 	__u8 invflags;
+ 	__u8 modeflag;
++	__u8 shflag; //rbj
+ };
+ 
+ #define MASK_HOPOPTS    128
+diff -Nru ori/iptables-1.4.21/include/linux/netfilter_ipv6/ip6t_REJECT.h iptables-1.4.21/include/linux/netfilter_ipv6/ip6t_REJECT.h
+--- ori/iptables-1.4.21/include/linux/netfilter_ipv6/ip6t_REJECT.h	2013-11-22 19:18:13.000000000 +0800
++++ iptables-1.4.21/include/linux/netfilter_ipv6/ip6t_REJECT.h	2014-07-18 17:41:34.097930295 +0800
+@@ -9,6 +9,7 @@
+ 	IP6T_ICMP6_NOT_NEIGHBOUR,
+ 	IP6T_ICMP6_ADDR_UNREACH,
+ 	IP6T_ICMP6_PORT_UNREACH,
++	IP6T_ICMP6_SRCADDR_FAIL,  /* UNH-IOL, RFC 6204 L-14 */
+ 	IP6T_ICMP6_ECHOREPLY,
+ 	IP6T_TCP_RESET
+ };
+diff -Nru ori/iptables-1.4.21/iptables/iptables.c iptables-1.4.21/iptables/iptables.c
+--- ori/iptables-1.4.21/iptables/iptables.c	2013-11-22 19:18:13.000000000 +0800
++++ iptables-1.4.21/iptables/iptables.c	2014-07-18 17:41:34.097930295 +0800
+@@ -1698,14 +1698,14 @@
+ 		}
+ 		cs.invert = FALSE;
+ 	}
+-
++#if 0
+ 	if (strcmp(*table, "nat") == 0 &&
+ 	    ((policy != NULL && strcmp(policy, "DROP") == 0) ||
+ 	    (cs.jumpto != NULL && strcmp(cs.jumpto, "DROP") == 0)))
+ 		xtables_error(PARAMETER_PROBLEM,
+ 			"\nThe \"nat\" table is not intended for filtering, "
+ 		        "the use of DROP is therefore inhibited.\n\n");
+-
++#endif
+ 	for (matchp = cs.matches; matchp; matchp = matchp->next)
+ 		xtables_option_mfcall(matchp->match);
+ 	if (cs.target != NULL)
+diff -Nru ori/iptables-1.4.21/libxtables/xtables.c iptables-1.4.21/libxtables/xtables.c
+--- ori/iptables-1.4.21/libxtables/xtables.c	2013-11-22 19:18:13.000000000 +0800
++++ iptables-1.4.21/libxtables/xtables.c	2014-07-18 17:41:34.097930295 +0800
+@@ -69,6 +69,8 @@
+ #define PROC_SYS_MODPROBE "/proc/sys/kernel/modprobe"
+ #endif
+ 
++#include <linux/version.h>
++
+ /* we need this for ip6?tables-restore.  ip6?tables-restore.c sets line to the
+  * current line of the input file, in order  to give a more precise error
+  * message.  ip6?tables itself doesn't need this, so it is initialized to the
+@@ -595,6 +597,7 @@
+ 	struct xtables_match **dptr;
+ 	struct xtables_match *ptr;
+ 	const char *icmp6 = "icmp6";
++	const char *multiport_str = "multiport";
+ 
+ 	if (strlen(name) >= XT_EXTENSION_MAXNAMELEN)
+ 		xtables_error(PARAMETER_PROBLEM,
+@@ -608,6 +611,10 @@
+ 	     (strcmp(name,"icmp6") == 0) )
+ 		name = icmp6;
+ 
++#if (LINUX_VERSION_CODE > KERNEL_VERSION(2,6,16))
++	if (strcmp(name,"mport") == 0 )
++		name = multiport_str;
++#endif
+ 	/* Trigger delayed initialization */
+ 	for (dptr = &xtables_pending_matches; *dptr; ) {
+ 		if (strcmp(name, (*dptr)->name) == 0) {

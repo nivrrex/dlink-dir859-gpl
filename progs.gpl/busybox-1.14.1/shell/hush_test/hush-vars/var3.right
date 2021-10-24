@@ -1,3 +1,2 @@
-hush: syntax error: unterminated ${name}
-hush: syntax error: unterminated ${name}
+hush: invalid number '1q'
 hush: syntax error: unterminated ${name}

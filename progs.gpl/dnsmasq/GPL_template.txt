@@ -1,0 +1,62 @@
+Module name: dnsmasq
+
+Module version: 2.78
+
+Copyright:
+Copyright (C) 1999-2005 by Erik Andersen <andersen@codepoet.org>	
+Copyright (C) 2003 Manuel Novoa III <mjn3@codepoet.org>	
+Copyright (C) 2004 Kay Sievers <kay.sievers@vrfy.org>	
+Copyright (C) 2008 by Vladimir Dronnikov <dronnikov@gmail.com>	
+Copyright (C) 2002 Roman Zippel <zippel@linux-m68k.org> Released under the terms of the GNU GPL v2.0.	
+Copyright (C) 2005 Kay Sievers <kay.sievers@vrfy.org>	
+Copyright (C) 1993, 1994, 1995, 1996 Theodore Ts'o.	
+Copyright (C) 1996, 1997 Theodore Ts'o.	
+Copyright (C) 2001 Andreas Dilger	
+Copyright (C) 1993, 1994 Remy Card <card@masi.ibp.fr> Laboratoire MASI, Institut Blaise Pascal Universite Pierre et Marie Curie (Paris VI)	
+Copyright (c) 2001-2006, Gerrit Pape All rights reserved.	
+Copyright (C) 2007 Denys Vlasenko	
+Copyright (C) 1996-2006 Julian Seward <jseward@bzip.org>	
+Copyright (C) 2003 Theodore Ts'o	
+Copyright (C) 1997 Theodore Ts'o.	
+Copyright (C) 1995, 1996 by Bruce Perens <bruce@pixar.com>.	
+Copyright (C) 2008 by Denys Vlasenko <vda.linux@googlemail.com>	
+Copyright (C) 2002 by Glenn McGrath	
+Copyright (C) 2000 Theodore Ts'o.	
+Copyright (C) 1999,2000,2001 by John Beppu <beppu@codepoet.org>	
+Copyright (c) 1991, 1993 The Regents of the University of California. All rights reserved.	
+Copyright (c) 1989 The Regents of the University of California. All rights reserved.	
+Copyright (c) 1989, 1991, 1993, 1994 The Regents of the University of California. All rights reserved.	
+Copyright 1989 - 1991, Julianne Frances Haugh <jockgrrl@austin.rr.com> All rights reserved.	
+Copyright (C) 2007 Denys Vlasenko.	
+Copyright (C) 2006 Denys Vlasenko	
+Copyright (C) 1999 by Randolph Chung <tausq@debian.org>	
+Copyright (c) 1999 by David I. Bell Permission has been granted to redistribute this code under the GPL.	
+Copyright (C) 1994, 1995 Theodore Ts'o.	
+Copyright 2007 by Denys Vlasenko <vda.linux@googlemail.com> Licensed under GPL v2, see file LICENSE for details.	
+Copyright (c) 2008 Vladimir Dronnikov	
+Copyright (C) 2008 Bernhard Reutner-Fischer	
+Copyright (C) 2007 Denys Vlasenko <vda.linux@googlemail.com>	
+Copyright (C) 2006 Rob Landley	
+Copyright (C) 2006 Aurelien Jacobs <aurel@gnuage.org>	
+Copyright (C) 2005 Manuel Novoa III <mjn3@codepoet.org>	
+Copyright (C) 2005 by Mike Frysinger <vapier@gentoo.org>	
+Copyright (C) 2005 by Erik Andersen <andersen@codepoet.org>
+COPYRIGHT "Copyright (C) 2000-2008 Simon Kelley"	
+Copyright (c) 2007 Simon Kelley	
+Copyright (C) 2007 Free Software Foundation, Inc.
+Copyright (C) 2004 Thomas Tuttle	
+Copyright (C) 2004 Peter Willis	
+Copyright (c) 2000-2008 Simon Kelley	
+(C) 2006 by Neil Fisher <neil@magnecor.com.au> license=GPL	
+
+License type: GPLv2, LGPLv2, BSDv3
+
+Download URL:
+http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.78.tar.gz
+
+Changes:
+Modify the source code to fit the needs and requirements of the products
+
+Last change date: @@modday@@
+
+------------------------------------------------------------------------

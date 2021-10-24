@@ -8,8 +8,22 @@
  * Correct default name server display and explicit name server option
  * added by Ben Zeckel <bzeckel@hmc.edu> June 2001
  *
- * Licensed under GPLv2 or later, see file LICENSE in this tarball for details.
+ * Licensed under GPLv2 or later, see file LICENSE in this source tree.
  */
+
+//usage:#define nslookup_trivial_usage
+//usage:       "[HOST] [SERVER]"
+//usage:#define nslookup_full_usage "\n\n"
+//usage:       "Query the nameserver for the IP address of the given HOST\n"
+//usage:       "optionally using a specified DNS server"
+//usage:
+//usage:#define nslookup_example_usage
+//usage:       "$ nslookup localhost\n"
+//usage:       "Server:     default\n"
+//usage:       "Address:    default\n"
+//usage:       "\n"
+//usage:       "Name:       debian\n"
+//usage:       "Address:    127.0.0.1\n"
 
 #include <resolv.h>
 #include "libbb.h"
@@ -66,7 +80,7 @@ static int print_host(const char *hostname, const char *header)
 	// hint.ai_flags = AI_CANONNAME;
 	rc = getaddrinfo(hostname, NULL /*service*/, &hint, &result);
 
-	if (!rc) {
+	if (rc == 0) {
 		struct addrinfo *cur = result;
 		unsigned cnt = 0;
 
@@ -94,7 +108,7 @@ static int print_host(const char *hostname, const char *header)
 		bb_error_msg("can't resolve '%s'", hostname);
 #endif
 	}
-	if (ENABLE_FEATURE_CLEAN_UP)
+	if (ENABLE_FEATURE_CLEAN_UP && result)
 		freeaddrinfo(result);
 	return (rc != 0);
 }
@@ -123,6 +137,9 @@ static void server_print(void)
 static void set_default_dns(const char *server)
 {
 	len_and_sockaddr *lsa;
+
+	if (!server)
+		return;
 
 	/* NB: this works even with, say, "[::1]:5353"! :) */
 	lsa = xhost2sockaddr(server, 53);
@@ -167,9 +184,17 @@ int nslookup_main(int argc, char **argv)
 	/* (but it also says "may be enabled in /etc/resolv.conf") */
 	/*_res.options |= RES_USE_INET6;*/
 
-	if (argv[2])
-		set_default_dns(argv[2]);
+	set_default_dns(argv[2]);
 
 	server_print();
+
+	/* getaddrinfo and friends are free to request a resolver
+	 * reinitialization. Just in case, set_default_dns() again
+	 * after getaddrinfo (in server_print). This reportedly helps
+	 * with bug 675 "nslookup does not properly use second argument"
+	 * at least on Debian Wheezy and Openwrt AA (eglibc based).
+	 */
+	set_default_dns(argv[2]);
+
 	return print_host(argv[1], "Name:");
 }

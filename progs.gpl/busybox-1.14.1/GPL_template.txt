@@ -1,6 +1,6 @@
 Module name: busybox
 
-Module version: 1.14.1
+Module version: 1.22.1
 
 Copyright:
 Copyright (C) 1999-2004 by Erik Andersen <andersen@codepoet.org>	
@@ -352,19 +352,7 @@ Copyright 1991-1997 Miquel van Smoorenburg.
 (c) 1995-1999 by: Geert Uytterhoeven (Geert.Uytterhoeven@cs.kuleuven.ac.be)	
 (C) 1991 Linus Torvalds.	
 (C) 1991, 1992 Linus Torvalds.
-Authors:
-Alexey Kuznetsov, <kuznet@ms2.inr.ac.ru>
-Remy Card <card@masi.ibp.fr>
-Theodore Ts'o <tytso@mit.edu>
-Stephen C. Tweedie <sct@redhat.com>
-Andreas Gruenbacher, <a.gruenbacher@computer.org>
-Kaz Kylheku <kaz@ashi.footprints.net>
-F.W. ten Wolde <franky@duteca.et.tudelft.nl>
-Jeremy Fitzhardinge <jeremy@zip.com.au>
-M.J.E. Mol <marcel@duteca.et.tudelft.nl>
-Miquel van Smoorenburg <miquels@drinkel.ow.org>
-Uwe Ohse <uwe@tirka.gun.de>
-Fred N. van Kempen, <waltje@uwalt.nl.mugnet.org>
+
 License type: GPLv2, BSD, BSDv3, BSDv4, GPL, LGPL
 
 Download URL:

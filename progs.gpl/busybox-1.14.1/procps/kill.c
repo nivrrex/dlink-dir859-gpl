@@ -5,8 +5,44 @@
  * Copyright (C) 1995, 1996 by Bruce Perens <bruce@pixar.com>.
  * Copyright (C) 1999-2004 by Erik Andersen <andersen@codepoet.org>
  *
- * Licensed under the GPL v2 or later, see the file LICENSE in this tarball.
+ * Licensed under GPLv2 or later, see file LICENSE in this source tree.
  */
+
+//usage:#define kill_trivial_usage
+//usage:       "[-l] [-SIG] PID..."
+//usage:#define kill_full_usage "\n\n"
+//usage:       "Send a signal (default: TERM) to given PIDs\n"
+//usage:     "\n	-l	List all signal names and numbers"
+/* //usage:  "\n	-s SIG	Yet another way of specifying SIG" */
+//usage:
+//usage:#define kill_example_usage
+//usage:       "$ ps | grep apache\n"
+//usage:       "252 root     root     S [apache]\n"
+//usage:       "263 www-data www-data S [apache]\n"
+//usage:       "264 www-data www-data S [apache]\n"
+//usage:       "265 www-data www-data S [apache]\n"
+//usage:       "266 www-data www-data S [apache]\n"
+//usage:       "267 www-data www-data S [apache]\n"
+//usage:       "$ kill 252\n"
+//usage:
+//usage:#define killall_trivial_usage
+//usage:       "[-l] [-q] [-SIG] PROCESS_NAME..."
+//usage:#define killall_full_usage "\n\n"
+//usage:       "Send a signal (default: TERM) to given processes\n"
+//usage:     "\n	-l	List all signal names and numbers"
+/* //usage:  "\n	-s SIG	Yet another way of specifying SIG" */
+//usage:     "\n	-q	Don't complain if no processes were killed"
+//usage:
+//usage:#define killall_example_usage
+//usage:       "$ killall apache\n"
+//usage:
+//usage:#define killall5_trivial_usage
+//usage:       "[-l] [-SIG] [-o PID]..."
+//usage:#define killall5_full_usage "\n\n"
+//usage:       "Send a signal (default: TERM) to all processes outside current session\n"
+//usage:     "\n	-l	List all signal names and numbers"
+//usage:     "\n	-o PID	Don't signal this PID"
+/* //usage:  "\n	-s SIG	Yet another way of specifying SIG" */
 
 #include "libbb.h"
 
@@ -24,11 +60,11 @@
  * This is needed to avoid collision with kill -9 ... syntax
  */
 
-int kill_main(int argc, char **argv)
+int kill_main(int argc UNUSED_PARAM, char **argv)
 {
 	char *arg;
 	pid_t pid;
-	int signo = SIGTERM, errors = 0, quiet = 0;	
+	int signo = SIGTERM, errors = 0, quiet = 0;
 #if !ENABLE_KILLALL && !ENABLE_KILLALL5
 #define killall 0
 #define killall5 0
@@ -37,17 +73,16 @@ int kill_main(int argc, char **argv)
  * kill, killall, killall5
  *  ^i       ^a        ^l  - it's unique
  * (checking from the start is complicated by /bin/kill... case) */
-	const char char3 = argv[0][strlen(argv[0]) - 3];	
-	int wait_until_dead=0, max_waiting_time=0;//jana added		
+	const char char3 = argv[0][strlen(argv[0]) - 3];
+	int wait_until_dead=0, max_waiting_time=0;
 #define killall (ENABLE_KILLALL && char3 == 'a')
 #define killall5 (ENABLE_KILLALL5 && char3 == 'l')
 #endif
 
 	/* Parse any options */
-	argc--;
 	arg = *++argv;
 
-	if (argc < 1 || arg[0] != '-') {
+	if (!arg || arg[0] != '-') {
 		goto do_it_now;
 	}
 
@@ -56,13 +91,14 @@ int kill_main(int argc, char **argv)
 	 * echo "Died of SIG`kill -l $?`"
 	 * We try to mimic what kill from coreutils-6.8 does */
 	if (arg[1] == 'l' && arg[2] == '\0') {
-		if (argc == 1) {
+		arg = *++argv;
+		if (!arg) {
 			/* Print the whole signal list */
 			print_signames();
 			return 0;
 		}
 		/* -l <sig list> */
-		while ((arg = *++argv)) {
+		do {
 			if (isdigit(arg[0])) {
 				signo = bb_strtou(arg, NULL, 10);
 				if (errno) {
@@ -83,29 +119,26 @@ int kill_main(int argc, char **argv)
 				}
 				printf("%d\n", signo);
 			}
-		}
-		/* If they specified -l, we are all done */
+			arg = *++argv;
+		} while (arg);
 		return EXIT_SUCCESS;
 	}
-	
-	//+++jana
-	/*The -w option (Wait  for  all  killed processes to die)*/		
+
+	/*The -w option (Wait  for  all  killed processes to die)*/
 	if(arg[1]=='w' && arg[2]=='\0'){
-		wait_until_dead=1;		
+		wait_until_dead=1;
 		arg = *++argv;
 		argc--;
-		if(argc<2 || arg[0] != '-'){									
+		if(argc<2 || arg[0] != '-'){
 			goto do_it_now;
 		}
 	}
-	//---jana
 
 	/* The -q quiet option */
 	if (killall && arg[1] == 'q' && arg[2] == '\0') {
 		quiet = 1;
 		arg = *++argv;
-		argc--;
-		if (argc < 1)
+		if (!arg)
 			bb_show_usage();
 		if (arg[0] != '-')
 			goto do_it_now;
@@ -117,8 +150,7 @@ int kill_main(int argc, char **argv)
 	if (killall5 && arg[0] == 'o')
 		goto do_it_now;
 
-	if (argc > 1 && arg[0] == 's' && arg[1] == '\0') { /* -s SIG? */
-		argc--;
+	if (argv[1] && arg[0] == 's' && arg[1] == '\0') { /* -s SIG? */
 		arg = *++argv;
 	} /* else it must be -SIG */
 	signo = get_signum(arg);
@@ -127,7 +159,6 @@ int kill_main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 	arg = *++argv;
-	argc--;
 
  do_it_now:
 	pid = getpid();
@@ -135,38 +166,44 @@ int kill_main(int argc, char **argv)
 	if (killall5) {
 		pid_t sid;
 		procps_status_t* p = NULL;
-		int ret = 0;
+		/* compat: exitcode 2 is "no one was signaled" */
+		int ret = 2;
 
 		/* Find out our session id */
 		sid = getsid(pid);
 		/* Stop all processes */
-		kill(-1, SIGSTOP);
+		if (signo != SIGSTOP && signo != SIGCONT)
+			kill(-1, SIGSTOP);
 		/* Signal all processes except those in our session */
-		while ((p = procps_scan(p, PSSCAN_PID|PSSCAN_SID))) {
-			int i;
+		while ((p = procps_scan(p, PSSCAN_PID|PSSCAN_SID)) != NULL) {
+			char **args;
 
 			if (p->sid == (unsigned)sid
+			 || p->sid == 0 /* compat: kernel thread, don't signal it */
 			 || p->pid == (unsigned)pid
-			 || p->pid == 1)
+			 || p->pid == 1
+			) {
 				continue;
+			}
 
 			/* All remaining args must be -o PID options.
 			 * Check p->pid against them. */
-			for (i = 0; i < argc; i++) {
+			args = argv;
+			while (*args) {
 				pid_t omit;
 
-				arg = argv[i];
+				arg = *args++;
 				if (arg[0] != '-' || arg[1] != 'o') {
 					bb_error_msg("bad option '%s'", arg);
 					ret = 1;
 					goto resume;
 				}
 				arg += 2;
-				if (!arg[0] && argv[++i])
-					arg = argv[i];
+				if (!arg[0] && *args)
+					arg = *args++;
 				omit = bb_strtoi(arg, NULL, 10);
 				if (errno) {
-					bb_error_msg("bad pid '%s'", arg);
+					bb_error_msg("invalid number '%s'", arg);
 					ret = 1;
 					goto resume;
 				}
@@ -174,34 +211,35 @@ int kill_main(int argc, char **argv)
 					goto dont_kill;
 			}
 			kill(p->pid, signo);
+			ret = 0;
  dont_kill: ;
 		}
  resume:
 		/* And let them continue */
-		kill(-1, SIGCONT);
+		if (signo != SIGSTOP && signo != SIGCONT)
+			kill(-1, SIGCONT);
 		return ret;
 	}
 
 	/* Pid or name is required for kill/killall */
-	if (argc < 1) {
+	if (!arg) {
 		bb_error_msg("you need to specify whom to kill");
 		return EXIT_FAILURE;
 	}
 
 	if (killall) {
-		//+++jana
+		
 		int pids_killed=0, max_pids = 256;
 		pid_t *pid_killed;
 		pid_killed = malloc (max_pids * sizeof (pid_t));
-	 	if (!pid_killed)
-	  	{
-	    	perror ("malloc");
-	    	exit (1);
-	  	}
-		//---jana
+		if (!pid_killed)
+		{
+			perror ("malloc");
+			exit (1);
+		}
 		
 		/* Looks like they want to do a killall.  Do that */
-		while (arg) {
+		do {
 			pid_t* pidList;
 
 			pidList = find_pid_by_name(arg);
@@ -219,49 +257,68 @@ int kill_main(int argc, char **argv)
 						continue;
 					errors++;
 					if (!quiet)
-						bb_perror_msg("cannot kill pid %u", (unsigned)*pl);
+						bb_perror_msg("can't kill pid %d", (int)*pl);
 				}
 			}
 			free(pidList);
 			arg = *++argv;
-		}
+		} while (arg);
 		
-		//+++jana
 		int i;
-		while (pids_killed && wait_until_dead) 
-	  	{
-	  		if(max_waiting_time>=20){break;}
-	      	for (i = 0; i < pids_killed;)
+		while (pids_killed && wait_until_dead)
+		{
+			if(max_waiting_time>=20){break;}
+			for (i = 0; i < pids_killed;)
 			{
-			  if (kill (pid_killed[i], 0) < 0 && errno == ESRCH)
-			  {
-			      pid_killed[i] = pid_killed[--pids_killed];
-			      continue;
-			  }
-			  i++;
+				if (kill (pid_killed[i], 0) < 0 && errno == ESRCH)
+				{
+					pid_killed[i] = pid_killed[--pids_killed];
+					continue;
+				}
+				i++;
 			}
-	      	sleep (1);		/* wait a bit longer */
-	      	max_waiting_time++;
-	  	}
-	  	free(pid_killed);
-		//---jana
-		
+			sleep (1);              /* wait a bit longer */
+			max_waiting_time++;
+		}
+		free(pid_killed);
+
 		return errors;
 	}
 
 	/* Looks like they want to do a kill. Do that */
 	while (arg) {
-		/* Support shell 'space' trick */
-		if (arg[0] == ' ')
-			arg++;
+#if ENABLE_ASH || ENABLE_HUSH
+		/*
+		 * We need to support shell's "hack formats" of
+		 * " -PRGP_ID" (yes, with a leading space)
+		 * and " PID1 PID2 PID3" (with degenerate case "")
+		 */
+		while (*arg != '\0') {
+			char *end;
+			if (*arg == ' ')
+				arg++;
+			pid = bb_strtoi(arg, &end, 10);
+			if (errno && (errno != EINVAL || *end != ' ')) {
+				bb_error_msg("invalid number '%s'", arg);
+				errors++;
+				break;
+			}
+			if (kill(pid, signo) != 0) {
+				bb_perror_msg("can't kill pid %d", (int)pid);
+				errors++;
+			}
+			arg = end; /* can only point to ' ' or '\0' now */
+		}
+#else
 		pid = bb_strtoi(arg, NULL, 10);
 		if (errno) {
-			bb_error_msg("bad pid '%s'", arg);
+			bb_error_msg("invalid number '%s'", arg);
 			errors++;
 		} else if (kill(pid, signo) != 0) {
-			bb_perror_msg("cannot kill pid %d", (int)pid);
+			bb_perror_msg("can't kill pid %d", (int)pid);
 			errors++;
 		}
+#endif
 		arg = *++argv;
 	}
 	return errors;
