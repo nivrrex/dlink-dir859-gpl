@@ -437,7 +437,7 @@ Copyright (C) 2012 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/home/xiang/dlink-dir859-gpl/progs.gpl/radvd-1.8/radvd-1.8'
+ac_pwd='/tmp/dlink-dir859-gpl/progs.gpl/radvd-1.8/radvd-1.8'
 srcdir='.'
 INSTALL='/usr/bin/install -c'
 MKDIR_P='/usr/bin/mkdir -p'
@@ -667,12 +667,12 @@ S["mkdir_p"]="/usr/bin/mkdir -p"
 S["MKDIR_P"]="/usr/bin/mkdir -p"
 S["INSTALL_STRIP_PROGRAM"]="$(install_sh) -c -s"
 S["STRIP"]="mips-linux-strip"
-S["install_sh"]="${SHELL} /home/xiang/dlink-dir859-gpl/progs.gpl/radvd-1.8/radvd-1.8/install-sh"
-S["MAKEINFO"]="${SHELL} /home/xiang/dlink-dir859-gpl/progs.gpl/radvd-1.8/radvd-1.8/missing --run makeinfo"
-S["AUTOHEADER"]="${SHELL} /home/xiang/dlink-dir859-gpl/progs.gpl/radvd-1.8/radvd-1.8/missing --run autoheader"
-S["AUTOMAKE"]="${SHELL} /home/xiang/dlink-dir859-gpl/progs.gpl/radvd-1.8/radvd-1.8/missing --run automake-1.11"
-S["AUTOCONF"]="${SHELL} /home/xiang/dlink-dir859-gpl/progs.gpl/radvd-1.8/radvd-1.8/missing --run autoconf"
-S["ACLOCAL"]="${SHELL} /home/xiang/dlink-dir859-gpl/progs.gpl/radvd-1.8/radvd-1.8/missing --run aclocal-1.11"
+S["install_sh"]="${SHELL} /tmp/dlink-dir859-gpl/progs.gpl/radvd-1.8/radvd-1.8/install-sh"
+S["MAKEINFO"]="${SHELL} /tmp/dlink-dir859-gpl/progs.gpl/radvd-1.8/radvd-1.8/missing --run makeinfo"
+S["AUTOHEADER"]="${SHELL} /tmp/dlink-dir859-gpl/progs.gpl/radvd-1.8/radvd-1.8/missing --run autoheader"
+S["AUTOMAKE"]="${SHELL} /tmp/dlink-dir859-gpl/progs.gpl/radvd-1.8/radvd-1.8/missing --run automake-1.11"
+S["AUTOCONF"]="${SHELL} /tmp/dlink-dir859-gpl/progs.gpl/radvd-1.8/radvd-1.8/missing --run autoconf"
+S["ACLOCAL"]="${SHELL} /tmp/dlink-dir859-gpl/progs.gpl/radvd-1.8/radvd-1.8/missing --run aclocal-1.11"
 S["VERSION"]="1.8"
 S["PACKAGE"]="radvd"
 S["CYGPATH_W"]="echo"

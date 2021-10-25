@@ -2,7 +2,7 @@
 
 # libtool - Provide generalized library-building support services.
 # Generated automatically by config.status (lzo) 2.06
-# Libtool was configured on host debian-sushe:
+# Libtool was configured on host debian-office:
 # NOTE: Changes made to this file will be lost: look at ltmain.sh.
 #
 #   Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005,
@@ -240,7 +240,7 @@ hardcode_into_libs=yes
 sys_lib_search_path_spec="/opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/lib/gcc/mips-linux-uclibc/4.3.3 /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/lib/gcc /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/mips-linux-uclibc/lib /opt/mips-gcc-4.3.3-uClibc-0.9.30/lib /opt/mips-gcc-4.3.3-uClibc-0.9.30/usr/lib "
 
 # Run-time system search path for libraries.
-sys_lib_dlsearch_path_spec="/lib64 /usr/lib64 /lib /usr/lib /usr/lib/x86_64-linux-gnu/libfakeroot /usr/local/lib /usr/local/lib/x86_64-linux-gnu /lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu /lib32 /usr/lib32 /libx32 /usr/libx32 "
+sys_lib_dlsearch_path_spec="/lib64 /usr/lib64 /lib /usr/lib /usr/lib/x86_64-linux-gnu/libfakeroot /usr/local/lib/i386-linux-gnu /lib/i386-linux-gnu /usr/lib/i386-linux-gnu /usr/local/lib/i686-linux-gnu /lib/i686-linux-gnu /usr/lib/i686-linux-gnu /usr/local/lib /usr/local/lib/x86_64-linux-gnu /lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu /lib32 /usr/lib32 /libx32 /usr/libx32 "
 
 # Whether dlopen is supported.
 dlopen_support=unknown

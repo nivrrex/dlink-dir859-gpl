@@ -34495,9 +34495,9 @@ diff -Nru ori/iptables-1.4.21/extensions/GNUmakefile.in iptables-1.4.21/extensio
 +ifeq ($(CONFIG_NETFILTER_XT_MATCH_CONNBYTES), y)
 +	pfx_build_mod += connbytes
 +endif
-+ifeq ($(CONFIG_NETFILTER_XT_MATCH_LAYER7), y)
-+	pfx_build_mod += layer7
-+endif
+#+ifeq ($(CONFIG_NETFILTER_XT_MATCH_LAYER7), y)
+#+	pfx_build_mod += layer7
+#+endif
 +ifeq ($(CONFIG_NETFILTER_XT_MATCH_PKTTYPE), y)
 +	pfx_build_mod += pkttype
 +endif
